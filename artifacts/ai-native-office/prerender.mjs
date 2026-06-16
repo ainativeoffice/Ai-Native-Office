@@ -20,8 +20,29 @@ if (!template.includes("</head>")) {
   throw new Error("Prerender failed: could not find </head> in built index.html");
 }
 
+const gaId = (process.env.GA_MEASUREMENT_ID || "").trim();
+let gaSnippet = "";
+if (gaId) {
+  if (!/^G-[A-Z0-9]+$/i.test(gaId)) {
+    throw new Error(
+      `Prerender failed: GA_MEASUREMENT_ID "${gaId}" is not a valid GA4 Measurement ID (expected format G-XXXXXXXXXX).`,
+    );
+  }
+  gaSnippet = `<script async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${gaId}');
+    </script>
+    `;
+  console.log(`Prerender: injecting Google Analytics (${gaId}).`);
+} else {
+  console.log("Prerender: GA_MEASUREMENT_ID not set — skipping analytics injection.");
+}
+
 template = template.replace('<div id="root"></div>', `<div id="root">${html}</div>`);
-template = template.replace("</head>", `    ${head}\n  </head>`);
+template = template.replace("</head>", `    ${gaSnippet}${head}\n  </head>`);
 
 writeFileSync(indexPath, template);
 
