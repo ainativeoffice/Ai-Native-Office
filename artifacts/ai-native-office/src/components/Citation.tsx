@@ -54,6 +54,13 @@ export function Citation({ number }: { number: number }) {
         <div className="px-4 py-3">
           <p className="text-sm font-light leading-snug text-foreground/90">{label}</p>
         </div>
+        <a
+          href={`#source-${number}`}
+          className="flex items-center justify-between border-t border-border px-4 py-2 font-mono text-[11px] uppercase tracking-wider text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+        >
+          <span>Jump to source</span>
+          <span aria-hidden="true">↓</span>
+        </a>
         {url && (
           <a
             href={url}

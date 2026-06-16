@@ -159,3 +159,23 @@
   cursor: pointer;
   border-radius: 0;
 }
+
+/* Brief highlight when a Works Cited entry is jumped to from an inline citation */
+@keyframes source-target-flash {
+  0% {
+    background-color: hsl(var(--primary) / 0.16);
+    box-shadow: -0.75rem 0 0 hsl(var(--primary) / 0.16);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: -0.75rem 0 0 transparent;
+  }
+}
+ol li[id^="source-"]:target {
+  animation: source-target-flash 2.4s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  ol li[id^="source-"]:target {
+    animation: none;
+  }
+}
