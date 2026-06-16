@@ -1,0 +1,24 @@
+# The AI-Native Office
+
+> The foundational manifesto and technical standard defining a new commercial real estate asset class: the AI-Native Office — a localized, sovereign compute edge node disguised as Class-A commercial real estate, collapsing the physical distance between human interaction and GPU inference to exactly zero.
+
+The AI-Native Office is the technical whitepaper for ainativeoffice.org. It argues that the public "Cloud-Native" paradigm is structurally and financially obsolete for multimodal AI, and specifies an architecture of on-premise sovereign compute deployed within acoustically and electromagnetically hardened commercial space.
+
+## Document
+
+- [Full manifesto (markdown)](https://ainativeoffice.org/llms-full.txt): The complete, verbatim text of the whitepaper, including all data tables and citations.
+- [The AI-Native Office (web edition)](https://ainativeoffice.org/): The rendered web edition of the manifesto.
+
+## Core sections
+
+- Introduction: The Terminal Failure of Public Cloud Architecture
+- The Cloud Egress Trap: The Physics and Economics of Multimodal Data
+- The Space as a Sensory Organ: The Death of the Keyboard
+- The Sovereign Enclave: The Architecture of the Hardened Shell
+- The Intelligence Flywheel & Absolute Sovereignty: Enterprise GraphRAG
+- Conclusion: The Mandate for the AI-Native Asset Class
+
+## Related
+
+- [Lease the Sovereign Shell](https://ainativeoffice.com): The physical infrastructure and hardened real estate.
+- [Deploy the Agentic Software](https://nativeagentic.com): The agentic software layer.

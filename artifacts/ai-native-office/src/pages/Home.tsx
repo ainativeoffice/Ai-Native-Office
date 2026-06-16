@@ -171,11 +171,31 @@ export default function Home() {
               Works Cited
             </h2>
             <ol className="list-decimal list-outside ml-6 font-mono text-xs text-muted-foreground space-y-3">
-              {content.worksCited.map((citation, i) => (
-                <li key={i} className="pl-4">
-                  {citation}
-                </li>
-              ))}
+              {content.worksCited.map((citation, i) => {
+                const match = citation.match(/(https?:\/\/\S+)/);
+                const url = match ? match[1] : null;
+                const label = url
+                  ? citation.slice(0, match!.index).replace(/,\s*$/, "")
+                  : citation;
+                return (
+                  <li key={i} className="pl-4 break-words">
+                    <span>{label}</span>
+                    {url && (
+                      <>
+                        {" "}
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noopener external"
+                          className="text-foreground/70 underline decoration-border underline-offset-2 transition-colors hover:text-primary break-all"
+                        >
+                          {url}
+                        </a>
+                      </>
+                    )}
+                  </li>
+                );
+              })}
             </ol>
           </section>
         </div>
