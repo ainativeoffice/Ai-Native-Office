@@ -30,3 +30,8 @@ externalPort = 8081
 [[ports]]
 localPort = 20280
 externalPort = 3000
+
+[userenv]
+
+[userenv.shared]
+GA_MEASUREMENT_ID = "G-76Z496G38J"
