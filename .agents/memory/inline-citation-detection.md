@@ -26,9 +26,25 @@ is "1" + citation 34. These look identical to decimals/versions (`1.25 Mbps`,
 unit check rejects `1.25 Mbps`. Symbol unit `%` must be matched literally in the UNIT
 regex — a trailing `\b` after `%` never matches, so don't rely on `\b` for it.
 
-**How to apply / regenerate:** when content changes, re-run a one-off detector over all
-prose strings and eyeball every match + every excluded `\d\.\d{1,2}` near-miss before
-trusting it. Expectation at time of writing: 49 inline prose markers + 10 table
-"Source Notes" cells = 59 anchors in the prerendered HTML. Markers are anchors to the
-source URL so they live in the SSG output and degrade without JS; the hover card is
-radix (client-only).
+**How to apply / regenerate:** detection is now guarded by automated checks, not a
+throwaway script. `src/lib/citations.test.ts` (run via `pnpm --filter
+@workspace/ai-native-office test`, Node's built-in runner through `tsx`) pins the
+detection rules, and `findBrokenCitations()` walks all content; `assertCitationsValid()`
+(in `entry-server.tsx`, called from `prerender.mjs`) fails the build on broken refs.
+Markers are anchors to the source URL so they live in the SSG output and degrade
+without JS; the hover card is radix (client-only).
+
+**Build-guard subtlety — out-of-range means different things for the two marker kinds.**
+The range check (`num <= worksCited.length`) is the *disambiguator* for digit-before-period
+markers, not just a validity filter. A word-glued out-of-range marker (`streams.79`) is a
+genuinely broken citation → the guard fails the build. But a digit-before-period
+out-of-range marker (`43.79 tokens per second`) is just a decimal → the guard must
+**ignore** it. So `findBrokenCitations` only flags `kind:"word"` markers (plus pure-number
+"Source Notes" table cells); flagging `kind:"digit"` out-of-range produces false positives.
+**Why:** a broken `35.99`-style citation is indistinguishable from a decimal, and the
+renderer already treats out-of-range digit markers as plain text, so the guard stays
+consistent with what actually renders.
+
+**No vitest in this repo** — the npm registry is frequently unreachable here, so a vitest
+install times out. Use Node's `node:test` + `node:assert` run through the already-vendored
+`tsx` (resolves the `@/*` tsconfig path alias); no network install needed.

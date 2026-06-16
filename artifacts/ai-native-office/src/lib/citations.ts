@@ -44,40 +44,179 @@ const UNIT = /^\s?(?:(?:Mbps|MBps|Gbps|Kbps|GB|TB|MB|KB|GHz|MHz|kHz|Hz|dB|ms|Wat
 // A citation may be glued to a word-ending character: a letter or closing punctuation.
 const WORD_END = /[A-Za-z)\]}"'\u201d\u2019]/;
 
+/** A citation-shaped marker found in prose, with its slice boundaries. */
+interface Marker {
+  number: number;
+  /**
+   * How the marker was recognized:
+   * - `"word"`: glued to a letter/closing-punctuation (`streams.1`, `(SCIF).26`) —
+   *   unambiguously a citation regardless of its value.
+   * - `"digit"`: glued after a digit (`STC 35.25`); only disambiguated from a
+   *   decimal by whether the number resolves to a real source.
+   */
+  kind: "word" | "digit";
+  /** index of the period that introduces the marker (kept as visible text) */
+  dotIdx: number;
+  /** index just past the trailing digits */
+  end: number;
+}
+
 /**
- * Tokenize prose into plain-text and citation tokens. A citation marker is a
- * 1–2 digit source number (1..SOURCE_COUNT) glued to the end of a word via a
- * period (e.g. `streams.1`, `(SCIF).26`, `STC 35.25`). Decimals, resolutions,
- * codecs, versions and unit values (`1.25 Mbps`, `H.264`, `Llama 3.1`, `96.58%`)
- * are excluded. The period itself is preserved as visible text.
+ * Scan prose for citation-shaped markers: a 1–2 digit number glued to the end
+ * of a word via a period (e.g. `streams.1`, `(SCIF).26`, `STC 35.25`). Decimals,
+ * resolutions, codecs, versions and unit values (`1.25 Mbps`, `H.264`,
+ * `Llama 3.1`, `96.58%`) are excluded. The source-number range is intentionally
+ * NOT consulted here so callers can distinguish valid markers from ones that
+ * point past the end of the Works Cited list (a broken citation).
  */
-export function tokenizeCitations(text: string): Token[] {
-  const tokens: Token[] = [];
+function scanMarkers(text: string): Marker[] {
+  const markers: Marker[] = [];
   const re = /\.(\d{1,2})\b/g;
-  let last = 0;
   let m: RegExpExecArray | null;
   while ((m = re.exec(text)) !== null) {
     const num = parseInt(m[1], 10);
-    if (num < 1 || num > SOURCE_COUNT) continue;
     const dotIdx = m.index;
     const before = text[dotIdx - 1] ?? "";
     const after = text.slice(re.lastIndex);
     if (/^\d/.test(after)) continue; // part of a longer number (e.g. 0.090, H.264)
 
-    let isCitation = false;
+    let kind: Marker["kind"] | null = null;
     if (WORD_END.test(before)) {
-      isCitation = true;
+      kind = "word";
     } else if (/\d/.test(before)) {
       // Digit before the period: only a 2-digit number not followed by a unit
       // (catches `STC 35.25`, `batch size of 1.34`; rejects `1.25 Mbps`, `5.1`).
-      if (m[1].length === 2 && !UNIT.test(after)) isCitation = true;
+      if (m[1].length === 2 && !UNIT.test(after)) kind = "digit";
     }
-    if (!isCitation) continue;
+    if (!kind) continue;
 
-    if (dotIdx + 1 > last) tokens.push({ type: "text", value: text.slice(last, dotIdx + 1) });
-    tokens.push({ type: "cite", number: num });
-    last = re.lastIndex;
+    markers.push({ number: num, kind, dotIdx, end: re.lastIndex });
+  }
+  return markers;
+}
+
+/**
+ * Detect citation-shaped numbers in a string, reporting each marker's number,
+ * recognition `kind`, and whether it falls within the Works Cited range.
+ * Exposed for tests and the build-time guard. Note: a `"digit"` marker that is
+ * out of range is a decimal (e.g. `43.79 tokens`), not a broken citation — the
+ * build guard only treats out-of-range `"word"` markers as broken.
+ */
+export function detectCitationNumbers(
+  text: string,
+): { number: number; kind: "word" | "digit"; inRange: boolean }[] {
+  return scanMarkers(text).map((marker) => ({
+    number: marker.number,
+    kind: marker.kind,
+    inRange: marker.number >= 1 && marker.number <= SOURCE_COUNT,
+  }));
+}
+
+/**
+ * Tokenize prose into plain-text and citation tokens. Only markers whose number
+ * is a valid source (1..SOURCE_COUNT) become citations; the period itself is
+ * preserved as visible text.
+ */
+export function tokenizeCitations(text: string): Token[] {
+  const tokens: Token[] = [];
+  let last = 0;
+  for (const marker of scanMarkers(text)) {
+    if (marker.number < 1 || marker.number > SOURCE_COUNT) continue;
+    if (marker.dotIdx + 1 > last) {
+      tokens.push({ type: "text", value: text.slice(last, marker.dotIdx + 1) });
+    }
+    tokens.push({ type: "cite", number: marker.number });
+    last = marker.end;
   }
   if (last < text.length) tokens.push({ type: "text", value: text.slice(last) });
   return tokens;
+}
+
+/** A citation that references a source number outside the Works Cited list. */
+export interface BrokenCitation {
+  number: number;
+  location: string;
+  context: string;
+}
+
+const SNIPPET = 60;
+
+function snippet(text: string, around: number): string {
+  const start = Math.max(0, around - SNIPPET);
+  const end = Math.min(text.length, around + SNIPPET);
+  const prefix = start > 0 ? "…" : "";
+  const suffix = end < text.length ? "…" : "";
+  return `${prefix}${text.slice(start, end).trim()}${suffix}`;
+}
+
+/**
+ * Walk every renderable string in the manifest and collect citation references
+ * that point outside the Works Cited range (1..SOURCE_COUNT). Covers inline
+ * prose/list markers (via {@link scanMarkers}) and the pure-number "Source
+ * Notes" table cells (which Home renders directly as citations). Returns an
+ * empty array when all citations resolve — the build guard fails if not.
+ *
+ * Pass `onlyText` to check a single arbitrary string instead of the manifest
+ * (used by tests); omit it to validate all shipped content.
+ */
+export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
+  const broken: BrokenCitation[] = [];
+  const inRange = (n: number) => n >= 1 && n <= SOURCE_COUNT;
+
+  const checkProse = (text: string, location: string) => {
+    for (const marker of scanMarkers(text)) {
+      // Only `"word"` markers are unambiguous citations; an out-of-range
+      // `"digit"` marker is a decimal (e.g. `43.79 tokens`), not a citation.
+      if (marker.kind === "word" && !inRange(marker.number)) {
+        broken.push({ number: marker.number, location, context: snippet(text, marker.dotIdx) });
+      }
+    }
+  };
+
+  const checkCell = (cell: string, location: string) => {
+    // Source-note cells are a bare 1–2 digit source number rendered as a citation.
+    if (/^\d{1,2}$/.test(cell)) {
+      const num = parseInt(cell, 10);
+      if (!inRange(num)) broken.push({ number: num, location, context: cell });
+    } else {
+      checkProse(cell, location);
+    }
+  };
+
+  if (onlyText !== undefined) {
+    checkProse(onlyText, "(input)");
+    return broken;
+  }
+
+  checkProse(content.hero.title, "hero.title");
+
+  (content.sections as any[]).forEach((section, si) => {
+    const at = (suffix: string) => `sections[${si}] "${section.title}" › ${suffix}`;
+    (section.prose ?? []).forEach((p: string, i: number) => checkProse(p, at(`prose[${i}]`)));
+    (section.list ?? []).forEach((it: string, i: number) => checkProse(it, at(`list[${i}]`)));
+    (section.postListProse ?? []).forEach((p: string, i: number) =>
+      checkProse(p, at(`postListProse[${i}]`)),
+    );
+    (section.subsections ?? []).forEach((sub: any, sj: number) => {
+      const subAt = (suffix: string) => at(`subsections[${sj}] "${sub.title}" › ${suffix}`);
+      (sub.prose ?? []).forEach((p: string, i: number) => checkProse(p, subAt(`prose[${i}]`)));
+      (sub.list ?? []).forEach((it: string, i: number) => checkProse(it, subAt(`list[${i}]`)));
+      (sub.postTableProse ?? []).forEach((p: string, i: number) =>
+        checkProse(p, subAt(`postTableProse[${i}]`)),
+      );
+      (sub.postListProse ?? []).forEach((p: string, i: number) =>
+        checkProse(p, subAt(`postListProse[${i}]`)),
+      );
+      if (sub.tableData) {
+        (sub.tableData.headers ?? []).forEach((h: string, i: number) =>
+          checkProse(h, subAt(`tableData.headers[${i}]`)),
+        );
+        (sub.tableData.rows ?? []).forEach((row: string[], ri: number) =>
+          row.forEach((cell, ci) => checkCell(cell, subAt(`tableData.rows[${ri}][${ci}]`))),
+        );
+      }
+    });
+  });
+
+  return broken;
 }

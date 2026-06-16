@@ -5,6 +5,7 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 ## Run & Operate
 
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/ai-native-office run test` — citation detection/guard unit tests (Node's `node:test` via `tsx`)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec

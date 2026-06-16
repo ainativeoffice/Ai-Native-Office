@@ -1,7 +1,23 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
 import { content } from "./content";
-import { parseCitation } from "./lib/citations";
+import { findBrokenCitations, parseCitation } from "./lib/citations";
+
+/**
+ * Build-time guard: throws if any inline citation references a source number
+ * outside the Works Cited range. Called by `prerender.mjs` so a broken or
+ * missing citation fails the production build instead of shipping silently.
+ */
+export function assertCitationsValid(): void {
+  const broken = findBrokenCitations();
+  if (broken.length === 0) return;
+  const details = broken
+    .map((b) => `  • source #${b.number} (only 1..${content.worksCited.length} exist) at ${b.location}\n    "${b.context}"`)
+    .join("\n");
+  throw new Error(
+    `Citation check failed: ${broken.length} inline citation(s) point outside the Works Cited range:\n${details}`,
+  );
+}
 
 const SITE = "https://ainativeoffice.org";
 

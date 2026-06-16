@@ -4,9 +4,12 @@ import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const { render, getLlmsFull } = await import(
+const { render, getLlmsFull, assertCitationsValid } = await import(
   path.join(__dirname, "dist/server/entry-server.js")
 );
+
+// Fail the build if any inline citation points outside the Works Cited range.
+assertCitationsValid();
 
 const indexPath = path.join(__dirname, "dist/public/index.html");
 let template = readFileSync(indexPath, "utf-8");
