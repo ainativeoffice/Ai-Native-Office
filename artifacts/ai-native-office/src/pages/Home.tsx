@@ -1,0 +1,207 @@
+import React from "react";
+import { motion } from "framer-motion";
+import { content } from "@/content";
+import { useActiveSection } from "@/hooks/use-active-section";
+import { EgressCalculator } from "@/components/EgressCalculator";
+
+export default function Home() {
+  const sectionIds = content.sections.map((s) => s.id);
+  const activeId = useActiveSection(sectionIds);
+
+  const renderTable = (tableData: any) => {
+    return (
+      <div className="w-full overflow-x-auto my-10 font-mono text-xs md:text-sm">
+        <table className="w-full border-collapse border border-border text-left">
+          <thead>
+            <tr className="bg-secondary/30">
+              {tableData.headers.map((h: string, i: number) => (
+                <th key={i} className="border border-border p-3 font-semibold uppercase tracking-wider text-muted-foreground">
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.rows.map((row: string[], i: number) => (
+              <tr key={i} className="hover:bg-card/50 transition-colors">
+                {row.map((cell: string, j: number) => (
+                  <td key={j} className="border border-border p-3">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderProse = (paragraphs: string[]) => {
+    return paragraphs.map((p, i) => (
+      <p key={i} className="mb-6 leading-relaxed text-foreground/90 font-light text-lg">
+        {p}
+      </p>
+    ));
+  };
+
+  return (
+    <div className="min-h-[100dvh] bg-background text-foreground flex flex-col md:flex-row selection:bg-primary selection:text-primary-foreground">
+      
+      {/* Sidebar Navigation */}
+      <nav className="hidden md:block w-72 shrink-0 border-r border-border p-8 sticky top-0 h-[100dvh] overflow-y-auto">
+        <div className="mb-12">
+          <div className="text-xl font-serif font-bold tracking-tight text-primary">ai-native-office</div>
+          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground mt-2 border-t border-border pt-2">Technical Standard v1.0</div>
+        </div>
+        <ul className="flex flex-col gap-4 font-mono text-xs uppercase tracking-wider">
+          {content.sections.map((section) => (
+            <li key={section.id}>
+              <a 
+                href={`#${section.id}`} 
+                className={`flex items-center gap-3 transition-colors ${
+                  activeId === section.id ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
+                }`}
+              >
+                <div className={`w-2 h-2 ${activeId === section.id ? "bg-primary" : "bg-transparent border border-muted"}`} />
+                <span className="truncate">{section.title.split(":")[0]}</span>
+              </a>
+            </li>
+          ))}
+          <li className="mt-8 border-t border-border pt-8">
+            <a 
+              href="#works-cited" 
+              className={`flex items-center gap-3 transition-colors ${
+                activeId === "works-cited" ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
+              }`}
+            >
+              <div className={`w-2 h-2 ${activeId === "works-cited" ? "bg-primary" : "bg-transparent border border-muted"}`} />
+              <span>Works Cited</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      {/* Main Content */}
+      <main className="flex-1 max-w-4xl mx-auto px-6 py-12 md:p-16 lg:p-24 relative">
+        
+        {/* Hero */}
+        <header className="mb-24 pb-12 border-b border-border">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-5xl md:text-7xl font-serif font-bold leading-tight tracking-tight mb-8"
+          >
+            {content.hero.title}
+          </motion.h1>
+          <div className="flex gap-4 items-center font-mono text-xs text-muted-foreground uppercase tracking-widest">
+            <span>Confidential</span>
+            <span className="w-1 h-1 bg-border rounded-full" />
+            <span>Architecture Specification</span>
+            <span className="w-1 h-1 bg-border rounded-full" />
+            <span>Classified</span>
+          </div>
+        </header>
+
+        {/* Sections */}
+        <div className="flex flex-col gap-24">
+          {content.sections.map((section, idx) => (
+            <motion.section 
+              key={section.id}
+              id={section.id}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8 }}
+              className="scroll-mt-24"
+            >
+              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-8 text-primary">
+                {section.title}
+              </h2>
+              
+              <div className="prose-container">
+                {renderProse(section.prose)}
+                
+                {section.list && (
+                  <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
+                    {section.list.map((item, i) => (
+                      <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                {section.postListProse && renderProse(section.postListProse)}
+
+                {section.subsections?.map((sub, sIdx) => (
+                  <div key={sIdx} className="mt-16">
+                    <h3 className="text-2xl font-serif font-semibold mb-6 text-foreground/90">
+                      {sub.title}
+                    </h3>
+                    {renderProse(sub.prose)}
+                    
+                    {sub.tableType === "egress_table" && <EgressCalculator />}
+
+                    {sub.tableData && renderTable(sub.tableData)}
+                    
+                    {sub.postTableProse && renderProse(sub.postTableProse)}
+                    
+                    {sub.list && (
+                      <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
+                        {sub.list.map((item, i) => (
+                          <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {sub.postListProse && renderProse(sub.postListProse)}
+                  </div>
+                ))}
+              </div>
+            </motion.section>
+          ))}
+
+          {/* Works Cited */}
+          <section id="works-cited" className="pt-24 border-t border-border scroll-mt-24">
+            <h2 className="text-2xl font-mono font-bold mb-8 uppercase tracking-widest text-muted-foreground">
+              Works Cited
+            </h2>
+            <ol className="list-decimal list-outside ml-6 font-mono text-xs text-muted-foreground space-y-3">
+              {content.worksCited.map((citation, i) => (
+                <li key={i} className="pl-4">
+                  {citation}
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
+
+        {/* Footer CTAs */}
+        <footer className="mt-32 pt-16 border-t border-border flex flex-col md:flex-row gap-6">
+          <a 
+            href="https://ainativeoffice.com" 
+            target="_blank" 
+            rel="noreferrer"
+            className="flex-1 block group border border-border p-6 hover:bg-primary hover:text-primary-foreground transition-all"
+          >
+            <div className="font-mono text-xs uppercase tracking-widest mb-4 opacity-70">Infrastructure</div>
+            <div className="font-serif text-2xl font-bold group-hover:translate-x-2 transition-transform">Lease the Sovereign Shell</div>
+          </a>
+          <a 
+            href="https://nativeagentic.com" 
+            target="_blank" 
+            rel="noreferrer"
+            className="flex-1 block group border border-border p-6 hover:bg-primary hover:text-primary-foreground transition-all"
+          >
+            <div className="font-mono text-xs uppercase tracking-widest mb-4 opacity-70">Software</div>
+            <div className="font-serif text-2xl font-bold group-hover:translate-x-2 transition-transform">Deploy the Agentic Software</div>
+          </a>
+        </footer>
+      </main>
+    </div>
+  );
+}

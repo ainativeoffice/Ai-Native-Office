@@ -1,6 +1,6 @@
-# [Project name]
+# The AI-Native Office
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining a new commercial real estate asset class — the AI-Native Office — in an institutional-brutalist aesthetic.
 
 ## Run & Operate
 
