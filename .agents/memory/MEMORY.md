@@ -1,0 +1,1 @@
+- [Static Vite artifact SSG/prerender](vite-static-ssg.md) — how to pre-render a client-only Vite SPA to static HTML for SEO/LLM crawlers when prod is a static serve.

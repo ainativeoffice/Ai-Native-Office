@@ -16,6 +16,9 @@ const { html, head } = render();
 if (!template.includes('<div id="root"></div>')) {
   throw new Error('Prerender failed: could not find <div id="root"></div> in built index.html');
 }
+if (!template.includes("</head>")) {
+  throw new Error("Prerender failed: could not find </head> in built index.html");
+}
 
 template = template.replace('<div id="root"></div>', `<div id="root">${html}</div>`);
 template = template.replace("</head>", `    ${head}\n  </head>`);

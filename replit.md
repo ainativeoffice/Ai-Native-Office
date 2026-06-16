@@ -22,15 +22,25 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/ai-native-office/src/content.ts` — source of truth for ALL page copy (hero, sections, subsections, tables, works cited). Verbatim user content; do not reword.
+- `artifacts/ai-native-office/src/pages/Home.tsx` — the single manifesto page; renders everything from `content.ts`.
+- `artifacts/ai-native-office/src/index.css` — carbon-black brutalist theme tokens (bg `hsl(0 0% 4%)`, near-white primary, zero radius) + fonts (Playfair Display serif, JetBrains Mono).
+- `artifacts/ai-native-office/index.html` — `<head>` SEO/OpenGraph/Twitter/canonical meta (static).
+- `artifacts/ai-native-office/src/entry-server.tsx` — SSR/SSG entry: `render()` (HTML + JSON-LD) and `getLlmsFull()` (markdown generator), both derived from `content.ts`.
+- `artifacts/ai-native-office/prerender.mjs` — post-build step: injects SSR HTML + schema.org JSON-LD into `dist/public/index.html` and writes `llms-full.txt`.
+- `artifacts/ai-native-office/public/` — static launch assets: `robots.txt`, `sitemap.xml`, `llms.txt`, `favicon.svg`, `opengraph.jpg` (generated from `og-source.svg`).
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- **SSG via two Vite builds.** Production is a static serve (`dist/public`), so `build` runs: client build → `--ssr entry-server` build → `node prerender.mjs`. Prerender injects fully-rendered HTML so crawlers/LLMs see the entire manifesto with zero JS. Client `main.tsx` `hydrateRoot`s when `#root` already has children, else `createRoot` (dev).
+- **wouter SSR** needs `ssrPath`; `App` accepts an optional `ssrPath` prop passed only by `entry-server` (client leaves it undefined to use browser location).
+- **JSON-LD + llms-full.txt are generated, not hand-written** — both come from `content.ts` at build time, so they never drift from the rendered copy. JSON-LD is a schema.org `TechArticle` with the full `citation` list.
+- **OG image is vector-first**: `og-source.svg` is rasterized to `public/opengraph.jpg` (1200×630) with ImageMagick `magick` for crisp brutalist text; regenerate after editing the SVG.
+- **Canonical domain is `https://ainativeoffice.org`** — hardcoded in meta, sitemap, robots, and JSON-LD.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+A single-page technical manifesto / whitepaper ("The End of the Cloud-Native Illusion") defining the AI-Native Office commercial real estate asset class. Fully pre-rendered for SEO and LLM ingestion: server-readable HTML, sitemap, robots (AI bots welcomed), schema.org JSON-LD, `llms.txt` + `llms-full.txt`, all ~45 sources linked out, brutalist favicon, and a 1200×630 OpenGraph card.
 
 ## User preferences
 
@@ -38,7 +48,10 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- `pnpm build` requires `PORT` and `BASE_PATH` env (vite.config throws without them); the production workflow injects these. From bash use `PORT=20280 BASE_PATH=/ pnpm --filter @workspace/ai-native-office run build`.
+- After editing `og-source.svg`, regenerate the OG image: `magick -density 192 -background '#0A0A0A' og-source.svg -resize 1200x630 -quality 90 public/opengraph.jpg`.
+- `llms-full.txt` and the prerendered `index.html` are build outputs — never hand-edit them; change `content.ts` / `entry-server.tsx` and rebuild.
+- The OG image uses generic `serif`/`monospace` font families on purpose (Playfair/JetBrains aren't installed for the rasterizer); keep headline ≤ ~84px so it stays inside the frame.
 
 ## Pointers
 

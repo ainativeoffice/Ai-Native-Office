@@ -135,7 +135,7 @@ export default function Home() {
 
                 {section.postListProse && renderProse(section.postListProse)}
 
-                {section.subsections?.map((sub, sIdx) => (
+                {section.subsections?.map((sub: any, sIdx: number) => (
                   <div key={sIdx} className="mt-16">
                     <h3 className="text-2xl font-serif font-semibold mb-6 text-foreground/90">
                       {sub.title}
@@ -150,7 +150,7 @@ export default function Home() {
                     
                     {sub.list && (
                       <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
-                        {sub.list.map((item, i) => (
+                        {sub.list.map((item: string, i: number) => (
                           <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
                             {item}
                           </li>
