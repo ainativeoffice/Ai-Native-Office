@@ -23,7 +23,7 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 
 ## Where things live
 
-- `artifacts/ai-native-office/src/content.ts` — source of truth for ALL page copy (hero, sections, subsections, tables, works cited). Verbatim user content; do not reword.
+- `artifacts/ai-native-office/src/content.ts` — source of truth for ALL page copy (hero title + `hero.authors` byline, sections, subsections, tables, works cited). Verbatim user content; do not reword.
 - `artifacts/ai-native-office/src/pages/Home.tsx` — the single manifesto page; renders everything from `content.ts`. Prose/list/table text runs through `renderText` → `tokenizeCitations` so inline source numbers become `<Citation>` markers.
 - `artifacts/ai-native-office/src/lib/citations.ts` — shared, React-free source helpers: `parseCitation` (splits a Works Cited entry into label + URL, used by Home, entry-server JSON-LD), `getSource` (1-based number → `{number,label,url,domain}`), and `tokenizeCitations` (render-time detection of inline citation markers; the period stays as visible text, only the trailing number becomes interactive).
 - `artifacts/ai-native-office/src/components/Citation.tsx` — superscript citation marker: a hover-card (radix) whose trigger is an `<a>` to the source URL (new tab); card shows source number + label + domain + "Open in new tab ↗".

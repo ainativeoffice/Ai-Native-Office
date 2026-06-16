@@ -110,12 +110,18 @@ export default function Home() {
           >
             {content.hero.title}
           </motion.h1>
-          <div className="flex gap-4 items-center font-mono text-xs text-muted-foreground uppercase tracking-widest">
-            <span>Confidential</span>
-            <span className="w-1 h-1 bg-border rounded-full" />
-            <span>Architecture Specification</span>
-            <span className="w-1 h-1 bg-border rounded-full" />
-            <span>Classified</span>
+          <div className="flex flex-wrap gap-x-4 gap-y-2 items-center font-mono text-xs text-muted-foreground uppercase tracking-widest">
+            {content.hero.authors.map((author, idx) => (
+              <React.Fragment key={author.email}>
+                {idx > 0 && <span className="w-1 h-1 bg-border rounded-full" />}
+                <a
+                  href={`mailto:${author.email}`}
+                  className="text-muted-foreground underline decoration-dotted decoration-muted-foreground/50 underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary focus-visible:text-primary"
+                >
+                  {author.name}
+                </a>
+              </React.Fragment>
+            ))}
           </div>
         </header>
 
