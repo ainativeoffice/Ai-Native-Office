@@ -1,6 +1,7 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
 import { content } from "./content";
+import { parseCitation } from "./lib/citations";
 
 const SITE = "https://ainativeoffice.org";
 
@@ -75,9 +76,8 @@ export function getLlmsFull(): string {
 
 function buildJsonLd() {
   const citations = (content.worksCited as string[]).map((c) => {
-    const m = c.match(/(https?:\/\/\S+)/);
-    const url = m ? m[1] : undefined;
-    const name = (url ? c.slice(0, m!.index) : c).replace(/,\s*$/, "").trim();
+    const { label, url } = parseCitation(c);
+    const name = label.trim();
     return url
       ? { "@type": "CreativeWork", name, url }
       : { "@type": "CreativeWork", name };

@@ -24,7 +24,9 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 ## Where things live
 
 - `artifacts/ai-native-office/src/content.ts` — source of truth for ALL page copy (hero, sections, subsections, tables, works cited). Verbatim user content; do not reword.
-- `artifacts/ai-native-office/src/pages/Home.tsx` — the single manifesto page; renders everything from `content.ts`.
+- `artifacts/ai-native-office/src/pages/Home.tsx` — the single manifesto page; renders everything from `content.ts`. Prose/list/table text runs through `renderText` → `tokenizeCitations` so inline source numbers become `<Citation>` markers.
+- `artifacts/ai-native-office/src/lib/citations.ts` — shared, React-free source helpers: `parseCitation` (splits a Works Cited entry into label + URL, used by Home, entry-server JSON-LD), `getSource` (1-based number → `{number,label,url,domain}`), and `tokenizeCitations` (render-time detection of inline citation markers; the period stays as visible text, only the trailing number becomes interactive).
+- `artifacts/ai-native-office/src/components/Citation.tsx` — superscript citation marker: a hover-card (radix) whose trigger is an `<a>` to the source URL (new tab); card shows source number + label + domain + "Open in new tab ↗".
 - `artifacts/ai-native-office/src/index.css` — carbon-black brutalist theme tokens (bg `hsl(0 0% 4%)`, near-white primary, zero radius) + fonts (Playfair Display serif, JetBrains Mono).
 - `artifacts/ai-native-office/index.html` — `<head>` SEO/OpenGraph/Twitter/canonical meta (static).
 - `artifacts/ai-native-office/src/entry-server.tsx` — SSR/SSG entry: `render()` (HTML + JSON-LD) and `getLlmsFull()` (markdown generator), both derived from `content.ts`.
@@ -38,6 +40,7 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 - **JSON-LD + llms-full.txt are generated, not hand-written** — both come from `content.ts` at build time, so they never drift from the rendered copy. JSON-LD is a schema.org `TechArticle` with the full `citation` list.
 - **OG image is vector-first**: `og-source.svg` is rasterized to `public/opengraph.jpg` (1200×630) with ImageMagick `magick` for crisp brutalist text; regenerate after editing the SVG.
 - **Canonical domain is `https://ainativeoffice.org`** — hardcoded in meta, sitemap, robots, and JSON-LD.
+- **Inline citations are detected at render time, never annotated in `content.ts`.** `tokenizeCitations` finds a 1–2 digit source number (1..worksCited.length) glued to a word via a period (`streams.1`, `(SCIF).26`). The period is kept as visible text; only the trailing number becomes a `<Citation>`. Digit-before-period cases are accepted only when 2-digit and not followed by a unit, so genuine `rating + cite` markers (`STC 35.25`, `batch size of 1.34`) are caught while decimals/versions/units (`1.25 Mbps`, `Llama 3.1`, `96.58%`, `H.264`, `0.090`) are excluded. Markers are anchors to the source URL, so they appear in the prerendered HTML and degrade to plain source links without JS (the hover card is radix, client-only). Table "Source Notes" cells (pure 1–2 digit numbers) are also rendered as `<Citation>`.
 - **Analytics is build-time, not runtime.** `prerender.mjs` injects the gtag.js snippet into `<head>` only when `GA_MEASUREMENT_ID` is set (validated against `G-XXXXXXXXXX`). Dev (`vite dev`) skips prerender, so it never loads analytics — keeps dev/preview clean and avoids tracking non-prod traffic.
 
 ## Product

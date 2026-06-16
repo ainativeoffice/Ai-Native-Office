@@ -3,6 +3,17 @@ import { motion } from "framer-motion";
 import { content } from "@/content";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { EgressCalculator } from "@/components/EgressCalculator";
+import { Citation } from "@/components/Citation";
+import { getSource, parseCitation, tokenizeCitations } from "@/lib/citations";
+
+const renderText = (text: string) =>
+  tokenizeCitations(text).map((t, i) =>
+    t.type === "text" ? (
+      <React.Fragment key={i}>{t.value}</React.Fragment>
+    ) : (
+      <Citation key={i} number={t.number} />
+    ),
+  );
 
 export default function Home() {
   const sectionIds = content.sections.map((s) => s.id);
@@ -24,11 +35,15 @@ export default function Home() {
           <tbody>
             {tableData.rows.map((row: string[], i: number) => (
               <tr key={i} className="hover:bg-card/50 transition-colors">
-                {row.map((cell: string, j: number) => (
-                  <td key={j} className="border border-border p-3">
-                    {cell}
-                  </td>
-                ))}
+                {row.map((cell: string, j: number) => {
+                  const num = /^\d{1,2}$/.test(cell) ? parseInt(cell, 10) : NaN;
+                  const isSourceNote = !Number.isNaN(num) && getSource(num) !== null;
+                  return (
+                    <td key={j} className="border border-border p-3">
+                      {isSourceNote ? <Citation number={num} /> : cell}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
@@ -40,7 +55,7 @@ export default function Home() {
   const renderProse = (paragraphs: string[]) => {
     return paragraphs.map((p, i) => (
       <p key={i} className="mb-6 leading-relaxed text-foreground/90 font-light text-lg">
-        {p}
+        {renderText(p)}
       </p>
     ));
   };
@@ -127,7 +142,7 @@ export default function Home() {
                   <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
                     {section.list.map((item, i) => (
                       <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
-                        {item}
+                        {renderText(item)}
                       </li>
                     ))}
                   </ul>
@@ -152,7 +167,7 @@ export default function Home() {
                       <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
                         {sub.list.map((item: string, i: number) => (
                           <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
-                            {item}
+                            {renderText(item)}
                           </li>
                         ))}
                       </ul>
@@ -172,13 +187,9 @@ export default function Home() {
             </h2>
             <ol className="list-decimal list-outside ml-6 font-mono text-xs text-muted-foreground space-y-3">
               {content.worksCited.map((citation, i) => {
-                const match = citation.match(/(https?:\/\/\S+)/);
-                const url = match ? match[1] : null;
-                const label = url
-                  ? citation.slice(0, match!.index).replace(/,\s*$/, "")
-                  : citation;
+                const { label, url } = parseCitation(citation);
                 return (
-                  <li key={i} className="pl-4 break-words">
+                  <li key={i} id={`source-${i + 1}`} className="pl-4 break-words scroll-mt-24">
                     <span>{label}</span>
                     {url && (
                       <>

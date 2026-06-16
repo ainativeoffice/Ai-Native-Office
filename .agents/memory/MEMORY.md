@@ -1,1 +1,2 @@
 - [Static Vite artifact SSG/prerender](vite-static-ssg.md) — how to pre-render a client-only Vite SPA to static HTML for SEO/LLM crawlers when prod is a static serve.
+- [Inline citation detection](inline-citation-detection.md) — verbatim manifesto: render-time rule for source numbers glued to words; digit-before-period (STC 35.25) vs decimals.
