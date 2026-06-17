@@ -10,7 +10,7 @@
 
   <line x1="80" y1="500" x2="1120" y2="500" stroke="#333333" stroke-width="1"/>
   <text x="80" y="548" font-family="monospace" font-size="22" letter-spacing="3" fill="#9A9A9A">AINATIVEOFFICE.ORG</text>
-  <text x="1120" y="548" text-anchor="end" font-family="monospace" font-size="22" letter-spacing="3" fill="#9A9A9A">TECHNICAL STANDARD v1.0</text>
+  <text x="1120" y="548" text-anchor="end" font-family="monospace" font-size="22" letter-spacing="3" fill="#9A9A9A">DRAFT SPEC v0.5 &#183; RFC</text>
 
   <rect x="80" y="272" width="13" height="13" fill="#F2F2F2"/>
 </svg>
