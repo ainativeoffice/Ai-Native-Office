@@ -150,7 +150,7 @@ export default function Home() {
         {/* Hero */}
         <header className="mb-24 pb-12 border-b border-border">
           <div className="mb-8 inline-block border border-border px-4 py-2 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            <span className="text-primary/80">●</span> Draft Specification v0.5 — Request for Comment (RFC)
+            <span className="text-primary/80">●</span> Draft Specification v{content.hero.spec.version} — {content.hero.spec.status}
           </div>
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}

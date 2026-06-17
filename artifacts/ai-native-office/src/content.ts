@@ -1,6 +1,10 @@
 export const content = {
   hero: {
     title: "The End of the Cloud-Native Illusion",
+    spec: {
+      version: "0.5",
+      status: "Request for Comment (RFC)",
+    },
     authors: [
       { name: "Timothy Walsh", email: "tw@trucast.ai" },
       { name: "Parham Alizadeh", email: "parham@northcastleventures.com" },

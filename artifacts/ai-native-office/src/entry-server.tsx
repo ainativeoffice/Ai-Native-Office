@@ -107,6 +107,8 @@ function buildJsonLd() {
     description:
       "The technical standard and manifesto for a new commercial real estate asset class: the AI-Native Office — a sovereign compute edge node disguised as Class-A real estate.",
     inLanguage: "en",
+    version: content.hero.spec.version,
+    creativeWorkStatus: `Draft Specification — ${content.hero.spec.status}`,
     datePublished: "2026-06-16",
     dateModified: "2026-06-16",
     image: `${SITE}/opengraph.jpg`,
