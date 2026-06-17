@@ -4,7 +4,7 @@ import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const { render, getLlmsFull, assertCitationsValid } = await import(
+const { render, getLlmsFull, assertCitationsValid, meta } = await import(
   path.join(__dirname, "dist/server/entry-server.js")
 );
 
@@ -22,6 +22,30 @@ if (!template.includes('<div id="root"></div>')) {
 if (!template.includes("</head>")) {
   throw new Error("Prerender failed: could not find </head> in built index.html");
 }
+
+// Sync the spec-version-aware title across <title>, og:title, twitter:title from
+// the single source of truth (content.hero.spec via entry-server `meta`). The
+// hardcoded strings in index.html are only a dev fallback; prod always rewrites.
+const titleInjections = [
+  { name: "<title>", re: /<title>[\s\S]*?<\/title>/, replacement: `<title>${meta.title}</title>` },
+  {
+    name: "og:title",
+    re: /(<meta property="og:title" content=")[^"]*(")/,
+    replacement: `$1${meta.title}$2`,
+  },
+  {
+    name: "twitter:title",
+    re: /(<meta name="twitter:title" content=")[^"]*(")/,
+    replacement: `$1${meta.title}$2`,
+  },
+];
+for (const { name, re, replacement } of titleInjections) {
+  if (!re.test(template)) {
+    throw new Error(`Prerender failed: could not find ${name} to inject the spec version label.`);
+  }
+  template = template.replace(re, replacement);
+}
+console.log(`Prerender: synced title/og:title/twitter:title → "${meta.title}".`);
 
 const gaId = (process.env.GA_MEASUREMENT_ID || "").trim();
 let gaSnippet = "";

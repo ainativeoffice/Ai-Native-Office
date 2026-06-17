@@ -2,6 +2,15 @@ import { renderToString } from "react-dom/server";
 import App from "./App";
 import { content } from "./content";
 import { findBrokenCitations, parseCitation } from "./lib/citations";
+import { metaTitle } from "./lib/spec";
+
+/**
+ * Build-time meta values consumed by `prerender.mjs` to inject the
+ * spec-version-aware <title>/og:title/twitter:title into the static HTML.
+ */
+export const meta = {
+  title: metaTitle(),
+};
 
 /**
  * Build-time guard: throws if any inline citation references a source number

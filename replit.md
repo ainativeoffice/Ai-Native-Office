@@ -8,6 +8,7 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 - `pnpm --filter @workspace/ai-native-office run test` — citation detection/guard unit tests (Node's `node:test` via `tsx`)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
+- `pnpm --filter @workspace/ai-native-office run og:gen` — regenerate the OG card (`og-source.svg` version label + `public/opengraph.jpg`) from `content.hero.spec`
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required env: `DATABASE_URL` — Postgres connection string
@@ -39,7 +40,8 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 - **SSG via two Vite builds.** Production is a static serve (`dist/public`), so `build` runs: client build → `--ssr entry-server` build → `node prerender.mjs`. Prerender injects fully-rendered HTML so crawlers/LLMs see the entire manifesto with zero JS. Client `main.tsx` `hydrateRoot`s when `#root` already has children, else `createRoot` (dev).
 - **wouter SSR** needs `ssrPath`; `App` accepts an optional `ssrPath` prop passed only by `entry-server` (client leaves it undefined to use browser location).
 - **JSON-LD + llms-full.txt are generated, not hand-written** — both come from `content.ts` at build time, so they never drift from the rendered copy. JSON-LD is a schema.org `TechArticle` with the full `citation` list.
-- **OG image is vector-first**: `og-source.svg` is rasterized to `public/opengraph.jpg` (1200×630) with ImageMagick `magick` for crisp brutalist text; regenerate after editing the SVG.
+- **OG image is vector-first**: `og-source.svg` is rasterized to `public/opengraph.jpg` (1200×630) with ImageMagick `magick` for crisp brutalist text; regenerate via `og:gen` after editing the SVG.
+- **Version/status label has one source of truth: `content.hero.spec`.** `src/lib/spec.ts` derives every label form from it — `specStatusShort()` pulls the parenthetical abbreviation (`Request for Comment (RFC)` → `RFC`), `specMetaLabel()`/`metaTitle()` build the page title. The prerender injects `metaTitle()` into `<title>`/`og:title`/`twitter:title` (hardcoded strings in `index.html` are dev-only fallbacks), JSON-LD reads `content.hero.spec` directly, and `gen-og.ts` substitutes the OG SVG label + rerasters. Bump `content.ts` then rebuild + run `og:gen` to update every surface; no hand-edited version copies remain.
 - **Canonical domain is `https://ainativeoffice.org`** — hardcoded in meta, sitemap, robots, and JSON-LD.
 - **Inline citations are detected at render time, never annotated in `content.ts`.** `tokenizeCitations` finds a 1–2 digit source number (1..worksCited.length) glued to a word via a period (`streams.1`, `(SCIF).26`). The period is kept as visible text; only the trailing number becomes a `<Citation>`. Digit-before-period cases are accepted only when 2-digit and not followed by a unit, so genuine `rating + cite` markers (`STC 35.25`, `batch size of 1.34`) are caught while decimals/versions/units (`1.25 Mbps`, `Llama 3.1`, `96.58%`, `H.264`, `0.090`) are excluded. Markers are anchors to the source URL, so they appear in the prerendered HTML and degrade to plain source links without JS (the hover card is radix, client-only). Table "Source Notes" cells (pure 1–2 digit numbers) are also rendered as `<Citation>`.
 - **Analytics is build-time, not runtime.** `prerender.mjs` injects the gtag.js snippet into `<head>` only when `GA_MEASUREMENT_ID` is set (validated against `G-XXXXXXXXXX`). Dev (`vite dev`) skips prerender, so it never loads analytics — keeps dev/preview clean and avoids tracking non-prod traffic.
@@ -55,7 +57,7 @@ _Populate as you build — explicit user instructions worth remembering across s
 ## Gotchas
 
 - `pnpm build` requires `PORT` and `BASE_PATH` env (vite.config throws without them); the production workflow injects these. From bash use `PORT=20280 BASE_PATH=/ pnpm --filter @workspace/ai-native-office run build`.
-- After editing `og-source.svg`, regenerate the OG image: `magick -density 192 -background '#0A0A0A' og-source.svg -resize 1200x630 -quality 90 public/opengraph.jpg`.
+- After editing `og-source.svg` or bumping the spec version, regenerate the OG image with `pnpm --filter @workspace/ai-native-office run og:gen` (it re-syncs the version label from `content.hero.spec` then rasterizes). It shells out to `magick`, which is slow in this env (~75s) — be patient. Raw command equivalent: `magick -density 192 -background '#0A0A0A' og-source.svg -resize 1200x630 -quality 90 public/opengraph.jpg`.
 - `llms-full.txt` and the prerendered `index.html` are build outputs — never hand-edit them; change `content.ts` / `entry-server.tsx` and rebuild.
 - The OG image uses generic `serif`/`monospace` font families on purpose (Playfair/JetBrains aren't installed for the rasterizer); keep headline ≤ ~84px so it stays inside the frame.
 
