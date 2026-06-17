@@ -46,7 +46,7 @@ export function getLlmsFull(): string {
   lines.push(`> ${content.hero.title}`);
   lines.push("");
   lines.push(
-    "The foundational manifesto and technical standard for ainativeoffice.org, defining a new commercial real estate asset class: the AI-Native Office — a localized, sovereign compute edge node disguised as Class-A commercial real estate.",
+    "The foundational technical specification for ainativeoffice.org, defining a new commercial real estate asset class: the AI-Native Office — a localized, sovereign compute edge node built within Class-A commercial real estate.",
   );
   lines.push("");
 
@@ -84,6 +84,24 @@ export function getLlmsFull(): string {
         for (const item of sub.list) lines.push(`- ${item}`);
         lines.push("");
       }
+      for (const block of sub.blocks ?? []) {
+        if (block.label) {
+          lines.push(`#### ${block.label}`);
+          lines.push("");
+        }
+        for (const p of block.prose ?? []) {
+          lines.push(p);
+          lines.push("");
+        }
+        if (block.list) {
+          for (const item of block.list) lines.push(`- ${item}`);
+          lines.push("");
+        }
+        for (const l of block.lines ?? []) {
+          lines.push(l);
+        }
+        if (block.lines) lines.push("");
+      }
       for (const p of sub.postListProse ?? []) {
         lines.push(p);
         lines.push("");
@@ -114,7 +132,7 @@ function buildJsonLd() {
     headline: content.hero.title,
     name: "The AI-Native Office",
     description:
-      "The technical standard and manifesto for a new commercial real estate asset class: the AI-Native Office — a sovereign compute edge node disguised as Class-A real estate.",
+      "A technical specification for the AI-Native Office — a sovereign compute edge node that collapses the distance between human collaboration and machine inference to exactly zero.",
     inLanguage: "en",
     version: content.hero.spec.version,
     creativeWorkStatus: `Draft Specification — ${content.hero.spec.status}`,

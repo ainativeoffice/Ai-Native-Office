@@ -207,6 +207,14 @@ export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
       (sub.postListProse ?? []).forEach((p: string, i: number) =>
         checkProse(p, subAt(`postListProse[${i}]`)),
       );
+      (sub.blocks ?? []).forEach((block: any, bi: number) => {
+        const blockAt = (suffix: string) =>
+          subAt(`blocks[${bi}]${block.label ? ` "${block.label}"` : ""} › ${suffix}`);
+        if (block.label) checkProse(block.label, blockAt("label"));
+        (block.prose ?? []).forEach((p: string, i: number) => checkProse(p, blockAt(`prose[${i}]`)));
+        (block.list ?? []).forEach((it: string, i: number) => checkProse(it, blockAt(`list[${i}]`)));
+        (block.lines ?? []).forEach((l: string, i: number) => checkProse(l, blockAt(`lines[${i}]`)));
+      });
       if (sub.tableData) {
         (sub.tableData.headers ?? []).forEach((h: string, i: number) =>
           checkProse(h, subAt(`tableData.headers[${i}]`)),

@@ -9,14 +9,54 @@ import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
 import { getSource, parseCitation, tokenizeCitations } from "@/lib/citations";
 
-const renderText = (text: string) =>
+type EmphasisSegment = { text: string; bold?: boolean; italic?: boolean };
+
+/**
+ * Lightweight inline emphasis parser: `**bold**` → <strong>, `*italic*` → <em>.
+ * Markers are formatting, not content — they are stripped from the rendered
+ * output. Citation detection runs inside each resulting segment.
+ */
+const parseEmphasis = (text: string): EmphasisSegment[] => {
+  const segments: EmphasisSegment[] = [];
+  const re = /\*\*([^*]+)\*\*|\*([^*]+)\*/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) segments.push({ text: text.slice(last, m.index) });
+    if (m[1] !== undefined) segments.push({ text: m[1], bold: true });
+    else segments.push({ text: m[2], italic: true });
+    last = re.lastIndex;
+  }
+  if (last < text.length) segments.push({ text: text.slice(last) });
+  return segments;
+};
+
+const renderCitations = (text: string, keyBase: string) =>
   tokenizeCitations(text).map((t, i) =>
     t.type === "text" ? (
-      <React.Fragment key={i}>{t.value}</React.Fragment>
+      <React.Fragment key={`${keyBase}-${i}`}>{t.value}</React.Fragment>
     ) : (
-      <Citation key={i} number={t.number} />
+      <Citation key={`${keyBase}-${i}`} number={t.number} />
     ),
   );
+
+const renderText = (text: string) =>
+  parseEmphasis(text).map((seg, i) => {
+    const inner = renderCitations(seg.text, `e${i}`);
+    if (seg.bold)
+      return (
+        <strong key={i} className="font-semibold text-foreground">
+          {inner}
+        </strong>
+      );
+    if (seg.italic)
+      return (
+        <em key={i} className="italic">
+          {inner}
+        </em>
+      );
+    return <React.Fragment key={i}>{inner}</React.Fragment>;
+  });
 
 /**
  * Tufte-style marginalia, matched verbatim against paragraph text at render time
@@ -27,9 +67,9 @@ const MARGIN_NOTES: MarginNote[] = [
   {
     id: "aws-egress",
     label: "AWS Egress Pricing",
-    match: "$13,000 in pure transit taxes on AWS",
+    match: "$13,000 in pure transit costs on AWS",
     source: 6,
-    note: "AWS EC2 internet egress is metered at $0.090/GB for the first 10 TB and $0.085/GB beyond — the recurring transit tax a sovereign node eliminates.",
+    note: "AWS EC2 internet egress is metered at $0.090/GB for the first 10 TB and $0.085/GB beyond — the recurring transit cost a sovereign node eliminates.",
   },
   {
     id: "mxa920",
@@ -101,6 +141,34 @@ export default function Home() {
     });
   };
 
+  const renderBlocks = (blocks: any[]) =>
+    blocks.map((b, bi) => (
+      <div key={bi} className="mt-8">
+        {b.label && (
+          <h4 className="mb-3 font-serif text-xl font-semibold text-foreground/90">
+            {renderText(b.label)}
+          </h4>
+        )}
+        {b.prose && renderProse(b.prose)}
+        {b.list && (
+          <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
+            {b.list.map((item: string, i: number) => (
+              <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
+                {renderText(item)}
+              </li>
+            ))}
+          </ul>
+        )}
+        {b.lines && (
+          <div className="font-mono text-sm leading-relaxed text-muted-foreground space-y-1">
+            {b.lines.map((line: string, i: number) => (
+              <div key={i}>{renderText(line)}</div>
+            ))}
+          </div>
+        )}
+      </div>
+    ));
+
   return (
     <div className="min-h-[100dvh] bg-background text-foreground flex flex-col md:flex-row selection:bg-primary selection:text-primary-foreground">
       
@@ -161,6 +229,11 @@ export default function Home() {
           >
             {content.hero.title}
           </motion.h1>
+          {content.hero.subtitle && (
+            <p className="mb-8 max-w-3xl font-serif text-xl italic text-muted-foreground md:text-2xl">
+              {content.hero.subtitle}
+            </p>
+          )}
           <div className="flex flex-wrap gap-x-4 gap-y-2 items-center font-mono text-xs text-muted-foreground uppercase tracking-widest">
             {content.hero.authors.map((author, idx) => (
               <React.Fragment key={author.email}>
@@ -174,6 +247,20 @@ export default function Home() {
               </React.Fragment>
             ))}
           </div>
+          {content.hero.authorBios && content.hero.authorBios.length > 0 && (
+            <div className="mt-10 grid gap-8 border-t border-border pt-8 sm:grid-cols-2">
+              {content.hero.authorBios.map((bio) => (
+                <div key={bio.name}>
+                  <div className="font-serif text-lg font-bold text-foreground">{bio.name}</div>
+                  <div className="mt-2 space-y-1 font-mono text-xs leading-relaxed text-muted-foreground">
+                    {bio.lines.map((line, i) => (
+                      <p key={i}>{line}</p>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </header>
 
         {/* Abstract */}
@@ -241,6 +328,8 @@ export default function Home() {
                         ))}
                       </ul>
                     )}
+
+                    {sub.blocks && renderBlocks(sub.blocks)}
 
                     {sub.postListProse && renderProse(sub.postListProse)}
                   </div>
