@@ -289,14 +289,14 @@ export default function Home() {
             <div>{content.footer.publishedBy}</div>
             <div>{content.footer.location}</div>
           </div>
-          <div className="flex flex-col md:items-end gap-2">
-            <span className="opacity-70">[ Changelog v{content.hero.spec.version} ]</span>
+          <div className="flex shrink-0 flex-col md:items-end gap-2">
+            <span className="whitespace-nowrap opacity-70">[ Changelog v{content.hero.spec.version} ]</span>
             {content.footer.links.map((link) =>
               link.disabled ? (
                 <span
                   key={link.label}
                   aria-disabled="true"
-                  className="opacity-30 cursor-not-allowed select-none"
+                  className="whitespace-nowrap opacity-30 cursor-not-allowed select-none"
                 >
                   [ {link.label} ]
                 </span>
@@ -304,7 +304,7 @@ export default function Home() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
+                  className="whitespace-nowrap opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
                 >
                   [ {link.label} ]
                 </a>
