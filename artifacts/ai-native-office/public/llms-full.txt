@@ -114,7 +114,7 @@ Furthermore, the acoustic integrity of the walls is irrelevant if penetrations a
 
 ### Dedicated Infrastructure: Dark Fiber and Power Envelopes
 
-The public internet is a hostile, high-latency vector that cannot be trusted for core enterprise intelligence. The AI-Native Office operates independently of standard commercial ISPs. It requires dedicated point-to-point dark fiber, specifically Ethernet Private Line (E-Line) architecture. This layer-2 transport protocol connects the physical office directly to localized private data repositories or failover facilities without ever traversing public routing tables or border gateway protocols (BGP).
+The public internet introduces variable latency and shared routing that is incompatible with deterministic enterprise intelligence requirements. The AI-Native Office operates independently of standard commercial ISPs. It requires dedicated point-to-point dark fiber, specifically Ethernet Private Line (E-Line) architecture. This layer-2 transport protocol connects the physical office directly to localized private data repositories or failover facilities without ever traversing public routing tables or border gateway protocols (BGP).
 
 Power infrastructure must also be deliberately provisioned. Standard office IT closets are designed for low-draw networking switches. The localized edge node requires dedicated low-voltage 20-Amp power envelopes specifically engineered for high-density compute. This power must be isolated from the general HVAC and lighting grids to prevent power cycling disruptions and ensure stable thermal management for the localized silicon.
 
@@ -158,7 +158,7 @@ Standard RAG architectures rely entirely on vector similarity search, which fetc
 
 The implementation of a localized GraphRAG pipeline, such as the methodology defined by Microsoft Research, transforms the unstructured ambient telemetry of the office into a rigorous, queryable hierarchical structure.41 This capability is transformative; it allows AI assistants to fetch specific internal reports or customer records in real-time, drastically improving trust and relevance compared to offline Business Intelligence outputs.43
 
-The offline indexing process operates entirely on the local L40S nodes, ensuring data never crosses a firewall:
+The offline indexing process operates entirely on the local sovereign compute nodes, ensuring data never crosses a firewall:
 
 - Entity Extraction: The localized LLM is prompted to process the transcribed text units, extracting named entities—such as patient names, legal precedents, financial metrics, and corporate entities—and generating a precise description for each.44
 - Relationship Extraction: The system parses the documents into subject-object-predicate triples (e.g., Physician X - prescribed - Medication Y), mapping the deterministic relationships between entities across all recorded text units.45
@@ -217,12 +217,12 @@ This specification is an open technical standard under active development. Engin
 
 ### Initialize a Conversation
 
-To request a technical briefing or begin a tenant inquiry:
+To request a technical briefing or begin a tenant inquiry, contact:
 
 #### Tim Walsh
 
-AI Commons
-Armonk, NY
+AI Commons | Armonk, NY
+[contact — Tim to supply]
 
 *The AI-Native Office is a category being built. The organizations that engage now help define what it becomes.*
 

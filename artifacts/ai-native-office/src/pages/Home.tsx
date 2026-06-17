@@ -224,20 +224,6 @@ export default function Home() {
               </React.Fragment>
             ))}
           </div>
-          {content.hero.authorBios && content.hero.authorBios.length > 0 && (
-            <div className="mt-10 grid gap-8 border-t border-border pt-8 sm:grid-cols-2">
-              {content.hero.authorBios.map((bio) => (
-                <div key={bio.name}>
-                  <div className="font-serif text-lg font-bold text-foreground">{bio.name}</div>
-                  <div className="mt-2 space-y-1 font-mono text-xs leading-relaxed text-muted-foreground">
-                    {bio.lines.map((line, i) => (
-                      <p key={i}>{line}</p>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </header>
 
         {/* Abstract */}

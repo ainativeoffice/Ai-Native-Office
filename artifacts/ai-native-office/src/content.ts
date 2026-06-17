@@ -10,29 +10,6 @@ export const content = {
       { name: "Timothy Walsh", email: "tw@trucast.ai" },
       { name: "Parham Alizadeh", email: "parham@northcastleventures.com" },
     ],
-    // Author bios are placeholder copy for now — kept empty so nothing renders
-    // below the byline (the `authors` above still render). Restore by moving the
-    // commented entries below back into this array and replacing the bracketed
-    // placeholders with real bios.
-    authorBios: [] as { name: string; lines: string[] }[],
-    // {
-    //   name: "Timothy Walsh",
-    //   lines: [
-    //     "[One sentence: current role + the AI Commons project — what you are building and where. Example: \"Tim Walsh is co-founder of AI Commons, developing the first AI-Native Office campus in Armonk, NY.\"]",
-    //     "[One sentence: prior professional track record establishing credibility for this specific undertaking.]",
-    //     "[One sentence, optional: personal motivation — why this problem, why now.]",
-    //     "[LinkedIn or contact link]",
-    //   ],
-    // },
-    // {
-    //   name: "Parham Alizadeh",
-    //   lines: [
-    //     "[One sentence: current role + the AI Commons project — what you are building and where.]",
-    //     "[One sentence: prior professional track record establishing credibility for this specific undertaking.]",
-    //     "[One sentence, optional: personal motivation — why this problem, why now.]",
-    //     "[LinkedIn or contact link]",
-    //   ],
-    // },
   },
   abstract:
     "The public cloud is structurally and financially misaligned with multimodal enterprise AI. The continuous ingestion of uncompressed spatial audio, WebRTC video, and Bluetooth telemetry generates terabyte-scale data that imposes compounding cloud egress costs and unacceptable latency. The AI-Native Office resolves this by defining a new commercial real estate asset class: a sovereign, STC-55 acoustically hardened shell powered by localized PCIe inference silicon. By treating the physical room as the primary sensory interface and collapsing the distance between data generation and GPU inference to exactly zero, enterprises achieve absolute data sovereignty, eliminate egress costs, and unlock deterministic, machine-layer intelligence.",
@@ -166,7 +143,7 @@ export const content = {
         {
           title: "Dedicated Infrastructure: Dark Fiber and Power Envelopes",
           prose: [
-            "The public internet is a hostile, high-latency vector that cannot be trusted for core enterprise intelligence. The AI-Native Office operates independently of standard commercial ISPs. It requires dedicated point-to-point dark fiber, specifically Ethernet Private Line (E-Line) architecture. This layer-2 transport protocol connects the physical office directly to localized private data repositories or failover facilities without ever traversing public routing tables or border gateway protocols (BGP).",
+            "The public internet introduces variable latency and shared routing that is incompatible with deterministic enterprise intelligence requirements. The AI-Native Office operates independently of standard commercial ISPs. It requires dedicated point-to-point dark fiber, specifically Ethernet Private Line (E-Line) architecture. This layer-2 transport protocol connects the physical office directly to localized private data repositories or failover facilities without ever traversing public routing tables or border gateway protocols (BGP).",
             "Power infrastructure must also be deliberately provisioned. Standard office IT closets are designed for low-draw networking switches. The localized edge node requires dedicated low-voltage 20-Amp power envelopes specifically engineered for high-density compute. This power must be isolated from the general HVAC and lighting grids to prevent power cycling disruptions and ensure stable thermal management for the localized silicon."
           ]
         },
@@ -217,7 +194,7 @@ export const content = {
           prose: [
             "Standard RAG architectures rely entirely on vector similarity search, which fetches isolated text chunks based on semantic proximity. This approach fundamentally fails when attempting to connect disparate pieces of information across massive, temporal enterprise datasets, leading to hallucinations and disconnected logic. The AI-Native Office employs localized GraphRAG—a hybrid architectural pattern that combines the semantic understanding of vector embeddings with the deterministic, symbolic reasoning of structured knowledge graphs.39",
             "The implementation of a localized GraphRAG pipeline, such as the methodology defined by Microsoft Research, transforms the unstructured ambient telemetry of the office into a rigorous, queryable hierarchical structure.41 This capability is transformative; it allows AI assistants to fetch specific internal reports or customer records in real-time, drastically improving trust and relevance compared to offline Business Intelligence outputs.43",
-            "The offline indexing process operates entirely on the local L40S nodes, ensuring data never crosses a firewall:"
+            "The offline indexing process operates entirely on the local sovereign compute nodes, ensuring data never crosses a firewall:"
           ],
           list: [
             "Entity Extraction: The localized LLM is prompted to process the transcribed text units, extracting named entities—such as patient names, legal precedents, financial metrics, and corporate entities—and generating a precise description for each.44",
@@ -300,16 +277,14 @@ export const content = {
         {
           title: "Initialize a Conversation",
           prose: [
-            "To request a technical briefing or begin a tenant inquiry:"
+            "To request a technical briefing or begin a tenant inquiry, contact:"
           ],
           blocks: [
             {
               label: "Tim Walsh",
               lines: [
-                "AI Commons",
-                "Armonk, NY",
-                // Contact placeholder hidden until Tim supplies the real value.
-                // "[contact placeholder — Tim to supply]"
+                "AI Commons | Armonk, NY",
+                "[contact — Tim to supply]"
               ]
             }
           ],
