@@ -6,6 +6,8 @@ export const content = {
       { name: "Parham Alizadeh", email: "parham@northcastleventures.com" },
     ],
   },
+  abstract:
+    "The public cloud is structurally and financially incompatible with multimodal enterprise AI. The continuous ingestion of uncompressed spatial audio, WebRTC video, and Bluetooth telemetry generates terabyte-scale data that triggers extortionate cloud egress taxes and unacceptable latency. The AI-Native Office resolves this by defining a new commercial real estate asset class: a sovereign, STC-55 acoustically hardened shell powered by localized PCIe inference silicon. By treating the physical room as the primary sensory interface and collapsing the distance between data generation and GPU inference to exactly zero, enterprises achieve absolute data sovereignty, eliminate egress costs, and unlock deterministic, machine-layer intelligence.",
   sections: [
     {
       id: "intro",

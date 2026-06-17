@@ -175,6 +175,16 @@ export default function Home() {
           </div>
         </header>
 
+        {/* Abstract */}
+        <section className="mb-24 pl-6 md:pl-8 border-l-4 border-[#FF5F1F]">
+          <h2 className="mb-4 font-mono text-sm font-bold uppercase tracking-[0.3em] text-foreground">
+            Abstract
+          </h2>
+          <p className="font-serif italic text-base leading-relaxed text-foreground/80">
+            {content.abstract}
+          </p>
+        </section>
+
         {/* Sections */}
         <div className="flex flex-col gap-24">
           {content.sections.map((section, idx) => (
