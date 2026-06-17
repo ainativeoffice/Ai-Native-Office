@@ -13,6 +13,7 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required env: `DATABASE_URL` — Postgres connection string
 - Optional env: `GA_MEASUREMENT_ID` — GA4 Measurement ID (`G-XXXXXXXXXX`); when set at build time, the prerender injects gtag.js. Unset = no analytics.
+- Email capture (api-server): `RESEND_API_KEY` (secret, required to send) — add it in the Replit **Secrets** pane. Optional `RFC_FROM_EMAIL` (default `AI-Native Office <onboarding@resend.dev>`) and `RFC_NOTIFY_EMAIL` (destination inbox for captured subscriptions, default `delivered@resend.dev`).
 
 ## Stack
 
@@ -34,6 +35,9 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 - `artifacts/ai-native-office/src/entry-server.tsx` — SSR/SSG entry: `render()` (HTML + JSON-LD) and `getLlmsFull()` (markdown generator), both derived from `content.ts`.
 - `artifacts/ai-native-office/prerender.mjs` — post-build step: injects SSR HTML + schema.org JSON-LD into `dist/public/index.html` and writes `llms-full.txt`.
 - `artifacts/ai-native-office/public/` — static launch assets: `robots.txt`, `sitemap.xml`, `llms.txt`, `favicon.svg`, `opengraph.jpg` (generated from `og-source.svg`).
+- `artifacts/ai-native-office/src/components/SpecificationUpdateFeed.tsx` — bottom email-capture form (terminal email input + 4 brutalist Layer toggles + `[ INITIALIZE HANDSHAKE ]`); posts via the generated `useSubscribeToUpdates` hook and shows terminal success (safety-orange `#FF5F1F`) / error (`--destructive` red) states. Copy/Layer labels + footer text live in `content.ts` (`subscribe`, `footer`).
+- `lib/api-spec/openapi.yaml` — API contract; `POST /subscribe` (`SubscribeRequest`: email + layers[]) drives generated Zod (`SubscribeToUpdatesBody`) + the React Query hook.
+- `artifacts/api-server/src/routes/subscribe.ts` — Express route: validates with the generated Zod schema, then sends the capture (subscriber email + checked Layer labels) via Resend. Registered in `src/routes/index.ts`.
 
 ## Architecture decisions
 
@@ -44,6 +48,7 @@ A single-page technical manifesto / whitepaper for "ainativeoffice.org" defining
 - **Version/status label has one source of truth: `content.hero.spec`.** `src/lib/spec.ts` derives every label form from it — `specStatusShort()` pulls the parenthetical abbreviation (`Request for Comment (RFC)` → `RFC`), `specMetaLabel()`/`metaTitle()` build the page title. The prerender injects `metaTitle()` into `<title>`/`og:title`/`twitter:title` (hardcoded strings in `index.html` are dev-only fallbacks), JSON-LD reads `content.hero.spec` directly, and `gen-og.ts` substitutes the OG SVG label + rerasters. Bump `content.ts` then rebuild + run `og:gen` to update every surface; no hand-edited version copies remain.
 - **Canonical domain is `https://ainativeoffice.org`** — hardcoded in meta, sitemap, robots, and JSON-LD.
 - **Inline citations are detected at render time, never annotated in `content.ts`.** `tokenizeCitations` finds a 1–2 digit source number (1..worksCited.length) glued to a word via a period (`streams.1`, `(SCIF).26`). The period is kept as visible text; only the trailing number becomes a `<Citation>`. Digit-before-period cases are accepted only when 2-digit and not followed by a unit, so genuine `rating + cite` markers (`STC 35.25`, `batch size of 1.34`) are caught while decimals/versions/units (`1.25 Mbps`, `Llama 3.1`, `96.58%`, `H.264`, `0.090`) are excluded. Markers are anchors to the source URL, so they appear in the prerendered HTML and degrade to plain source links without JS (the hover card is radix, client-only). Table "Source Notes" cells (pure 1–2 digit numbers) are also rendered as `<Citation>`.
+- **Email capture is contract-first + server-side.** `POST /api/subscribe` is defined in `openapi.yaml`; codegen produces the Zod validator (`SubscribeToUpdatesBody`) and the `useSubscribeToUpdates` React Query hook. The api-server route holds `RESEND_API_KEY` (never client-exposed) and emails the subscriber address + checked Layer labels via Resend, returning terminal `{ ok, message }`. The form is SSR-rendered (degrades to static markup without JS) and only calls the API after hydration. The footer "Changelog v…" label derives from `content.hero.spec.version` (single source of truth).
 - **Analytics is build-time, not runtime.** `prerender.mjs` injects the gtag.js snippet into `<head>` only when `GA_MEASUREMENT_ID` is set (validated against `G-XXXXXXXXXX`). Dev (`vite dev`) skips prerender, so it never loads analytics — keeps dev/preview clean and avoids tracking non-prod traffic.
 
 ## Product

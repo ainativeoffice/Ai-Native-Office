@@ -6,6 +6,7 @@ import { EgressCalculator } from "@/components/EgressCalculator";
 import { Citation } from "@/components/Citation";
 import { SideNote, type MarginNote } from "@/components/SideNote";
 import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
+import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
 import { getSource, parseCitation, tokenizeCitations } from "@/lib/citations";
 
 const renderText = (text: string) =>
@@ -279,26 +280,37 @@ export default function Home() {
           </section>
         </div>
 
-        {/* Footer CTAs */}
-        <footer className="mt-32 pt-16 border-t border-border flex flex-col md:flex-row gap-6">
-          <a 
-            href="https://ainativeoffice.com" 
-            target="_blank" 
-            rel="noreferrer"
-            className="flex-1 block group border border-border p-6 hover:bg-primary hover:text-primary-foreground transition-all"
-          >
-            <div className="font-mono text-xs uppercase tracking-widest mb-4 opacity-70">Infrastructure</div>
-            <div className="font-serif text-2xl font-bold group-hover:translate-x-2 transition-transform">Lease the Sovereign Shell</div>
-          </a>
-          <a 
-            href="https://nativeagentic.com" 
-            target="_blank" 
-            rel="noreferrer"
-            className="flex-1 block group border border-border p-6 hover:bg-primary hover:text-primary-foreground transition-all"
-          >
-            <div className="font-mono text-xs uppercase tracking-widest mb-4 opacity-70">Software</div>
-            <div className="font-serif text-2xl font-bold group-hover:translate-x-2 transition-transform">Deploy the Agentic Software</div>
-          </a>
+        {/* Specification update feed (email capture) */}
+        <SpecificationUpdateFeed />
+
+        {/* Institutional footer */}
+        <footer className="mt-24 pt-8 border-t border-border flex flex-col md:flex-row md:items-start md:justify-between gap-8 font-mono text-xs">
+          <div className="opacity-70 leading-relaxed">
+            <div>{content.footer.publishedBy}</div>
+            <div>{content.footer.location}</div>
+          </div>
+          <div className="flex flex-col md:items-end gap-2">
+            <span className="opacity-70">[ Changelog v{content.hero.spec.version} ]</span>
+            {content.footer.links.map((link) =>
+              link.disabled ? (
+                <span
+                  key={link.label}
+                  aria-disabled="true"
+                  className="opacity-30 cursor-not-allowed select-none"
+                >
+                  [ {link.label} ]
+                </span>
+              ) : (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
+                >
+                  [ {link.label} ]
+                </a>
+              ),
+            )}
+          </div>
         </footer>
       </main>
     </div>

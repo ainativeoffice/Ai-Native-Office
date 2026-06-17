@@ -261,5 +261,27 @@ export const content = {
     "GraphRAG on Consumer Hardware: Benchmarking Local LLMs for Healthcare EHR Schema Retrieval - arXiv, accessed June 16, 2026, https://arxiv.org/html/2605.20815v1",
     "Methods - GraphRAG - Microsoft Open Source, accessed June 16, 2026, https://microsoft.github.io/graphrag/index/methods/",
     "How Would Microsoft GraphRAG Work Alongside a Graph Database? - Memgraph, accessed June 16, 2026, https://memgraph.com/blog/how-microsoft-graphrag-works-with-graph-databases"
-  ]
+  ],
+  subscribe: {
+    heading: "Subscribe to Specification Updates (RFC Logs)",
+    placeholder: "sysadmin@enterprise.com",
+    submitLabel: "[ INITIALIZE HANDSHAKE ]",
+    layers: [
+      "Layer 1: Core & Shell (Acoustics, Fiber, Power)",
+      "Layer 2: Sovereign Edge Compute (PCIe, Hardware)",
+      "Layer 3: Spatial Intelligence (Audio, BLE Mesh)",
+      "Layer 4: Enterprise GraphRAG & Compliance",
+    ],
+    successMessage: "200 OK: Email registered.",
+    errorMessage: "ERR: Handshake failed.",
+  },
+  footer: {
+    publishedBy:
+      "Published by Native Agentic LLC & North Castle Infrastructure.",
+    location: "Armonk, New York | 41.1265° N, 73.7140° W",
+    links: [
+      { label: "Security / PGP Key", href: "#", disabled: false },
+      { label: "Architecture CAD Repo", href: "#", disabled: true },
+    ],
+  },
 };
