@@ -6,9 +6,9 @@ The foundational technical specification for ainativeoffice.org, defining a new 
 
 ## Introduction: The Architecture of the Next Layer
 
-The past decade of enterprise software architecture was built on a specific set of assumptions: that centralized compute would always be sufficient, that bandwidth costs would trend toward zero, and that the keyboard would remain the primary interface between human cognition and machine processing. Those assumptions were well-suited to their era. For text-based CRUD (Create, Read, Update, Delete) applications, the public cloud was an entirely rational centralization mechanism.
+The institutions best positioned to deploy frontier AI are frequently the ones that cannot. Regulated financial services firms, healthcare systems, law firms, and the consultancies and software companies that serve them operate under data residency requirements, model governance obligations, and third-party risk frameworks that make routing sensitive inference through shared hyperscaler infrastructure a compliance exposure, not an architectural preference. The result is a structural ceiling: the organizations with the most to gain from AI-native intelligence are architecturally excluded from using it at full fidelity.
 
-The era of spatial audio, continuous high-definition video, and real-time multimodal inference operates under a different set of physical and economic constraints. Routing ambient, terabyte-scale data through hyperscaler infrastructure introduces architectural latency and compounding transit costs that are structurally incompatible with the performance requirements of AI-native workloads. The cloud-native paradigm was right for its moment. The AI-Native Office is the next layer.
+The AI-Native Office is the architectural response to that constraint. Localizing inference silicon within the physical office environment eliminates the data transit problem entirely — sensitive data is processed where it is generated, by compute the tenant owns, within a physical envelope they control. The cloud-native paradigm solved a real problem for its era. The AI-Native Office solves the problem that paradigm created for the next one.
 
 This document is the foundational technical specification for ainativeoffice.org. It defines an entirely new asset class: The AI-Native Office. The central thesis of this architecture is precise and non-negotiable: the future of enterprise intelligence requires collapsing the physical distance between human interaction and GPU inference to exactly zero.
 
@@ -197,7 +197,7 @@ The AI-Native Office is designed for organizations where data sovereignty, laten
 - Family offices and private investment firms where intellectual property and transaction data cannot be exposed to shared infrastructure
 - Organizations in the $5M–$500M revenue range that have outgrown the operational simplicity of cloud AI services and are ready to own their intelligence layer
 
-The common thread is not industry — it is the recognition that intelligence is a sovereign asset, and infrastructure should reflect that.
+The common thread is not industry — it is the recognition that intelligence is a sovereign asset, and infrastructure should reflect that. AI Commons makes the infrastructure previously available only to Fortune 100 institutions accessible to the firms, advisors, and specialists that the Fortune 100 depends on.
 
 ### Engagement Paths
 
