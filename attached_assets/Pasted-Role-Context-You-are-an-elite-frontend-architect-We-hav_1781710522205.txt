@@ -1,0 +1,29 @@
+Role & Context:
+You are an elite frontend architect. We have successfully deployed the V1 of the ainativeoffice.org SPA. The current design utilizes the "Institutional Brutalism" aesthetic (deep carbon backgrounds, stark white text, monospace data tables). Now, we need to elevate this application from a standard web page to a rigorous, institutional standard.
+Implement the following 5 critical updates:
+1. The Versioning Pivot (Header Update)
+At the very top of the page, above or right next to the main title, add a monospace, subtle text badge that reads: Draft Specification v0.5 — Request for Comment (RFC).
+This should look like a formal document classification tag.
+2. The "Boardroom Print" Function (Print Stylesheet)
+Add a sleek, minimalist button to the top of the sticky sidebar navigation: [Download as Whitepaper / PDF].
+When clicked, it should trigger the browser's native window.print() function.
+CRITICAL: You must write a robust @media print CSS block. When printed, the site must invert to a clean, academic black-and-white paper layout. Hide the sidebar navigation, hide the interactive calculator, remove all background colors (pure white background, pure black text), and format the text into a clean, highly legible academic format.
+3. Marginalia & Hard Citations (Tufte UI)
+Implement a "Marginalia" component (similar to Edward Tufte's CSS or Gwern.net). On desktop breakpoints, the text container should be offset to allow a wide right-hand margin.
+Convert the references to AWS pricing, the Shure MXA920 array, and STC 55 ratings into subtle, clickable side-notes that sit adjacent to the paragraph in the right margin.
+Mobile fallback: On mobile screens, these marginal notes should collapse into standard, inline footnote markers.
+4. The Architectural Schematic (SVG Generation)
+In the "Sovereign Enclave: The Architecture of the Hardened Shell" section, generate and insert a minimalist, wireframe-style SVG diagram.
+The SVG should look like a high-tech architectural blueprint drawn in our site's accent color (e.g., terminal green or raw orange) on the dark background.
+It must visually represent a top-down room labeled with 4 components:
+Ceiling Sensor Grid (Shure/Casambi)
+STC 55 Acoustic Perimeter Shield
+Dedicated E-Line Fiber Conduit
+PCIe Edge Node (Hardware Vault)
+5. The "Egress Penalty" Receipt (Calculator Upgrade)
+Modify the output display of the existing Cloud Egress Calculator.
+When the user slides the data slider, the resulting AWS Egress Fee output should be styled to look like a literal, monospaced physical receipt or terminal invoice with dashed borders (e.g., ------------------------).
+Directly underneath the massive AWS dollar amount, add a sub-text styled in a warning color (like caution orange or red) that reads exactly: * Capital effectively destroyed. Zero computational value generated.
+Ensure the "Edge Node Egress Cost" remains starkly positioned next to it, reading $0.00.
+Execution Constraint:
+Maintain the stark, zero-fluff "Institutional Brutalism" aesthetic. No animations other than subtle state changes. Focus on typographic hierarchy and data legibility.
