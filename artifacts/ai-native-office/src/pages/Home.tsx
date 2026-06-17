@@ -9,54 +9,39 @@ import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
 import { getSource, parseCitation, tokenizeCitations } from "@/lib/citations";
 
-type EmphasisSegment = { text: string; bold?: boolean; italic?: boolean };
-
-/**
- * Lightweight inline emphasis parser: `**bold**` → <strong>, `*italic*` → <em>.
- * Markers are formatting, not content — they are stripped from the rendered
- * output. Citation detection runs inside each resulting segment.
- */
-const parseEmphasis = (text: string): EmphasisSegment[] => {
-  const segments: EmphasisSegment[] = [];
-  const re = /\*\*([^*]+)\*\*|\*([^*]+)\*/g;
-  let last = 0;
-  let m: RegExpExecArray | null;
-  while ((m = re.exec(text)) !== null) {
-    if (m.index > last) segments.push({ text: text.slice(last, m.index) });
-    if (m[1] !== undefined) segments.push({ text: m[1], bold: true });
-    else segments.push({ text: m[2], italic: true });
-    last = re.lastIndex;
-  }
-  if (last < text.length) segments.push({ text: text.slice(last) });
-  return segments;
-};
-
-const renderCitations = (text: string, keyBase: string) =>
+const renderText = (text: string) =>
   tokenizeCitations(text).map((t, i) =>
     t.type === "text" ? (
-      <React.Fragment key={`${keyBase}-${i}`}>{t.value}</React.Fragment>
+      <React.Fragment key={i}>{t.value}</React.Fragment>
     ) : (
-      <Citation key={`${keyBase}-${i}`} number={t.number} />
+      <Citation key={i} number={t.number} />
     ),
   );
 
-const renderText = (text: string) =>
-  parseEmphasis(text).map((seg, i) => {
-    const inner = renderCitations(seg.text, `e${i}`);
-    if (seg.bold)
-      return (
-        <strong key={i} className="font-semibold text-foreground">
-          {inner}
-        </strong>
-      );
-    if (seg.italic)
-      return (
-        <em key={i} className="italic">
-          {inner}
-        </em>
-      );
-    return <React.Fragment key={i}>{inner}</React.Fragment>;
-  });
+/**
+ * Renders a bulleted list. Items are either plain strings or structured
+ * `{ label, body }` objects, where `label` is a bold lead-in term (modeled as
+ * real structure, not markdown asterisks in the content string).
+ */
+const renderList = (items: any[]) => (
+  <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
+    {items.map((item, i) => (
+      <li
+        key={i}
+        className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border"
+      >
+        {typeof item === "string" ? (
+          renderText(item)
+        ) : (
+          <>
+            <strong className="font-semibold text-foreground">{renderText(item.label)}</strong>{" "}
+            {renderText(item.body)}
+          </>
+        )}
+      </li>
+    ))}
+  </ul>
+);
 
 /**
  * Tufte-style marginalia, matched verbatim against paragraph text at render time
@@ -150,15 +135,7 @@ export default function Home() {
           </h4>
         )}
         {b.prose && renderProse(b.prose)}
-        {b.list && (
-          <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
-            {b.list.map((item: string, i: number) => (
-              <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
-                {renderText(item)}
-              </li>
-            ))}
-          </ul>
-        )}
+        {b.list && renderList(b.list)}
         {b.lines && (
           <div className="font-mono text-sm leading-relaxed text-muted-foreground space-y-1">
             {b.lines.map((line: string, i: number) => (
@@ -292,15 +269,7 @@ export default function Home() {
               <div className="prose-container">
                 {renderProse(section.prose)}
                 
-                {section.list && (
-                  <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
-                    {section.list.map((item, i) => (
-                      <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
-                        {renderText(item)}
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                {section.list && renderList(section.list)}
 
                 {section.postListProse && renderProse(section.postListProse)}
 
@@ -319,19 +288,15 @@ export default function Home() {
                     
                     {sub.postTableProse && renderProse(sub.postTableProse)}
                     
-                    {sub.list && (
-                      <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
-                        {sub.list.map((item: string, i: number) => (
-                          <li key={i} className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border">
-                            {renderText(item)}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+                    {sub.list && renderList(sub.list)}
 
                     {sub.blocks && renderBlocks(sub.blocks)}
 
                     {sub.postListProse && renderProse(sub.postListProse)}
+
+                    {sub.closing && (
+                      <p className="mt-6 font-serif italic text-foreground/80">{renderText(sub.closing)}</p>
+                    )}
                   </div>
                 ))}
               </div>

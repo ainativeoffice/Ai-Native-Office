@@ -244,10 +244,10 @@ export const content = {
         "The standard this document establishes requires:"
       ],
       list: [
-        "**Zero Egress Transit.** Replacing continuous cloud transit costs with localized, depreciable capital expenditure. The data never crosses a public network boundary.",
-        "**The Room as the Interface.** Deterministic Dante audio networks and Casambi BLE spatial telemetry transform the physical environment into a peripheral nervous system, eliminating the keyboard as the primary ingestion mechanism.",
-        "**The STC 55 Hardened Shell.** ICD 705-level acoustic isolation ensuring the physical retention of proprietary data, paired with dedicated E-Line dark fiber.",
-        "**Sovereign PCIe Compute.** Tenant-owned inference silicon — Class 1 (L40S, PCIe retrofit) or Class 2 (GB10/DGX Spark, purpose-built) — executing localized GraphRAG on raw, un-blinded intelligence, orchestrated by Native Agentic."
+        { label: "Zero Egress Transit.", body: "Replacing continuous cloud transit costs with localized, depreciable capital expenditure. The data never crosses a public network boundary." },
+        { label: "The Room as the Interface.", body: "Deterministic Dante audio networks and Casambi BLE spatial telemetry transform the physical environment into a peripheral nervous system, eliminating the keyboard as the primary ingestion mechanism." },
+        { label: "The STC 55 Hardened Shell.", body: "ICD 705-level acoustic isolation ensuring the physical retention of proprietary data, paired with dedicated E-Line dark fiber." },
+        { label: "Sovereign PCIe Compute.", body: "Tenant-owned inference silicon — Class 1 (L40S, PCIe retrofit) or Class 2 (GB10/DGX Spark, purpose-built) — executing localized GraphRAG on raw, un-blinded intelligence, orchestrated by Native Agentic." }
       ],
       postListProse: [
         "The physical distance between human collaboration and machine inference must be collapsed to exactly zero. The AI-Native Office is how that happens."
@@ -309,9 +309,7 @@ export const content = {
               ]
             }
           ],
-          postListProse: [
-            "*The AI-Native Office is a category being built. The organizations that engage now help define what it becomes.*"
-          ]
+          closing: "The AI-Native Office is a category being built. The organizations that engage now help define what it becomes."
         }
       ]
     }

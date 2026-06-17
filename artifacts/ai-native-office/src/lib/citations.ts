@@ -173,6 +173,15 @@ export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
     }
   };
 
+  const checkListItem = (item: any, location: string) => {
+    if (typeof item === "string") {
+      checkProse(item, location);
+    } else {
+      if (item.label) checkProse(item.label, `${location}.label`);
+      if (item.body) checkProse(item.body, `${location}.body`);
+    }
+  };
+
   const checkCell = (cell: string, location: string) => {
     // Source-note cells are a bare 1–2 digit source number rendered as a citation.
     if (/^\d{1,2}$/.test(cell)) {
@@ -193,14 +202,15 @@ export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
   (content.sections as any[]).forEach((section, si) => {
     const at = (suffix: string) => `sections[${si}] "${section.title}" › ${suffix}`;
     (section.prose ?? []).forEach((p: string, i: number) => checkProse(p, at(`prose[${i}]`)));
-    (section.list ?? []).forEach((it: string, i: number) => checkProse(it, at(`list[${i}]`)));
+    (section.list ?? []).forEach((it: any, i: number) => checkListItem(it, at(`list[${i}]`)));
     (section.postListProse ?? []).forEach((p: string, i: number) =>
       checkProse(p, at(`postListProse[${i}]`)),
     );
     (section.subsections ?? []).forEach((sub: any, sj: number) => {
       const subAt = (suffix: string) => at(`subsections[${sj}] "${sub.title}" › ${suffix}`);
       (sub.prose ?? []).forEach((p: string, i: number) => checkProse(p, subAt(`prose[${i}]`)));
-      (sub.list ?? []).forEach((it: string, i: number) => checkProse(it, subAt(`list[${i}]`)));
+      (sub.list ?? []).forEach((it: any, i: number) => checkListItem(it, subAt(`list[${i}]`)));
+      if (sub.closing) checkProse(sub.closing, subAt("closing"));
       (sub.postTableProse ?? []).forEach((p: string, i: number) =>
         checkProse(p, subAt(`postTableProse[${i}]`)),
       );
@@ -212,7 +222,7 @@ export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
           subAt(`blocks[${bi}]${block.label ? ` "${block.label}"` : ""} › ${suffix}`);
         if (block.label) checkProse(block.label, blockAt("label"));
         (block.prose ?? []).forEach((p: string, i: number) => checkProse(p, blockAt(`prose[${i}]`)));
-        (block.list ?? []).forEach((it: string, i: number) => checkProse(it, blockAt(`list[${i}]`)));
+        (block.list ?? []).forEach((it: any, i: number) => checkListItem(it, blockAt(`list[${i}]`)));
         (block.lines ?? []).forEach((l: string, i: number) => checkProse(l, blockAt(`lines[${i}]`)));
       });
       if (sub.tableData) {

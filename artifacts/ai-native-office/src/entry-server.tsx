@@ -39,6 +39,13 @@ function tableToMarkdown(table: Table): string {
   return `${header}\n${divider}\n${body}`;
 }
 
+// List items are plain strings or `{ label, body }` objects (bold lead-ins
+// modeled as structure, not markdown). Emphasis is re-applied here in the
+// generated markdown export only.
+function listItemMd(item: string | { label: string; body: string }): string {
+  return typeof item === "string" ? `- ${item}` : `- **${item.label}** ${item.body}`;
+}
+
 export function getLlmsFull(): string {
   const lines: string[] = [];
   lines.push("# The AI-Native Office");
@@ -58,7 +65,7 @@ export function getLlmsFull(): string {
       lines.push("");
     }
     if (section.list) {
-      for (const item of section.list) lines.push(`- ${item}`);
+      for (const item of section.list) lines.push(listItemMd(item));
       lines.push("");
     }
     for (const p of section.postListProse ?? []) {
@@ -81,7 +88,7 @@ export function getLlmsFull(): string {
         lines.push("");
       }
       if (sub.list) {
-        for (const item of sub.list) lines.push(`- ${item}`);
+        for (const item of sub.list) lines.push(listItemMd(item));
         lines.push("");
       }
       for (const block of sub.blocks ?? []) {
@@ -94,7 +101,7 @@ export function getLlmsFull(): string {
           lines.push("");
         }
         if (block.list) {
-          for (const item of block.list) lines.push(`- ${item}`);
+          for (const item of block.list) lines.push(listItemMd(item));
           lines.push("");
         }
         for (const l of block.lines ?? []) {
@@ -104,6 +111,10 @@ export function getLlmsFull(): string {
       }
       for (const p of sub.postListProse ?? []) {
         lines.push(p);
+        lines.push("");
+      }
+      if (sub.closing) {
+        lines.push(`*${sub.closing}*`);
         lines.push("");
       }
     }
