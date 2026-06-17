@@ -23,6 +23,15 @@ runtime server in prod, so SEO/LLM-readable HTML must be baked at build time.
 - Escape `<` to `\u003c` when embedding JSON-LD in a `<script>` tag.
 - esbuild/vite build does NOT typecheck — run the package `typecheck` separately; pre-existing union-narrowing errors in content-driven pages may surface.
 
+## Verifying deep-section visuals in dev
+`vite dev` does NOT prerender, so the root is empty until React mounts. The
+screenshot tool's hash-anchor scroll (`/#section`) fires before content exists,
+so it always captures the top — you cannot screenshot a deep section in dev.
+To verify content far down the page: grep the built `dist/public/index.html`
+(prerender bakes all static markup, so a `grep` confirms it renders SSR), and
+for self-contained SVG figures, rasterize a standalone copy with `magick` and
+view the PNG. Reserve live screenshots for above-the-fold layout.
+
 ## OG image without a headless browser
 ImageMagick (`magick`, not the deprecated `convert`) is available in the Replit
 runtime. Author the card as an SVG and rasterize:

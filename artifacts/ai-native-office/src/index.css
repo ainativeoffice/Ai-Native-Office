@@ -179,3 +179,145 @@ ol li[id^="source-"]:target {
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Marginalia (Tufte-style side notes)
+   Inline footnote marker + a note that floats into the right-hand margin on
+   desktop and collapses to a toggleable inline footnote on mobile. Pure markup
+   + a CSS checkbox toggle so it renders statically (SSG) and degrades w/o JS.
+--------------------------------------------------------------------------- */
+.sidenote-wrapper {
+  position: relative;
+}
+.sidenote-marker {
+  display: inline;
+  cursor: pointer;
+  vertical-align: super;
+  font-size: 0.62em;
+  font-family: var(--app-font-mono);
+  color: hsl(var(--primary) / 0.7);
+  padding: 0 0.1em 0 0.15em;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+.sidenote-marker:hover {
+  color: hsl(var(--primary));
+}
+.sidenote-toggle {
+  display: none;
+}
+.sidenote {
+  font-family: var(--app-font-mono);
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: hsl(var(--muted-foreground));
+}
+.sidenote-label {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.6rem;
+  color: hsl(var(--foreground) / 0.8);
+  margin-bottom: 0.4rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid hsl(var(--border));
+}
+.sidenote-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: hsl(var(--primary) / 0.8);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 2px;
+  word-break: break-all;
+}
+.sidenote-link:hover {
+  color: hsl(var(--primary));
+}
+
+/* Mobile / narrow: hide the note; reveal inline when the marker is toggled. */
+@media (max-width: 1023px) {
+  .sidenote {
+    display: none;
+    margin: 0.75rem 0 0.25rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+  }
+  .sidenote-label {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .sidenote-toggle:checked ~ .sidenote {
+    display: block;
+  }
+}
+
+/* Desktop: float the note into the reserved right-hand margin. */
+@media (min-width: 1024px) {
+  .sidenote {
+    float: right;
+    clear: right;
+    width: 15rem;
+    margin-right: -16.5rem;
+    margin-top: 0.2rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Print: clean academic black-on-white whitepaper.
+--------------------------------------------------------------------------- */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  * {
+    background: transparent !important;
+    background-color: transparent !important;
+    color: #000 !important;
+    border-color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+  main {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 0.25in !important;
+  }
+  /* Side notes reflow as compact inline footnotes. */
+  .sidenote {
+    display: inline !important;
+    float: none !important;
+    width: auto !important;
+    margin: 0 0.35rem !important;
+    padding: 0 !important;
+    border: 0 !important;
+    font-size: 0.8em;
+  }
+  .sidenote-label {
+    display: inline !important;
+    border: 0 !important;
+    padding: 0 !important;
+    margin: 0 0.3rem 0 0 !important;
+  }
+  .sidenote-link {
+    margin: 0 0 0 0.3rem !important;
+  }
+  /* Avoid awkward breaks inside data blocks and the blueprint figure. */
+  table,
+  figure,
+  .blueprint-svg {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
