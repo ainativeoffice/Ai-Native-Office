@@ -114,7 +114,7 @@ export default function Home() {
         </button>
         <div className="mb-12">
           <div className="text-xl font-serif font-bold tracking-tight text-primary">ai-native-office</div>
-          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground mt-2 border-t border-border pt-2">Technical Standard v1.0</div>
+          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground mt-2 border-t border-border pt-2">Draft Spec v{content.hero.spec.version} · {content.hero.spec.status}</div>
         </div>
         <ul className="flex flex-col gap-4 font-mono text-xs uppercase tracking-wider">
           {content.sections.map((section) => (
