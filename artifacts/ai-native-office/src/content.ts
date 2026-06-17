@@ -10,26 +10,29 @@ export const content = {
       { name: "Timothy Walsh", email: "tw@trucast.ai" },
       { name: "Parham Alizadeh", email: "parham@northcastleventures.com" },
     ],
-    authorBios: [
-      {
-        name: "Timothy Walsh",
-        lines: [
-          "[One sentence: current role + the AI Commons project — what you are building and where. Example: \"Tim Walsh is co-founder of AI Commons, developing the first AI-Native Office campus in Armonk, NY.\"]",
-          "[One sentence: prior professional track record establishing credibility for this specific undertaking.]",
-          "[One sentence, optional: personal motivation — why this problem, why now.]",
-          "[LinkedIn or contact link]",
-        ],
-      },
-      {
-        name: "Parham Alizadeh",
-        lines: [
-          "[One sentence: current role + the AI Commons project — what you are building and where.]",
-          "[One sentence: prior professional track record establishing credibility for this specific undertaking.]",
-          "[One sentence, optional: personal motivation — why this problem, why now.]",
-          "[LinkedIn or contact link]",
-        ],
-      },
-    ],
+    // Author bios are placeholder copy for now — kept empty so nothing renders
+    // below the byline (the `authors` above still render). Restore by moving the
+    // commented entries below back into this array and replacing the bracketed
+    // placeholders with real bios.
+    authorBios: [] as { name: string; lines: string[] }[],
+    // {
+    //   name: "Timothy Walsh",
+    //   lines: [
+    //     "[One sentence: current role + the AI Commons project — what you are building and where. Example: \"Tim Walsh is co-founder of AI Commons, developing the first AI-Native Office campus in Armonk, NY.\"]",
+    //     "[One sentence: prior professional track record establishing credibility for this specific undertaking.]",
+    //     "[One sentence, optional: personal motivation — why this problem, why now.]",
+    //     "[LinkedIn or contact link]",
+    //   ],
+    // },
+    // {
+    //   name: "Parham Alizadeh",
+    //   lines: [
+    //     "[One sentence: current role + the AI Commons project — what you are building and where.]",
+    //     "[One sentence: prior professional track record establishing credibility for this specific undertaking.]",
+    //     "[One sentence, optional: personal motivation — why this problem, why now.]",
+    //     "[LinkedIn or contact link]",
+    //   ],
+    // },
   },
   abstract:
     "The public cloud is structurally and financially misaligned with multimodal enterprise AI. The continuous ingestion of uncompressed spatial audio, WebRTC video, and Bluetooth telemetry generates terabyte-scale data that imposes compounding cloud egress costs and unacceptable latency. The AI-Native Office resolves this by defining a new commercial real estate asset class: a sovereign, STC-55 acoustically hardened shell powered by localized PCIe inference silicon. By treating the physical room as the primary sensory interface and collapsing the distance between data generation and GPU inference to exactly zero, enterprises achieve absolute data sovereignty, eliminate egress costs, and unlock deterministic, machine-layer intelligence.",
@@ -305,7 +308,8 @@ export const content = {
               lines: [
                 "AI Commons",
                 "Armonk, NY",
-                "[contact placeholder — Tim to supply]"
+                // Contact placeholder hidden until Tim supplies the real value.
+                // "[contact placeholder — Tim to supply]"
               ]
             }
           ],
