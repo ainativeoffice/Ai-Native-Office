@@ -1,4 +1,4 @@
-import { content } from "@/content";
+import { content, type ListItem, type Section, type Subsection, type ContactBlock } from "@/content";
 
 export interface SourceRef {
   number: number;
@@ -173,7 +173,7 @@ export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
     }
   };
 
-  const checkListItem = (item: any, location: string) => {
+  const checkListItem = (item: ListItem, location: string) => {
     if (typeof item === "string") {
       checkProse(item, location);
     } else {
@@ -199,37 +199,31 @@ export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
 
   checkProse(content.hero.title, "hero.title");
 
-  (content.sections as any[]).forEach((section, si) => {
+  content.sections.forEach((section: Section, si) => {
     const at = (suffix: string) => `sections[${si}] "${section.title}" › ${suffix}`;
-    (section.prose ?? []).forEach((p: string, i: number) => checkProse(p, at(`prose[${i}]`)));
-    (section.list ?? []).forEach((it: any, i: number) => checkListItem(it, at(`list[${i}]`)));
-    (section.postListProse ?? []).forEach((p: string, i: number) =>
-      checkProse(p, at(`postListProse[${i}]`)),
-    );
-    (section.subsections ?? []).forEach((sub: any, sj: number) => {
+    (section.prose ?? []).forEach((p, i) => checkProse(p, at(`prose[${i}]`)));
+    (section.list ?? []).forEach((it, i) => checkListItem(it, at(`list[${i}]`)));
+    (section.postListProse ?? []).forEach((p, i) => checkProse(p, at(`postListProse[${i}]`)));
+    (section.subsections ?? []).forEach((sub: Subsection, sj) => {
       const subAt = (suffix: string) => at(`subsections[${sj}] "${sub.title}" › ${suffix}`);
-      (sub.prose ?? []).forEach((p: string, i: number) => checkProse(p, subAt(`prose[${i}]`)));
-      (sub.list ?? []).forEach((it: any, i: number) => checkListItem(it, subAt(`list[${i}]`)));
+      (sub.prose ?? []).forEach((p, i) => checkProse(p, subAt(`prose[${i}]`)));
+      (sub.list ?? []).forEach((it, i) => checkListItem(it, subAt(`list[${i}]`)));
       if (sub.closing) checkProse(sub.closing, subAt("closing"));
-      (sub.postTableProse ?? []).forEach((p: string, i: number) =>
-        checkProse(p, subAt(`postTableProse[${i}]`)),
-      );
-      (sub.postListProse ?? []).forEach((p: string, i: number) =>
-        checkProse(p, subAt(`postListProse[${i}]`)),
-      );
-      (sub.blocks ?? []).forEach((block: any, bi: number) => {
+      (sub.postTableProse ?? []).forEach((p, i) => checkProse(p, subAt(`postTableProse[${i}]`)));
+      (sub.postListProse ?? []).forEach((p, i) => checkProse(p, subAt(`postListProse[${i}]`)));
+      (sub.blocks ?? []).forEach((block: ContactBlock, bi) => {
         const blockAt = (suffix: string) =>
           subAt(`blocks[${bi}]${block.label ? ` "${block.label}"` : ""} › ${suffix}`);
         if (block.label) checkProse(block.label, blockAt("label"));
-        (block.prose ?? []).forEach((p: string, i: number) => checkProse(p, blockAt(`prose[${i}]`)));
-        (block.list ?? []).forEach((it: any, i: number) => checkListItem(it, blockAt(`list[${i}]`)));
-        (block.lines ?? []).forEach((l: string, i: number) => checkProse(l, blockAt(`lines[${i}]`)));
+        (block.prose ?? []).forEach((p, i) => checkProse(p, blockAt(`prose[${i}]`)));
+        (block.list ?? []).forEach((it, i) => checkListItem(it, blockAt(`list[${i}]`)));
+        (block.lines ?? []).forEach((l, i) => checkProse(l, blockAt(`lines[${i}]`)));
       });
       if (sub.tableData) {
-        (sub.tableData.headers ?? []).forEach((h: string, i: number) =>
+        (sub.tableData.headers ?? []).forEach((h, i) =>
           checkProse(h, subAt(`tableData.headers[${i}]`)),
         );
-        (sub.tableData.rows ?? []).forEach((row: string[], ri: number) =>
+        (sub.tableData.rows ?? []).forEach((row, ri) =>
           row.forEach((cell, ci) => checkCell(cell, subAt(`tableData.rows[${ri}][${ci}]`))),
         );
       }
