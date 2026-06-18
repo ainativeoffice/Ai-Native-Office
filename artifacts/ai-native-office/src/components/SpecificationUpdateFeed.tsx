@@ -43,7 +43,7 @@ export function SpecificationUpdateFeed() {
   };
 
   return (
-    <section className="mt-32 pt-16 border-t border-border">
+    <section className="no-print mt-32 pt-16 border-t border-border">
       <div className="font-mono text-xs uppercase tracking-widest opacity-70 mb-8">
         {heading}
       </div>
