@@ -81,8 +81,19 @@ const renderPrinciples = (principles: Principle[]) => (
 );
 
 export default function Home() {
-  const sectionIds = content.sections.map((s) => s.id);
+  const appendixNav = content.appendices.map((a, idx) => ({
+    id: `appendix-${a.id}`,
+    letter: String.fromCharCode(65 + idx),
+    label: a.navLabel ?? a.title.split(":")[0],
+  }));
+  const sectionIds = [
+    ...content.sections.map((s) => s.id),
+    "works-cited",
+    "appendices",
+    ...appendixNav.map((a) => a.id),
+  ];
   const activeId = useActiveSection(sectionIds);
+  const isAppendixActive = activeId === "appendices" || activeId.startsWith("appendix-");
 
   const renderTable = (tableData: Table) => {
     return (
@@ -196,12 +207,29 @@ export default function Home() {
             <a
               href="#appendices"
               className={`flex items-center gap-3 transition-colors ${
-                activeId === "appendices" ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
+                isAppendixActive ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
               }`}
             >
-              <div className={`w-2 h-2 ${activeId === "appendices" ? "bg-primary" : "bg-transparent border border-muted"}`} />
+              <div className={`w-2 h-2 ${isAppendixActive ? "bg-primary" : "bg-transparent border border-muted"}`} />
               <span>Appendices</span>
             </a>
+            <ul className="mt-3 ml-[3px] flex flex-col gap-3 border-l border-border pl-4">
+              {appendixNav.map((appendix) => (
+                <li key={appendix.id}>
+                  <a
+                    href={`#${appendix.id}`}
+                    className={`flex items-center gap-2 transition-colors ${
+                      activeId === appendix.id ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
+                    }`}
+                  >
+                    <span className={`shrink-0 ${activeId === appendix.id ? "text-primary" : "text-muted-foreground/60"}`}>
+                      {appendix.letter}
+                    </span>
+                    <span className="truncate normal-case tracking-normal">{appendix.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </li>
         </ul>
       </nav>
