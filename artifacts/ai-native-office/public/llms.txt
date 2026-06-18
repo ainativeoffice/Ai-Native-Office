@@ -21,4 +21,3 @@ The AI-Native Office is the technical whitepaper for ainativeoffice.org. It argu
 ## Related
 
 - [Lease the Sovereign Shell](https://ainativeoffice.com): The physical infrastructure and hardened real estate.
-- [Deploy the Agentic Software](https://nativeagentic.com): The agentic software layer.

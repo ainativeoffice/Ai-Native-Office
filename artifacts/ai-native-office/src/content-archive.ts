@@ -101,7 +101,7 @@ export const archivedSections = [
       "The Software Integrator weaves the physical sensors and digital infrastructure together, deploying the localized orchestration layer."
     ],
     postListProse: [
-      "The Software Integrator is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. Native Agentic operates as the Software Integrator in the tripartite model, translating the physical sovereign enclave into a fully operational intelligence environment."
+      "The Software Integrator is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. It translates the physical sovereign enclave into a fully operational intelligence environment."
     ],
     subsections: [
       {
