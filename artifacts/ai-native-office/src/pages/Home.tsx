@@ -48,32 +48,37 @@ const renderList = (items: any[]) => (
  * (never annotated in content.ts). Each `match` is a unique substring of the
  * paragraph it should sit beside; the note grounds itself in an existing source.
  */
-const MARGIN_NOTES: MarginNote[] = [
-  {
-    id: "aws-egress",
-    label: "AWS Egress Pricing",
-    match: "$13,000 in pure transit costs on AWS",
-    source: 6,
-    note: "AWS EC2 internet egress is metered at $0.090/GB for the first 10 TB and $0.085/GB beyond — the recurring transit cost a sovereign node eliminates.",
-  },
-  {
-    id: "mxa920",
-    label: "Shure MXA920 Array",
-    match: "The Shure MXA920 ceiling array exemplifies",
-    source: 11,
-    note: "Networked beamforming ceiling array: PoE-powered, eight transmit channels, Dante/AES67 transport — the reference sensor for spatial acoustic telemetry.",
-  },
-  {
-    id: "stc55",
-    label: "STC 55 Mandate",
-    match: "The baseline structural requirement for any ingestion space is STC 55",
-    source: 25,
-    note: "Sound Transmission Class 55 mirrors ICD 705 Sound Group 4 for SCIF conference spaces, rendering normal and loud speech inaudible at the perimeter.",
-  },
-];
+const MARGIN_NOTES: MarginNote[] = [];
 
 const findMarginNote = (paragraph: string): MarginNote | undefined =>
   MARGIN_NOTES.find((n) => paragraph.includes(n.match));
+
+/**
+ * Renders a set of principle callouts. Each entry is `{ label?, body }`, where
+ * `label` is an optional bold lead-in term (modeled as structure, not markdown).
+ * Given a distinct left-border / mono treatment to read as a tenet block.
+ */
+const renderPrinciples = (principles: any[]) => (
+  <div className="my-10 flex flex-col gap-6">
+    {principles.map((p, i) => (
+      <blockquote
+        key={i}
+        className="border-l-2 border-primary bg-card/40 py-3 pl-6 pr-4 font-mono text-sm leading-relaxed text-muted-foreground"
+      >
+        {p.label ? (
+          <>
+            <strong className="font-semibold uppercase tracking-wider text-foreground">
+              {renderText(p.label)}
+            </strong>{" "}
+            {renderText(p.body)}
+          </>
+        ) : (
+          renderText(p.body)
+        )}
+      </blockquote>
+    ))}
+  </div>
+);
 
 export default function Home() {
   const sectionIds = content.sections.map((s) => s.id);
@@ -172,7 +177,7 @@ export default function Home() {
                 }`}
               >
                 <div className={`w-2 h-2 ${activeId === section.id ? "bg-primary" : "bg-transparent border border-muted"}`} />
-                <span className="truncate">{section.title.split(":")[0]}</span>
+                <span className="truncate">{(section as any).navLabel ?? section.title.split(":")[0]}</span>
               </a>
             </li>
           ))}
@@ -238,7 +243,7 @@ export default function Home() {
 
         {/* Sections */}
         <div className="flex flex-col gap-24">
-          {content.sections.map((section, idx) => (
+          {content.sections.map((section: any, idx: number) => (
             <motion.section 
               key={section.id}
               id={section.id}
@@ -254,12 +259,14 @@ export default function Home() {
               
               <div className="prose-container">
                 {renderProse(section.prose)}
-                
+
+                {section.id === "for" && <EgressCalculator />}
+
                 {section.list && renderList(section.list)}
 
                 {section.postListProse && renderProse(section.postListProse)}
 
-                {section.id === "enclave" && <ArchitectureBlueprint />}
+                {section.id === "architecture" && <ArchitectureBlueprint />}
 
                 {section.subsections?.map((sub: any, sIdx: number) => (
                   <div key={sIdx} className="mt-16">
@@ -267,8 +274,8 @@ export default function Home() {
                       {sub.title}
                     </h3>
                     {renderProse(sub.prose)}
-                    
-                    {sub.tableType === "egress_table" && <EgressCalculator />}
+
+                    {sub.principles && renderPrinciples(sub.principles)}
 
                     {sub.tableData && renderTable(sub.tableData)}
                     

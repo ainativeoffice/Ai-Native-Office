@@ -79,6 +79,10 @@ export function getLlmsFull(): string {
         lines.push(p);
         lines.push("");
       }
+      for (const pr of sub.principles ?? []) {
+        lines.push(pr.label ? `> **${pr.label}** ${pr.body}` : `> ${pr.body}`);
+        lines.push("");
+      }
       if (sub.tableData) {
         lines.push(tableToMarkdown(sub.tableData));
         lines.push("");

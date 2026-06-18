@@ -15,263 +15,143 @@ export const content = {
     "The institutions best positioned to leverage frontier AI — regulated banks, law firms, healthcare systems, and the firms that serve them — are precisely the institutions least able to use it as delivered. Data residency obligations, model governance requirements, and the fundamental exposure of routing sensitive inference through shared hyperscaler infrastructure have created a structural ceiling on enterprise AI adoption. The AI-Native Office removes that ceiling by defining a new commercial real estate asset class: a sovereign, on-premises compute node built within a Class-A office environment, acoustically hardened to STC 55 and powered by tenant-owned inference silicon. Ambient multimodal data is ingested and processed locally — never crossing a public network boundary — delivering absolute data sovereignty, zero egress cost, and deterministic AI inference at the point where collaboration actually happens.",
   sections: [
     {
-      id: "intro",
-      title: "Introduction: The Architecture of the Next Layer",
+      id: "ceiling",
+      title: "The Structural Ceiling",
       prose: [
-        "The institutions best positioned to deploy frontier AI are frequently the ones that cannot. Regulated financial services firms, healthcare systems, law firms, and the consultancies and software companies that serve them operate under data residency requirements, model governance obligations, and third-party risk frameworks that make routing sensitive inference through shared hyperscaler infrastructure a compliance exposure, not an architectural preference. The result is a structural ceiling: the organizations with the most to gain from AI-native intelligence are architecturally excluded from using it at full fidelity.",
-        "The AI-Native Office is the architectural response to that constraint. Localizing inference silicon within the physical office environment eliminates the data transit problem entirely — sensitive data is processed where it is generated, by compute the tenant owns, within a physical envelope they control. The cloud-native paradigm solved a real problem for its era. The AI-Native Office solves the problem that paradigm created for the next one.",
-        "This document is the foundational technical specification for ainativeoffice.org. It defines an entirely new asset class: The AI-Native Office. The central thesis of this architecture is precise and non-negotiable: the future of enterprise intelligence requires collapsing the physical distance between human interaction and GPU inference to exactly zero.",
-        "The AI-Native Office is not a \"smart office.\" It is not a coworking space equipped with internet-of-things (IoT) novelty gadgets, nor is it a traditional real estate play. It is a localized, sovereign compute edge node built within Class-A commercial real estate. It operates as a peripheral nervous system that treats the physical room itself as the primary ingestion interface. By deploying PCIe-based inference silicon directly within an acoustically hardened, structurally isolated envelope, organizations achieve absolute sovereignty over their data. This architecture eliminates hyperscaler egress costs, neutralizes regulatory compliance risks, and enforces deterministic computational logic on human collaboration.",
-        "The enterprise software industry has spent a decade adapting workloads to fit the cloud. The AI-Native Office reverses this architecture, embedding sovereign compute directly into the physical environment where work happens."
+        "The institutions best positioned to leverage frontier AI — regulated banks, law firms, healthcare systems, and the firms that serve them — are precisely the institutions least able to use it as delivered. The models are capable. The governance infrastructure required to deploy them on real, sensitive, unredacted data inside a regulated institution does not exist in the standard cloud delivery model. The ceiling is not a technology problem. It is an architecture problem.",
+        "The AI-Native Office removes that ceiling. It is a sovereign compute environment built into the physical workplace — an architecture that gives regulated institutions full AI capability without requiring them to route sensitive data through shared infrastructure they do not own, cannot audit end-to-end, and cannot fully control. The solution is not a compliance workaround. It is a different infrastructure category.",
+        "Human beings have always built tools that extend capability beyond the body's natural limits. Writing extended memory across time. The printing press extended it across distance. The telephone extended voice across geography. The internet extended access beyond every prior constraint of proximity. Cloud computing extended storage and computational power beyond the limits of any single organization's physical plant. Each of these extensions followed the same logic: a capability previously constrained by physical limits becomes ambient, available on demand, and ultimately invisible. The AI-Native Office follows the same logic for a different set of capabilities. Where the cloud extended storage and computation across distance, the AI-Native Office extends perception, reasoning, and memory into the room itself. The intelligence is not accessed through a device or a browser. It is native to the physical environment where work actually happens — present, sovereign, and compounding with every use.",
+        "Frontier AI capability crossed a meaningful threshold in the last twelve to eighteen months. Models can now synthesize clinical conversations with diagnostic precision, extract deal risk from unstructured negotiation in real time, and generate second-order strategic insight from raw operational data without human intermediation. The demand is measurable: 42% of enterprises are running agentic AI in production as of the Mayfield Fund 2026 CXO Survey, and the pilot-to-production conversion rate climbed from 11% in Q3 2025 to 31% in Q2 2026. The question has moved from \"should we adopt?\" to \"how do we scale?\" — and for regulated institutions, the answer keeps hitting the same wall. The models work. The governance doesn't.",
+        "The regulatory environment has resolved from ambiguity to obligation. EU AI Act high-risk AI provisions became generally applicable August 2, 2026. The FCA's principles-based AI governance framework means every agentic workflow touching a regulated decision has a named Senior Manager personally accountable for it — which requires knowing, with certainty, where data went and what model touched it. The SEC and FINRA treat AI prompt-and-output logs as books-and-records under existing rules. These are not forecasts. They are the current operating environment. Routing sensitive inference through a shared hyperscaler is no longer an architectural preference question. It is a governance liability question, and the liability is currently unresolved for most of the institutions it touches.",
+        "The infrastructure industry confirmed the direction of travel in June 2026. At Computex, the leading AI platform and the leading silicon company jointly demonstrated the first production hybrid inference system that autonomously classifies sensitive data and keeps it local, routing only non-sensitive workloads to the cloud. The proof-of-concept document type was confidential M&A deal materials — the single most legally sensitive category a law firm handles. When the two companies that define the frontier of AI deployment jointly validate sovereign inference as the production architecture for regulated data, and use a law firm's most sensitive document type as the test case, the question is no longer theoretical. The category has been ratified at the highest level of the industry. The organizations that move now are setting the standard. The organizations that wait are inheriting it."
       ]
     },
     {
-      id: "egress",
-      title: "The Cloud Egress Trap: The Physics and Economics of Multimodal Data",
+      id: "for",
+      title: "Who This Is For",
       prose: [
-        "Hyperscaler infrastructure is priced on an asymmetric model: inbound data transfer (ingress) is aggressively subsidized or free, while outbound data transfer (egress) is metered and billed. For most enterprise software workloads — transactional APIs, document storage, asynchronous batch processing — this pricing structure is manageable. The cost asymmetry becomes a significant architectural constraint when the workload shifts to continuous, uncompressed multimodal telemetry. The organizations that encounter this constraint are not making avoidable errors; they are running into a structural mismatch between a pricing model designed for one class of workload and an infrastructure requirement defined by a fundamentally different one."
-      ],
+        "If your Chief Risk Officer must approve every new AI vendor before a single query touches sensitive data, this architecture resolves that process at the infrastructure level — there is no vendor in the inference chain. If your General Counsel has concerns about what a hyperscaler's terms of service does to attorney-client privilege, this architecture resolves that concern at the infrastructure level — the data never leaves the physical facility under your control. If your CTO has been told to find an AI solution that delivers full model capability on unredacted patient records without a Business Associate Agreement with a cloud provider that may change its terms, this architecture resolves that constraint at the infrastructure level. These are not policy workarounds. They are structural resolutions built into the physical environment.",
+        "The organizations this architecture is built for operate in one of three conditions. The first is regulated financial services — banks, asset managers, broker-dealers, and the legal, consulting, and advisory firms that serve them — where AI inference on deal data, client data, and proprietary trading strategy cannot touch shared infrastructure without generating regulatory exposure that the compliance function cannot sign off on. The second is healthcare and clinical operations, where the requirement that protected health information remain within a covered entity's control means that genuine AI capability on raw clinical data has been functionally unavailable through any standard cloud path. The third is organizations — including family offices, private investment firms, and AI-native companies requiring absolute model isolation — where the competitive sensitivity of the inference inputs is itself the asset, and where the prospect of proprietary reasoning appearing in a vendor's training corpus is not an acceptable risk at any price.",
+        "The infrastructure that Fortune 100 institutions have built internally — dedicated inference compute, air-gapped environments, sovereign data pipelines owned and operated entirely in-house — has not been available to the firms that serve them, or to the next tier of institutions that face identical governance constraints at smaller operational scale. A mid-sized law firm handling M&A transactions has the same attorney-client privilege exposure as a global firm. A regional health system has the same obligations as an academic medical center. A family office managing concentrated positions has the same competitive sensitivity as a multi-strategy fund. The AI-Native Office changes the availability equation. Sovereign compute infrastructure, previously accessible only to organizations with the capital and operational capacity to build and staff it entirely in-house, is now available as a purpose-built, professionally operated environment to any qualified tenant.",
+        "The threshold for qualification is not a revenue band. It is a maturity condition: organizations that have moved past cloud AI experimentation and are now confronting its governance ceiling. If the pilots worked and the production deployment stalled on compliance review, this is the architecture that resolves the stall."
+      ]
+    },
+    {
+      id: "architecture",
+      navLabel: "How It Works",
+      title: "How the Architecture Works",
+      prose: [],
       subsections: [
         {
-          title: "The Physics of Ambient Data Generation",
+          title: "The Tripartite Ownership Model",
           prose: [
-            "A traditional enterprise software environment relies on users consciously submitting structured data packets via keyboards or asynchronous API calls. An AI-Native Office operates continuously, capturing ambient human interaction as raw, uncompressed data. This environment utilizes real-time spatial audio, uncompressed WebRTC video streaming, SIP telephony mapping, and continuous screen telemetry. The physics of this data generation scale exponentially and cannot be mitigated by standard compression algorithms without destroying the granular context required by advanced machine learning models.",
-            "Consider the bandwidth requirements for a standard real-time communication protocol utilized in a localized collaboration space. LiveKit, an open-source WebRTC-based Selective Forwarding Unit (SFU) designed for real-time applications, demonstrates the staggering network load required to process multimodal streams.1 Benchmarking a single large video room with 150 publishers and 150 subscribers at a standard 720p resolution—even with adaptive bitrate streaming (ABR) and simulcast enabled—generates incoming throughput of 50 MBps and outgoing throughput of 93 MBps.1",
-            "When evaluating the data footprint of an ambiently recorded enterprise environment across a standard workday, the continuous flow of packets requires dedicated processing power. A single 16-core compute-optimized server managing this WebRTC traffic will experience 85% CPU utilization simply to handle the decryption, packet processing, and re-encryption required to forward these media tracks.1",
-            "The equation for daily data generation is unforgiving. A single WebRTC session utilizing standard H.264 codecs at 1280x720 resolution demands 1.25 Mbps per stream.5 If a corporate office runs twenty concurrent multimodal collaboration nodes, the data generated is measured in terabytes per day. Furthermore, processing this data via cloud architecture introduces a severe physical limitation: the latency horizon.",
-            "The glass-to-glass latency in video applications, or mouth-to-ear latency in audio, represents the time required for a media packet to travel from the source device, undergo encryption, traverse the public internet, reach the cloud SFU, undergo decryption, processing, re-encryption, and travel back to the edge.2 Every geographic hop, every transit ISP network boundary, and every encryption layer adds milliseconds to the round trip. For real-time autonomous agents interacting dynamically with human speech, any latency exceeding 200 milliseconds destroys the determinism of the interaction. True AI-native architectures cannot tolerate network jitter or packet loss; the computational engine must reside adjacent to the sensor."
+            "The governance architecture of the AI-Native Office rests on a clear separation of ownership and responsibility across three parties, each with a distinct role and none with access to what belongs to the other two.",
+            "The Landlord — AI Commons — provisions the physical environment. The hardened shell, the acoustic and physical isolation engineering, the dedicated network infrastructure, the power envelopes designed for continuous high-density compute. The Landlord builds and maintains the room. The Landlord does not touch the tenant's compute or data.",
+            "The Tenant owns the compute hardware outright. Physical custody. Legal title. The silicon that runs the tenant's inference workloads is property of the tenant, installed in the tenant's dedicated space, accessible only to the tenant. There is no shared compute pool. There are no other tenants on the same hardware. There is no mechanism — contractual or technical — by which a third party accesses the tenant's inference runs. No subprocessor agreements govern what happens inside the tenant's hardware envelope, because no subprocessor is present.",
+            "Native Agentic deploys and operates the intelligence stack — the software layer that binds the tenant's compute to the physical environment, maintains the ambient intelligence systems, and keeps the full stack current as models and capabilities evolve. Native Agentic operates at the software layer only. It does not hold, transmit, or have access to the tenant's inference data or outputs.",
+            "The result of this structure: no shared infrastructure anywhere in the stack. No vendor lock-in on the data layer, because the data layer is owned by the tenant. No third-party access to sensitive inference. The data sovereignty is not a policy position — it is the logical consequence of who owns what."
           ]
         },
         {
-          title: "The Economics of the Egress Constraint",
+          title: "Physical Sovereignty",
           prose: [
-            "The physical latency limitations of multimodal AI are compounded by the financial architecture of public cloud egress pricing. When multimodal data is processed in the cloud, inference APIs, model weights, and continuous WebRTC streams constantly move data out of the provider's infrastructure.6 This creates a pricing structure that compounds significantly on continuously streaming, GPU-heavy workloads.6",
-            "The egress pricing schedules across major hyperscalers reflect the cost structure enterprises encounter when routing multimodal AI workloads through centralized infrastructure:"
-          ],
-          tableType: "egress_table",
-          tableData: {
-            headers: ["Cloud Provider", "Tier Level", "Internet Egress Cost per GB (USD)", "Source Notes"],
-            rows: [
-              ["AWS (EC2)", "First 10 TB / Month", "$0.090", "6"],
-              ["AWS (EC2)", "Next 40 TB / Month", "$0.085", "8"],
-              ["Microsoft Azure", "First 10 TB / Month (Zone 1)", "$0.087", "7"],
-              ["Microsoft Azure", "10 TB - 50 TB / Month", "$0.083", "8"],
-              ["Google Cloud (GCP)", "Premium Tier First 1 TB", "$0.120", "6"],
-              ["Google Cloud (GCP)", "10 TB - 50 TB / Month", "$0.060", "10"]
-            ]
-          },
-          postTableProse: [
-            "If an enterprise office generates merely 5 terabytes of raw multimodal data daily and transmits it to an AWS-hosted inference pipeline, the return trip of processed data, augmented video, and localized knowledge graphs will aggressively trigger these egress tiers. At 150 TB of egress per month, an organization will incur over $13,000 in pure transit costs on AWS, exclusive of the actual cost of the GPU compute itself. Moving data across inter-continental boundaries via Microsoft's Premium Global Network scales up to $0.181 per GB depending on the region.9",
-            "The architectural conclusion is clear. When continuous multimodal ingestion is the baseline operational requirement, the cost-optimal path is to localize the inference engine. By deploying sovereign compute nodes on-premises, the data never traverses a public network boundary. The cloud egress cost is reduced to exactly zero. This is not a position against centralized infrastructure — it is a recognition that different workload classes have different optimal architectures, and that ambient multimodal AI inference belongs at the edge."
+            "The room is engineered to the same acoustic isolation standard used for classified government facilities. This is not an analogy — it is a construction standard, applied to a commercial environment, because the use case demands it. Conversations that happen inside the room — negotiations, clinical consultations, legal strategy sessions, investment committee meetings — generate data of the highest sensitivity. The physical environment is designed so that data generated inside stays inside. Not by policy, not by contractual restriction on a vendor, but by the physics of the room. Sound does not leave. Signals do not leave. Data does not leave."
+          ]
+        },
+        {
+          title: "Ambient Intelligence",
+          prose: [
+            "Every enterprise AI deployment built on structured inputs — forms, logs, typed notes, post-meeting summaries — operates on a degraded version of reality. The gap between what actually happened in a meeting and what got recorded afterward is the single most expensive information loss in enterprise operations. It is where deal context disappears, where clinical reasoning goes undocumented, where the actual terms of a negotiation diverge from the written summary. Organizations have managed this loss for decades not because it is acceptable but because there was no alternative.",
+            "The AI-Native Office eliminates that gap. The environment captures the full fidelity of collaboration as it happens — audio, spatial context, screen content — and the intelligence layer operates on that complete input, not on a retroactive summary of it. This is not surveillance. Surveillance is covert observation by an external party for its own purposes. This is the tenant's own intelligence system, operating on the tenant's own data, in the tenant's own sovereign environment, for the tenant's own operational benefit. The distinction is architectural, not procedural. The AI operates on reality. Every inference it performs is more accurate, more complete, and more useful than any inference performed on a filtered or summarized input."
+          ]
+        },
+        {
+          title: "Intelligence Compounding",
+          prose: [
+            "Every meeting, negotiation, diagnostic session, and strategic discussion conducted inside the sovereign enclave becomes structured, queryable knowledge. The system builds a complete, high-resolution picture of the organization's intellectual activity — deals in progress, clinical reasoning, legal strategy, risk assessments — and that picture compounds in value with every session added to it. The knowledge graph is a sovereign asset. It belongs entirely to the tenant, lives on tenant-owned hardware, and is never externalized. It cannot be accessed by a vendor. It cannot appear in a training corpus. It cannot be lost in a breach of someone else's infrastructure. It is the accumulated institutional intelligence of the organization, owned and controlled by the organization."
+          ]
+        },
+        {
+          title: "The Four Principles",
+          prose: [],
+          principles: [
+            { label: "Zero Egress.", body: "Data never crosses a public network boundary. The inference runs on tenant-owned hardware inside the physical facility. The output stays there." },
+            { label: "The Room as the Interface.", body: "The physical environment is the primary data source. Collaboration is captured at full fidelity, not reconstructed from notes." },
+            { label: "The Hardened Shell.", body: "Acoustic and physical isolation engineered to the standard of classified government facilities. Sovereignty is enforced by physics, not policy." },
+            { label: "Sovereign Compute.", body: "Tenant-owned inference hardware. No per-token billing. No third-party access. No subprocessor in the inference chain." }
           ]
         }
       ]
     },
     {
-      id: "sensory",
-      title: "The Space as a Sensory Organ: The Death of the Keyboard",
+      id: "economics",
+      navLabel: "The Economics",
+      title: "The Economics of Sovereignty",
       prose: [
-        "The modern enterprise is built upon a legacy ingestion bottleneck: the keyboard. Digital-native companies rely on keyboards, mice, and discrete API calls to update databases after an event has occurred. This post-hoc documentation process is fundamentally flawed and highly lossy; it strips away up to 90% of the original human context, including tonal inflection, spatial positioning, hesitation, physiological state, and collaborative overlap.",
-        "The AI-Native Office advances beyond this paradigm. Instead of forcing humans to translate their multidimensional work into flattened, structured data for a machine, the architecture transforms the physical real estate into a passive sensory organ. The physical room becomes the primary ingestion interface, capturing reality natively at the machine layer. This transition requires a complete overhaul of localized acoustic and spatial infrastructure."
-      ],
+        "Cloud providers charge for data moving out of their infrastructure. For most enterprise software — documents, APIs, database queries — this egress cost is incidental. For continuous AI workloads that operate on ambient data, it compounds into a material operating expense that generates zero computational value for the organization paying it. The data was produced inside the organization. The intelligence derived from it belongs to the organization. The egress charge is a transit tax on the organization's own information, paid indefinitely, growing with every increase in AI utilization, accruing to the cloud provider rather than to the organization's own capability.",
+        "Sovereign compute replaces that perpetual operating expense with a depreciating capital asset. The hardware is owned, not rented. Depreciation schedules apply. The inference runs at zero marginal cost per query — the hardware is already provisioned, already powered, already present. Once the capital investment is made, the cost per unit of intelligence approaches zero as utilization increases. The cloud model inverts this: cost per unit of intelligence is fixed or rising, with no depreciation benefit and no path to marginal-cost inference. For organizations running high-volume, continuous AI workloads, the arithmetic favors the on-premises model decisively and permanently.",
+        "For any workload that does route externally — non-sensitive data, public-source research, external API calls — dedicated private fiber connectivity provides bandwidth at roughly one-tenth the per-gigabyte cost of standard cloud egress. This is not a negotiated discount. It is a different pricing class, structurally available only to organizations with dedicated physical infrastructure. The Lightpath private fiber backbone that serves the AI Commons campus places external connectivity in a cost category that standard cloud-hosted organizations cannot access, regardless of contract size or negotiating leverage.",
+        "The cost of inaction has a component that does not appear on any invoice. Organizations that choose to operate AI workloads through public cloud infrastructure on sensitive data must pre-process that data — redacting, tokenizing, anonymizing — before it can be safely submitted for inference. This compliance preprocessing degrades the input quality the model actually receives. The AI operates on a sanitized version of reality, and the output reflects that limitation. Organizations spending significant operational effort on compliance preprocessing are paying twice: once in the direct cost of the redaction workflow, and once in the inference quality penalty. The AI-Native Office eliminates both costs simultaneously. The data enters inference at full fidelity because it never leaves the sovereign environment. The compliance preprocessing step does not exist."
+      ]
+    },
+    {
+      id: "compliance",
+      title: "The Compliance Moat",
+      prose: [],
       subsections: [
         {
-          title: "Acoustic Telemetry and Beamforming Ingestion",
+          title: "Architecture as Compliance",
           prose: [
-            "To achieve deterministic audio capture, the physical infrastructure requires enterprise-grade networked acoustics. Consumer-grade microphones are grossly insufficient for multi-speaker, highly reverberant environments. The AI-Native Office utilizes beamforming ceiling microphone arrays to map acoustic energy dynamically across a three-dimensional coordinate system.",
-            "The Shure MXA920 ceiling array exemplifies the required standard for spatial acoustic telemetry.11 Operating via standard Power over Ethernet (PoE) and consuming a maximum of 10.1 Watts, the unit integrates directly into the enterprise local area network.11 Instead of a single omnidirectional recording that flattens audio, the MXA920 array utilizes advanced digital signal processing (DSP) to apply precise mathematical delays to multiple internal channels, electronically steering the acoustic beam in real-time to follow active talkers.14"
-          ],
-          list: [
-            "Acoustic Precision: The array provides up to 8 independent transmit channels and 1 automix output, capturing audio at a 48 kHz sampling rate with a 24-bit depth and a 77.5 dB dynamic range.13",
-            "Acoustic Echo Cancellation (AEC): The hardware features up to 250 ms of AEC tail length, alongside dedicated noise reduction and automatic gain control, ensuring the raw feed is pristine before it reaches the inference layer.13",
-            "Network Transport: This uncompressed audio is distributed across the localized network using AES67 or Dante digital audio protocols.13 Dante networking ensures strict clock synchronization via the Precision Time Protocol (PTP) and utilizes layer 3 Quality of Service (QoS) Differentiated Services Code Point (DSCP) prioritization to guarantee deterministic packet delivery.15"
-          ],
-          postListProse: [
-            "Because a single Dante flow can contain up to 4 audio channels, the network handles raw, uncompressed audio packets continuously, feeding them directly into local GPU nodes.15 When this raw Real-time Transport Protocol (RTP) audio stream is directed into an open-source private branch exchange (PBX) framework like Asterisk, the telephony architecture merges seamlessly with the AI architecture. Asterisk allows external media channels via its Asterisk REST Interface (ARI) to fork bidirectional real-time RTP streams directly into a localized transcription engine.16",
-            "Instead of waiting for a meeting to end, the AI-Native Office implements a streaming variant of the Whisper ASR (Automatic Speech Recognition) model. Utilizing a LocalAgreement policy with self-adaptive latency, the Whisper-Streaming implementation achieves simultaneous, sub-3-second latency transcription on unsegmented long-form speech.17 Because the Asterisk server is local, the audio is never sent to a centralized API; it is processed directly on the localized PCIe silicon, ensuring absolute privacy and zero latency."
+            "Compliance in the cloud is procedural. It rests on data use agreements, vendor access controls, audit logs maintained by a third party whose interests are not identical to yours, and contractual representations about what the vendor will and will not do with data that has already left your physical control. These procedures are enforceable. They are also insufficient as the sole governance mechanism for AI inference on the most sensitive categories of regulated data — because the exposure is created at the moment the data crosses the boundary, and no agreement undoes that.",
+            "Compliance in a sovereign enclave is architectural. The data physically cannot leave. The compute is owned. The audit trail lives on hardware under the tenant's custody. The compliance posture is not dependent on a vendor's contractual performance — it is the structural consequence of where the hardware sits and who owns it. The governed state is the default state. Departure from compliance would require a physical act, not a vendor policy change."
           ]
         },
         {
-          title: "Spatial Tracking and BLE Mesh Networks",
+          title: "The Regulatory Landscape",
           prose: [
-            "Audio ingestion alone is insufficient; spatial context is mandatory for true intelligence. An AI model must know not just what was said, but who said it, where they were positioned relative to visual displays, and how they moved through the environment. The AI-Native Office tracks movement and occupancy using Bluetooth Low Energy (BLE) positioning technology deeply integrated into the architectural lighting grid.",
-            "The system relies on Casambi's BLE mesh network, which acts as the spatial nervous system of the office. Casambi establishes a decentralized, self-organizing wireless mesh network where all the intelligence is replicated in every node, completely eliminating single points of failure that plague gateway-dependent systems.18 While Casambi is traditionally specified for Human Centric Lighting control, its nodes feature built-in iBeacon capabilities, broadcasting high-frequency 2.4GHz radio signals across the physical envelope.20",
-            "Traditional indoor positioning relied on Received Signal Strength Indicator (RSSI) metrics, which are highly vulnerable to multipath fading and interference, resulting in unacceptable meter-level inaccuracies.22 The AI-Native Office discards RSSI in favor of Bluetooth 5.1 Direction Finding, specifically the Angle of Arrival (AoA) methodology.23",
-            "By deploying a constellation of multi-antenna anchors in the ceiling, the system measures the phase differences of incoming unmodulated continuous wave signals emitted by employee badges or smartphones.23 This allows the system to triangulate the precise location of any BLE tag with centimeter-level precision.24 When this raw AoA data is preprocessed and fed into localized machine learning models—such as Support Vector Machines (SVM) or K-nearest neighbors (KNN)—the spatial tracking achieves localization accuracy exceeding 96.58% in real-time environments.22",
-            "This continuous telemetry—identifying who is speaking via the Shure MXA920, where they are standing via Casambi AoA, and what digital assets are displayed on local screens—is fused into a singular, deterministic data stream. The physical room understands the temporal and spatial context of the work natively at the hardware level, rendering manual data entry entirely obsolete."
+            "The EU AI Act's high-risk AI provisions became generally applicable August 2, 2026. High-risk AI systems must be documented, auditable, and subject to human oversight throughout their operational lifecycle. Running consequential AI inference through a shared API — where the model version, infrastructure configuration, and data handling practices are controlled by the provider and subject to change — creates a documentation and auditability dependency on that provider. The AI-Native Office resolves this dependency. The model runs on tenant-owned hardware. The configuration is tenant-controlled. The audit documentation lives on tenant infrastructure.",
+            "The FCA's Senior Managers and Certification Regime requires that every AI workflow touching a regulated decision have a named Senior Manager who is personally accountable for it. That accountability is meaningful only if the Senior Manager can answer, with certainty and with evidence, where sensitive data went, what model touched it, and what governance controls were in place at the time of the inference. A sovereign compute environment provides that answer by construction. A shared cloud API provides it only to the extent the cloud provider's logs are complete, accessible, and admissible — conditions that the Senior Manager does not control.",
+            "Under existing SEC and FINRA guidance, AI-generated outputs that touch investment decisions are books-and-records. The record is the prompt, the model version, the inference output, and the context in which it was generated. The AI-Native Office produces that record on tenant-owned hardware, under tenant custody, accessible only to the tenant and to regulators with appropriate authority. The record cannot be altered by a vendor. It cannot be withheld in a vendor dispute. It cannot be lost in a vendor's data management decisions.",
+            "Under HIPAA, raw clinical data must remain within the covered entity's control. The AI-Native Office satisfies this requirement not through a Business Associate Agreement with an inference provider but through the architecture itself. The data never leaves the physical facility. There is no inference provider in the chain. The BAA question does not arise because the subprocessor does not exist."
+          ]
+        },
+        {
+          title: "The Flywheel",
+          prose: [
+            "Every conversation inside the sovereign enclave becomes structured knowledge that compounds in value over time. The AI builds a complete, queryable picture of the organization's intellectual activity — deals in progress, clinical reasoning, legal strategy, risk assessments as they evolve — and that picture grows more precise and more useful with every session. The knowledge is owned entirely by the tenant. It cannot be subpoenaed from a vendor because it does not live with a vendor. It cannot be accessed by a competitor through a shared infrastructure vulnerability. It cannot be lost in a breach of someone else's environment. It is the organization's own accumulated intelligence, growing in a sovereign enclave, accessible only on the organization's terms."
+          ],
+          principles: [
+            { body: "No third-party model access to sensitive inference. No subprocessor agreements governing what happens to your data. No risk of proprietary reasoning appearing in a vendor's training corpus. The audit trail lives on your hardware, under your control, accessible only to you — and to the regulators you choose to grant access to it." }
           ]
         }
       ]
     },
     {
-      id: "enclave",
-      title: "The Sovereign Enclave: The Architecture of the Hardened Shell",
+      id: "engage",
+      title: "Engage",
       prose: [
-        "Processing terabytes of uncompressed acoustic and spatial data necessitates a physical environment engineered to the standards of a military installation. The AI-Native Office is fundamentally different from a heavily branded coworking space; it is a localized edge compute node enclosed within a mathematically verified hardened shell. The real estate itself serves as the foundational layer of the cybersecurity stack.",
-        "The sovereign compute architecture relies on a strict tripartite separation of responsibilities:"
-      ],
-      list: [
-        "The Landlord provisions the hardened architectural shell and base building infrastructure.",
-        "The Tenant owns the local PCIe inference silicon, maintaining absolute legal and physical custody of the hardware.",
-        "The Software Integrator (Native Agentic) weaves the physical sensors and digital infrastructure together, deploying the localized orchestration layer."
-      ],
-      postListProse: [
-        "Native Agentic is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. Native Agentic operates as the Software Integrator in the tripartite model, translating the physical sovereign enclave into a fully operational intelligence environment."
+        "The organizations engaging with this standard now are setting the terms for how regulated enterprise AI infrastructure gets built. The ones waiting are not holding a position — they are ceding one."
       ],
       subsections: [
         {
-          title: "Acoustic Sovereignty and the STC 55 Mandate",
+          title: "Reference Implementation Visit",
           prose: [
-            "Data sovereignty is instantly voided if the physical walls leak acoustic information. In a standard Class-A commercial office, demising partitions are typically constructed with 25-gauge metal studs and a single layer of 5/8-inch drywall, yielding a Sound Transmission Class (STC) rating of roughly 38 to 40.25 At this level, normal speech is easily overheard, and loud speech can be recorded by hostile actors or unauthorized devices in adjacent corridors.",
-            "The AI-Native Office demands absolute acoustic isolation. The baseline structural requirement for any ingestion space is STC 55. This specification aligns with the stringent criteria defined by the Intelligence Community Directive (ICD) 705 for Sensitive Compartmented Information Facilities (SCIF).26 Under ICD 705 Sound Group 4, an STC 50 perimeter is the baseline, but STC 55 is strictly mandated for conference rooms and spaces where amplified audio or multiple speakers are present.27 At STC 55, normal and loud speech are rendered entirely inaudible, guaranteeing a physical air-gapped security perimeter for the acoustic data.25",
-            "Achieving STC 55 requires deliberate, engineered structural modifications. Adding mass is insufficient; physical decoupling is mandatory to break the structural bridge that transmits acoustic vibrations.25"
-          ],
-          tableType: "stc_table",
-          tableData: {
-            headers: ["Architectural Component", "Engineering Specification", "Acoustic Contribution", "Source Notes"],
-            rows: [
-              ["Structural Decoupling", "Staggered 2x4 studs on a 2x6 plate, or Double Stud assemblies with a 1-inch air gap.", "Eliminates mechanical path for vibration. Crucial for exceeding STC 50.", "25"],
-              ["Material Damping", "Constrained-Layer Drywall (viscoelastic polymer sandwiched between gypsum).", "Converts acoustic vibration energy into heat.", "25"],
-              ["Cavity Absorption", "Mineral wool or high-density fiberglass batts.", "Breaks up standing acoustic waves within the stud bay.", "25"],
-              ["Perimeter Sealing", "Continuous acoustic-grade sealant at all joints, no back-to-back electrical boxes.", "Prevents flanking paths and high-frequency sound leaks.", "25"]
-            ]
-          },
-          postTableProse: [
-            "Furthermore, the acoustic integrity of the walls is irrelevant if penetrations are compromised. A standard solid-core wood door provides a maximum of STC 35.25 The hardened shell mandates the installation of STC 50+ acoustic door assemblies. These require cam lift hinges, RF/STC fabric-over-foam perimeter seals, and adjustable silicone drop-bottoms to maintain a hermetic seal against the threshold.26 These assemblies simultaneously provide 40 dB of RF shielding against magnetic, electric, and microwave fields in the 1 KHz to 8 GHz frequency range, preventing external radio-frequency surveillance.26"
+            "For technology officers, real estate principals, and infrastructure architects evaluating the AI-Native Office standard for their own environment.",
+            "Tour the AI Commons Node One campus in Armonk, NY. The full stack — acoustic isolation, sovereign compute, ambient sensor infrastructure, and the intelligence layer — is deployed and operational. A reference implementation visit is the appropriate first step for organizations evaluating the standard for their own environment: a working system that can be observed, interrogated, and stress-tested against real organizational requirements. This is not a demonstration environment. It is the production standard."
           ]
         },
         {
-          title: "Dedicated Infrastructure: Dark Fiber and Power Envelopes",
+          title: "Tenant Inquiry",
           prose: [
-            "The public internet introduces variable latency and shared routing that is incompatible with deterministic enterprise intelligence requirements. The AI-Native Office operates independently of standard commercial ISPs. It requires dedicated point-to-point dark fiber, specifically Ethernet Private Line (E-Line) architecture. This layer-2 transport protocol connects the physical office directly to localized private data repositories or failover facilities without ever traversing public routing tables or border gateway protocols (BGP).",
-            "Power infrastructure must also be deliberately provisioned. Standard office IT closets are designed for low-draw networking switches. The localized edge node requires dedicated low-voltage 20-Amp power envelopes specifically engineered for high-density compute. This power must be isolated from the general HVAC and lighting grids to prevent power cycling disruptions and ensure stable thermal management for the localized silicon."
+            "For organizations requiring dedicated sovereign AI infrastructure under the tripartite model.",
+            "Inquire about tenancy within an AI Commons node. Tenant deployments provide physically isolated, purpose-built sovereign compute environments within the AI Commons campus, operated under the tripartite ownership model described in this specification. The Node provides the hardened shell, base building systems, and Native Agentic integration. The tenant owns and operates the silicon. Tenancy is appropriate for organizations that require dedicated, auditable, physically sovereign inference infrastructure without the capital and operational commitment of building and staffing an independent facility."
           ]
         },
         {
-          title: "The Compute Engine: Sovereign Silicon and the Compute Class Specification",
+          title: "Developer / RFC Contributor",
           prose: [
-            "The intelligence of the AI-Native Office relies entirely on the tenant owning and operating their own inference silicon. The architectural standard is hardware-agnostic at the system level — the appropriate silicon depends on deployment context. This specification defines two reference compute classes."
-          ],
-          blocks: [
-            {
-              label: "Class 1 — PCIe Retrofit Inference (Reference: NVIDIA L40S)",
-              prose: [
-                "For retrofit deployments within existing Class-A commercial office environments, the reference compute class is PCIe-attached inference silicon operating within standard power envelopes. Large-scale centralized GPU chassis — such as 8-way HGX systems drawing 400W per GPU — require specialized liquid cooling and 480V three-phase power that standard commercial real estate cannot support.31",
-                "The NVIDIA L40S, built on the Ada Lovelace architecture, is the reference card for this class.33 As a dual-slot, full-height full-length PCIe Gen4 card drawing a maximum of 350 Watts, multiple L40S GPUs can be deployed in standard 2U or 4U rackmount servers operating within the 20-Amp, 1.5–2kW power envelopes available in most Class-A office environments.31 The L40S provides 48 GB of GDDR6 memory at 864 GB/s memory bandwidth, 18,176 CUDA cores, and 568 fourth-generation Tensor Cores.31.34 Utilizing the Transformer Engine with FP8 precision, it delivers 1,466 TFLOPS of compute.31 In practical LLM inference benchmarks, the L40S achieves 43.79 tokens per second on an 8-billion parameter model at batch size 1, and delivers more than 2x acceleration over prior architectures for RAG workloads.34.38",
-                "Because inference workloads do not require NVLink interconnects at the node level, PCIe-attached silicon is well-suited for the localized sovereign deployment. Class 1 is the appropriate specification for any retrofit environment where power and cooling infrastructure are constrained by existing base building conditions."
-              ]
-            },
-            {
-              label: "Class 2 — SoC-Integrated Sovereign Compute (Reference: NVIDIA GB10 / DGX Spark)",
-              prose: [
-                "For purpose-built sovereign nodes and greenfield campus deployments, the reference compute class is SoC-integrated silicon designed specifically for dense, energy-efficient AI inference at the edge. The NVIDIA GB10 Superchip, as deployed in the DGX Spark platform, integrates Grace CPU and Blackwell GPU compute on a unified die connected via NVLink-C2C, delivering high-bandwidth, low-latency inference in a compact power envelope suited to purpose-built physical environments — without the infrastructure overhead of traditional data center GPU chassis.",
-                "This class is appropriate for dedicated AI Commons node deployments, greenfield campus builds, and any deployment where the physical environment is being purpose-engineered around the compute rather than adapted to accommodate it."
-              ]
-            },
-            {
-              label: "Architectural Note",
-              prose: [
-                "Both compute classes fully support the AI-Native Office sensor stack: Dante audio ingestion via the Shure MXA920 array, Whisper-Streaming transcription via Asterisk, Casambi BLE spatial telemetry, and localized GraphRAG pipeline execution. Silicon class is determined by deployment context; the architectural specification is constant across both.",
-                "This specification is a living document. Hardware capabilities in sovereign edge compute are advancing at pace. The authors will update silicon references and compute class definitions as the standard matures and deployment experience accumulates.",
-                "Native Agentic provides the software orchestration layer that binds the selected inference platform to the physical sensor array, executing the full intelligence stack independent of public cloud routing."
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: "flywheel",
-      title: "The Intelligence Flywheel & Absolute Sovereignty: Enterprise GraphRAG",
-      prose: [
-        "The convergence of acoustic isolation, localized PCIe hardware, and ambient telemetry creates the ultimate enterprise moat: Absolute Sovereignty. Because the uncompressed data never leaves the STC 55 physical envelope and is processed directly on the tenant-owned L40S silicon, the regulatory compliance risk drops to exactly zero.",
-        "Highly regulated industries—including healthcare providers managing HIPAA-protected data, quantitative hedge funds developing alpha-generating algorithms, and law firms handling privileged discovery—are currently paralyzed by the public cloud. Utilizing managed AI services from cloud hyperscalers requires aggressive data blinding, redaction, and anonymization. This preprocessing destroys the exact temporal and semantic context the AI requires to generate deep, second-order insights.",
-        "Within the AI-Native Office, organizations ingest raw, un-blinded data directly. The local node listens to a highly confidential clinical diagnostic meeting, tracks the spatial positioning of the physicians via the Casambi AoA mesh, ingests the uncompressed audio via the Shure MXA920 array, transcribes it instantly via Asterisk, and feeds the raw intelligence into a localized GraphRAG pipeline."
-      ],
-      subsections: [
-        {
-          title: "Localized GraphRAG and Hybrid Knowledge Graphs",
-          prose: [
-            "Standard RAG architectures rely entirely on vector similarity search, which fetches isolated text chunks based on semantic proximity. This approach fundamentally fails when attempting to connect disparate pieces of information across massive, temporal enterprise datasets, leading to hallucinations and disconnected logic. The AI-Native Office employs localized GraphRAG—a hybrid architectural pattern that combines the semantic understanding of vector embeddings with the deterministic, symbolic reasoning of structured knowledge graphs.39",
-            "The implementation of a localized GraphRAG pipeline, such as the methodology defined by Microsoft Research, transforms the unstructured ambient telemetry of the office into a rigorous, queryable hierarchical structure.41 This capability is transformative; it allows AI assistants to fetch specific internal reports or customer records in real-time, drastically improving trust and relevance compared to offline Business Intelligence outputs.43",
-            "The offline indexing process operates entirely on the local sovereign compute nodes, ensuring data never crosses a firewall:"
-          ],
-          list: [
-            "Entity Extraction: The localized LLM is prompted to process the transcribed text units, extracting named entities—such as patient names, legal precedents, financial metrics, and corporate entities—and generating a precise description for each.44",
-            "Relationship Extraction: The system parses the documents into subject-object-predicate triples (e.g., Physician X - prescribed - Medication Y), mapping the deterministic relationships between entities across all recorded text units.45",
-            "Community Detection: The true power of GraphRAG lies in its structural organization. The knowledge graph utilizes the Leiden algorithm to detect and group entities into highly connected, meaningful clusters or \"communities.\" This enables multi-level reasoning, allowing the AI to understand macro-trends and hierarchical summaries across the entire temporal dataset of the enterprise.42",
-            "Vector Indexing: Finally, the communities, entities, and relationship summaries are embedded into a local vector store, enabling rapid semantic search over the entire structured graph.46"
-          ],
-          postListProse: [
-            "When a user or agent submits a query within the sovereign enclave, the system does not simply guess based on vector distance. It performs a local search to retrieve highly specific entity neighborhoods, and a global search that aggregates the community-level summaries, providing LLM-based answer generation that is strictly bound to the mathematical reality of the graph.42"
-          ]
-        },
-        {
-          title: "The Compliance Moat",
-          prose: [
-            "This architecture creates a self-reinforcing Intelligence Flywheel. Every conversation, spatial movement, and strategic meeting occurring within the hardened shell becomes structured, queryable intelligence. The temporal and medical entities are mapped perfectly without a single piece of data ever touching a public network.",
-            "By maintaining the data within an air-gapped local environment, the enterprise ensures HIPAA, FDA, and SEC compliance natively at the hardware level. The intellectual property is perfectly contained. The enterprise retains absolute ownership over not just the data, but the relationships and insights generated from that data. There is no risk of model collapse, no risk of data leakage via public cloud vulnerabilities, and no reliance on third-party security protocols."
-          ]
-        }
-      ]
-    },
-    {
-      id: "conclusion",
-      title: "The Implementation Path",
-      prose: [
-        "The AI-Native Office represents a fundamental evolution in the relationship between commercial real estate, enterprise strategy, and computational infrastructure. The cloud-native era was well-suited to its moment — centralized compute, globally distributed access, keyboard-mediated data entry. It solved real problems. The next architectural layer is suited to a different moment: one in which ambient, multimodal, real-time intelligence defines how serious organizations work.",
-        "Human beings are, at the deepest level, universal constructors — we build tools that extend our capabilities outward into the environment. The cloud extended storage and computation across geographic distance. The AI-Native Office extends perception, reasoning, and memory into the room itself. The medium reshapes the message. The physical environment becomes the machine.",
-        "The standard this document establishes requires:"
-      ],
-      list: [
-        { label: "Zero Egress Transit.", body: "Replacing continuous cloud transit costs with localized, depreciable capital expenditure. The data never crosses a public network boundary." },
-        { label: "The Room as the Interface.", body: "Deterministic Dante audio networks and Casambi BLE spatial telemetry transform the physical environment into a peripheral nervous system, eliminating the keyboard as the primary ingestion mechanism." },
-        { label: "The STC 55 Hardened Shell.", body: "ICD 705-level acoustic isolation ensuring the physical retention of proprietary data, paired with dedicated E-Line dark fiber." },
-        { label: "Sovereign PCIe Compute.", body: "Tenant-owned inference silicon — Class 1 (L40S, PCIe retrofit) or Class 2 (GB10/DGX Spark, purpose-built) — executing localized GraphRAG on raw, un-blinded intelligence, orchestrated by Native Agentic." }
-      ],
-      postListProse: [
-        "The physical distance between human collaboration and machine inference must be collapsed to exactly zero. The AI-Native Office is how that happens."
-      ],
-      subsections: [
-        {
-          title: "Who This Is Built For",
-          prose: [
-            "The AI-Native Office is designed for organizations where data sovereignty, latency, and intelligence compound into strategic advantage. The architecture is particularly well-suited for:"
-          ],
-          list: [
-            "Regulated enterprises in financial services, healthcare, and legal services managing sensitive, privileged, or compliance-bound data",
-            "AI-native companies building proprietary intelligence stacks that require absolute model and data isolation",
-            "Family offices and private investment firms where intellectual property and transaction data cannot be exposed to shared infrastructure",
-            "Organizations in the $5M–$500M revenue range that have outgrown the operational simplicity of cloud AI services and are ready to own their intelligence layer"
-          ],
-          postListProse: [
-            "The common thread is not industry — it is the recognition that intelligence is a sovereign asset, and infrastructure should reflect that. AI Commons makes the infrastructure previously available only to Fortune 100 institutions accessible to the firms, advisors, and specialists that the Fortune 100 depends on."
-          ]
-        },
-        {
-          title: "Engagement Paths",
-          prose: [
-            "There are three ways to engage with the AI-Native Office standard."
-          ],
-          blocks: [
-            {
-              label: "Reference Implementation Visit",
-              prose: [
-                "Tour the AI Commons Node One campus in Armonk, NY and see the full AI-Native Office stack deployed and operational — acoustic isolation, sovereign compute, sensor infrastructure, and the GraphRAG intelligence layer. This is the appropriate first step for technology officers, real estate principals, and infrastructure architects evaluating the standard for their organization."
-              ]
-            },
-            {
-              label: "Tenant Inquiry",
-              prose: [
-                "Organizations requiring dedicated sovereign AI infrastructure can inquire about tenancy within an AI Commons node. Tenant deployments provide physically isolated, purpose-built sovereign compute environments within the AI Commons campus, operated under the tripartite model described in this specification. The Node provides the hardened shell, base building systems, and Native Agentic integration. The tenant owns and operates the silicon."
-              ]
-            },
-            {
-              label: "Developer / RFC Contributor",
-              prose: [
-                "This specification is an open technical standard under active development. Engineers, architects, and researchers are invited to contribute technical feedback, propose amendments, or engage with the RFC process at ainativeoffice.org. The standard improves through deployment experience and rigorous technical review."
-              ]
-            }
+            "For engineers, architects, and researchers engaged with the technical standard.",
+            "This specification is an open technical standard under active development. Contribute technical feedback, propose amendments, or engage with the RFC process. The standard is designed to improve through deployment experience and rigorous peer review. Organizations that operate at the frontier of regulated AI deployment generate exactly the kind of operational evidence that makes a technical standard precise and durable. If your deployment has encountered constraints or edge cases not addressed in the current specification, that input belongs in the record."
           ]
         },
         {
