@@ -233,7 +233,7 @@ export const EgressCalculator: React.FC = () => {
       </div>
 
       <div className="mt-4 text-[10px] text-muted-foreground leading-relaxed opacity-60">
-        Assumptions: AWS egress $0.085/GB · Lightpath dedicated fiber $0.010/GB · Frontier API
+        Assumptions: AWS egress $0.085/GB · Dedicated private fiber $0.010/GB · Frontier API
         $0.015/M tokens (GPT-4o class) · Cloud storage $0.023/GB/mo (S3 standard) · Local inference
         and local storage at zero marginal cost (tenant-owned CapEx). Model is illustrative; actual
         costs vary by workload profile and contract.

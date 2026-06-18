@@ -338,7 +338,7 @@ export const content: Content = {
   },
   footer: {
     publishedBy:
-      "Published by Native Agentic LLC & North Castle Infrastructure.",
+      "AI-Native Office Working Group | Armonk, New York",
     location: "Armonk, New York | 41.1265° N, 73.7140° W",
     links: [
       { label: "Security / PGP Key", href: "#", disabled: false },

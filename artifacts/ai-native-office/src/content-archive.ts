@@ -98,10 +98,10 @@ export const archivedSections = [
     list: [
       "The Landlord provisions the hardened architectural shell and base building infrastructure.",
       "The Tenant owns the local PCIe inference silicon, maintaining absolute legal and physical custody of the hardware.",
-      "The Software Integrator (Native Agentic) weaves the physical sensors and digital infrastructure together, deploying the localized orchestration layer."
+      "The Software Integrator weaves the physical sensors and digital infrastructure together, deploying the localized orchestration layer."
     ],
     postListProse: [
-      "Native Agentic is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. Native Agentic operates as the Software Integrator in the tripartite model, translating the physical sovereign enclave into a fully operational intelligence environment."
+      "The Software Integrator is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. Native Agentic operates as the Software Integrator in the tripartite model, translating the physical sovereign enclave into a fully operational intelligence environment."
     ],
     subsections: [
       {
@@ -158,7 +158,7 @@ export const archivedSections = [
             prose: [
               "Both compute classes fully support the AI-Native Office sensor stack: Dante audio ingestion via the Shure MXA920 array, Whisper-Streaming transcription via Asterisk, Casambi BLE spatial telemetry, and localized GraphRAG pipeline execution. Silicon class is determined by deployment context; the architectural specification is constant across both.",
               "This specification is a living document. Hardware capabilities in sovereign edge compute are advancing at pace. The authors will update silicon references and compute class definitions as the standard matures and deployment experience accumulates.",
-              "Native Agentic provides the software orchestration layer that binds the selected inference platform to the physical sensor array, executing the full intelligence stack independent of public cloud routing."
+              "The Software Integrator provides the software orchestration layer that binds the selected inference platform to the physical sensor array, executing the full intelligence stack independent of public cloud routing."
             ]
           }
         ]

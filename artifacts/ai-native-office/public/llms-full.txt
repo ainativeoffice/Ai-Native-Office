@@ -34,7 +34,7 @@ The threshold for qualification is not a revenue band. It is a maturity conditio
 
 The governance architecture of the AI-Native Office rests on a clear separation of ownership and responsibility across three parties, each with a distinct role and none with access to what belongs to the other two.
 
-The Landlord — AI Commons — provisions the physical environment. The hardened shell, the acoustic and physical isolation engineering, the dedicated network infrastructure, the power envelopes designed for continuous high-density compute. The Landlord builds and maintains the room. The Landlord does not touch the tenant's compute or data.
+The Landlord provisions the physical environment. The hardened shell, the acoustic and physical isolation engineering, the dedicated network infrastructure, the power envelopes designed for continuous high-density compute. The Landlord builds and maintains the room. The Landlord does not touch the tenant's compute or data.
 
 The Tenant owns the compute hardware outright. Physical custody. Legal title. The silicon that runs the tenant's inference workloads is property of the tenant, installed in the tenant's dedicated space, accessible only to the tenant. There is no shared compute pool. There are no other tenants on the same hardware. There is no mechanism — contractual or technical — by which a third party accesses the tenant's inference runs. No subprocessor agreements govern what happens inside the tenant's hardware envelope, because no subprocessor is present.
 
@@ -72,7 +72,7 @@ Cloud providers charge for data moving out of their infrastructure. For most ent
 
 Sovereign compute replaces that perpetual operating expense with a depreciating capital asset. The hardware is owned, not rented. Depreciation schedules apply. The inference runs at zero marginal cost per query — the hardware is already provisioned, already powered, already present. Once the capital investment is made, the cost per unit of intelligence approaches zero as utilization increases. The cloud model inverts this: cost per unit of intelligence is fixed or rising, with no depreciation benefit and no path to marginal-cost inference. For organizations running high-volume, continuous AI workloads, the arithmetic favors the on-premises model decisively and permanently.
 
-For any workload that does route externally — non-sensitive data, public-source research, external API calls — dedicated private fiber connectivity provides bandwidth at roughly one-tenth the per-gigabyte cost of standard cloud egress. This is not a negotiated discount. It is a different pricing class, structurally available only to organizations with dedicated physical infrastructure. The Lightpath private fiber backbone that serves the AI Commons campus places external connectivity in a cost category that standard cloud-hosted organizations cannot access, regardless of contract size or negotiating leverage.
+For any workload that does route externally — non-sensitive data, public-source research, external API calls — dedicated private fiber connectivity provides bandwidth at a fraction of the per-gigabyte cost of standard cloud egress. Ethernet Private Line architecture connects the physical facility directly to upstream infrastructure without traversing public routing tables, placing external connectivity in a cost class that shared cloud infrastructure cannot match regardless of contract volume. This is not a discount available through negotiation — it is a structural advantage of owning dedicated physical infrastructure.
 
 The cost of inaction has a component that does not appear on any invoice. Organizations that choose to operate AI workloads through public cloud infrastructure on sensitive data must pre-process that data — redacting, tokenizing, anonymizing — before it can be safely submitted for inference. This compliance preprocessing degrades the input quality the model actually receives. The AI operates on a sanitized version of reality, and the output reflects that limitation. Organizations spending significant operational effort on compliance preprocessing are paying twice: once in the direct cost of the redaction workflow, and once in the inference quality penalty. The AI-Native Office eliminates both costs simultaneously. The data enters inference at full fidelity because it never leaves the sovereign environment. The compliance preprocessing step does not exist.
 
@@ -108,13 +108,13 @@ The organizations engaging with this standard now are setting the terms for how 
 
 For technology officers, real estate principals, and infrastructure architects evaluating the AI-Native Office standard for their own environment.
 
-Tour the AI Commons Node One campus in Armonk, NY. The full stack — acoustic isolation, sovereign compute, ambient sensor infrastructure, and the intelligence layer — is deployed and operational. A reference implementation visit is the appropriate first step for organizations evaluating the standard for their own environment: a working system that can be observed, interrogated, and stress-tested against real organizational requirements. This is not a demonstration environment. It is the production standard.
+Tour a reference implementation of the AI-Native Office standard. The full stack — acoustic isolation, sovereign compute, ambient sensor infrastructure, and the intelligence layer — is deployed and operational. A reference implementation visit is the appropriate first step for organizations evaluating the standard for their own environment: a working system that can be observed, interrogated, and stress-tested against real organizational requirements. This is not a demonstration environment. It is the production standard.
 
 ### Tenant Inquiry
 
 For organizations requiring dedicated sovereign AI infrastructure under the tripartite model.
 
-Inquire about tenancy within an AI Commons node. Tenant deployments provide physically isolated, purpose-built sovereign compute environments within the AI Commons campus, operated under the tripartite ownership model described in this specification. The Node provides the hardened shell, base building systems, and Native Agentic integration. The tenant owns and operates the silicon. Tenancy is appropriate for organizations that require dedicated, auditable, physically sovereign inference infrastructure without the capital and operational commitment of building and staffing an independent facility.
+Inquire about tenancy within a qualified AI-Native Office node. Tenant deployments provide physically isolated, purpose-built sovereign compute environments operated under the tripartite ownership model described in this specification. The Node provides the hardened shell, base building systems, and Native Agentic integration. The tenant owns and operates the silicon. Tenancy is appropriate for organizations that require dedicated, auditable, physically sovereign inference infrastructure without the capital and operational commitment of building and staffing an independent facility.
 
 ### Developer / RFC Contributor
 
@@ -128,7 +128,7 @@ To request a technical briefing or begin a tenant inquiry, contact:
 
 #### Tim Walsh
 
-AI Commons | Armonk, NY
+Armonk, NY
 [contact — Tim to supply]
 
 *The AI-Native Office is a category being built. The organizations that engage now help define what it becomes.*
@@ -263,9 +263,9 @@ The sovereign compute architecture relies on a strict tripartite separation of r
 
 - The Landlord provisions the hardened architectural shell and base building infrastructure.
 - The Tenant owns the local PCIe inference silicon, maintaining absolute legal and physical custody of the hardware.
-- The Software Integrator (Native Agentic) weaves the physical sensors and digital infrastructure together, deploying the localized orchestration layer.
+- The Software Integrator weaves the physical sensors and digital infrastructure together, deploying the localized orchestration layer.
 
-Native Agentic is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. Native Agentic operates as the Software Integrator in the tripartite model, translating the physical sovereign enclave into a fully operational intelligence environment.
+The Software Integrator is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. Native Agentic operates as the Software Integrator in the tripartite model, translating the physical sovereign enclave into a fully operational intelligence environment.
 
 ### Acoustic Sovereignty and the STC 55 Mandate
 
@@ -314,7 +314,7 @@ Both compute classes fully support the AI-Native Office sensor stack: Dante audi
 
 This specification is a living document. Hardware capabilities in sovereign edge compute are advancing at pace. The authors will update silicon references and compute class definitions as the standard matures and deployment experience accumulates.
 
-Native Agentic provides the software orchestration layer that binds the selected inference platform to the physical sensor array, executing the full intelligence stack independent of public cloud routing.
+The Software Integrator provides the software orchestration layer that binds the selected inference platform to the physical sensor array, executing the full intelligence stack independent of public cloud routing.
 
 ## Appendix D: The Intelligence Flywheel & Absolute Sovereignty: Enterprise GraphRAG
 
