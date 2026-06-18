@@ -54,6 +54,60 @@ const findMarginNote = (paragraph: string): MarginNote | undefined =>
   MARGIN_NOTES.find((n) => paragraph.includes(n.match));
 
 /**
+ * Data-driven cross-links from a simplified main section to the appendices that
+ * carry its full technical depth. Keyed by section id → appendix ids; the
+ * appendix letter (A, B, …) is derived from the appendix's position so it never
+ * drifts from the rendered list. Rendered as plain anchors to existing
+ * `#appendix-<id>` targets, so they degrade gracefully in the prerendered HTML.
+ */
+const SECTION_APPENDIX_LINKS: Record<string, string[]> = {
+  economics: ["egress"],
+  architecture: ["sensory", "enclave"],
+  compliance: ["flywheel"],
+};
+
+const appendixIndexById = new Map(content.appendices.map((a, i) => [a.id, i]));
+
+interface AppendixLink {
+  id: string;
+  letter: string;
+  label: string;
+}
+
+const resolveAppendixLinks = (sectionId: string): AppendixLink[] =>
+  (SECTION_APPENDIX_LINKS[sectionId] ?? []).flatMap((id) => {
+    const idx = appendixIndexById.get(id);
+    if (idx === undefined) return [];
+    return [
+      {
+        id,
+        letter: String.fromCharCode(65 + idx),
+        label: content.appendices[idx].title.split(":")[0],
+      },
+    ];
+  });
+
+/**
+ * Small, in-aesthetic "See Appendix X" links connecting a main section to its
+ * supporting appendices. Plain anchors → no JS required.
+ */
+const renderAppendixLinks = (links: AppendixLink[]) =>
+  links.length === 0 ? null : (
+    <div className="no-print mt-10 flex flex-wrap items-center gap-3 border-t border-border pt-6 font-mono text-[11px] uppercase tracking-widest">
+      <span className="text-border">{"// full technical detail"}</span>
+      {links.map((a) => (
+        <a
+          key={a.id}
+          href={`#appendix-${a.id}`}
+          className="border border-border px-3 py-2 text-muted-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
+        >
+          See Appendix {a.letter} — {a.label} ↗
+        </a>
+      ))}
+    </div>
+  );
+
+/**
  * Renders a set of principle callouts. Each entry is `{ label?, body }`, where
  * `label` is an optional bold lead-in term (modeled as structure, not markdown).
  * Given a distinct left-border / mono treatment to read as a tenet block.
@@ -331,6 +385,8 @@ export default function Home() {
                     )}
                   </div>
                 ))}
+
+                {renderAppendixLinks(resolveAppendixLinks(section.id))}
               </div>
             </motion.section>
           ))}
