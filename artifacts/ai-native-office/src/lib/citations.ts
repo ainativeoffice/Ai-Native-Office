@@ -199,8 +199,8 @@ export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
 
   checkProse(content.hero.title, "hero.title");
 
-  content.sections.forEach((section: Section, si) => {
-    const at = (suffix: string) => `sections[${si}] "${section.title}" › ${suffix}`;
+  const checkSection = (section: Section, collection: string, si: number) => {
+    const at = (suffix: string) => `${collection}[${si}] "${section.title}" › ${suffix}`;
     (section.prose ?? []).forEach((p, i) => checkProse(p, at(`prose[${i}]`)));
     (section.list ?? []).forEach((it, i) => checkListItem(it, at(`list[${i}]`)));
     (section.postListProse ?? []).forEach((p, i) => checkProse(p, at(`postListProse[${i}]`)));
@@ -228,7 +228,10 @@ export function findBrokenCitations(onlyText?: string): BrokenCitation[] {
         );
       }
     });
-  });
+  };
+
+  content.sections.forEach((section, si) => checkSection(section, "sections", si));
+  content.appendices.forEach((appendix, si) => checkSection(appendix, "appendices", si));
 
   return broken;
 }

@@ -1,6 +1,6 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
-import { content, type ListItem, type Table } from "./content";
+import { content, type ListItem, type Table, type Section } from "./content";
 import { findBrokenCitations, parseCitation } from "./lib/citations";
 import { metaTitle } from "./lib/spec";
 
@@ -55,9 +55,10 @@ export function getLlmsFull(): string {
   );
   lines.push("");
 
-  for (const section of content.sections) {
-    lines.push(`## ${section.title}`);
-    lines.push("");
+  // Emit a section/appendix body (prose, lists, subsections, tables, blocks)
+  // into `lines`. Heading for the section title itself is pushed by the caller
+  // so main sections and appendices can use different heading levels/labels.
+  const emitSectionBody = (section: Section) => {
     for (const p of section.prose ?? []) {
       lines.push(p);
       lines.push("");
@@ -120,12 +121,32 @@ export function getLlmsFull(): string {
         lines.push("");
       }
     }
+  };
+
+  for (const section of content.sections) {
+    lines.push(`## ${section.title}`);
+    lines.push("");
+    emitSectionBody(section);
   }
 
   lines.push("## Works Cited");
   lines.push("");
   content.worksCited.forEach((c, i) => lines.push(`${i + 1}. ${c}`));
   lines.push("");
+
+  lines.push("---");
+  lines.push("");
+  lines.push("# Appendices");
+  lines.push("");
+  lines.push(
+    "Deep technical detail supporting the specification above — egress economics, sensor and acoustic engineering, the hardened sovereign enclave, reference compute classes, and the localized GraphRAG pipeline.",
+  );
+  lines.push("");
+  content.appendices.forEach((appendix, idx) => {
+    lines.push(`## Appendix ${String.fromCharCode(65 + idx)}: ${appendix.title}`);
+    lines.push("");
+    emitSectionBody(appendix);
+  });
 
   return lines.join("\n");
 }
@@ -160,7 +181,7 @@ function buildJsonLd() {
       logo: { "@type": "ImageObject", url: `${SITE}/opengraph.jpg` },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/` },
-    articleSection: content.sections.map((s) => s.title),
+    articleSection: [...content.sections, ...content.appendices].map((s) => s.title),
     citation: citations,
   };
 }

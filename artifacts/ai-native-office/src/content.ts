@@ -1,3 +1,5 @@
+import { archivedSections } from "./content-archive";
+
 /**
  * A bulleted list item: either a plain string or a `{ label, body }` pair whose
  * `label` is a bold lead-in term (modeled as structure, not markdown asterisks).
@@ -91,6 +93,7 @@ export interface Content {
   hero: Hero;
   abstract: string;
   sections: Section[];
+  appendices: Section[];
   worksCited: string[];
   subscribe: Subscribe;
   footer: Footer;
@@ -319,6 +322,7 @@ export const content: Content = {
     "Methods - GraphRAG - Microsoft Open Source, accessed June 16, 2026, https://microsoft.github.io/graphrag/index/methods/",
     "How Would Microsoft GraphRAG Work Alongside a Graph Database? - Memgraph, accessed June 16, 2026, https://memgraph.com/blog/how-microsoft-graphrag-works-with-graph-databases"
   ],
+  appendices: archivedSections,
   subscribe: {
     heading: "Subscribe to Specification Updates (RFC Logs)",
     placeholder: "sysadmin@enterprise.com",

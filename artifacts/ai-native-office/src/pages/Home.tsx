@@ -192,6 +192,17 @@ export default function Home() {
               <span>Works Cited</span>
             </a>
           </li>
+          <li>
+            <a
+              href="#appendices"
+              className={`flex items-center gap-3 transition-colors ${
+                activeId === "appendices" ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
+              }`}
+            >
+              <div className={`w-2 h-2 ${activeId === "appendices" ? "bg-primary" : "bg-transparent border border-muted"}`} />
+              <span>Appendices</span>
+            </a>
+          </li>
         </ul>
       </nav>
 
@@ -324,6 +335,67 @@ export default function Home() {
                 );
               })}
             </ol>
+          </section>
+
+          {/* Appendices — deep technical detail surfaced for reference */}
+          <section id="appendices" className="pt-24 border-t border-border scroll-mt-24">
+            <h2 className="text-2xl font-mono font-bold mb-4 uppercase tracking-widest text-muted-foreground">
+              Appendices
+            </h2>
+            <p className="mb-16 max-w-3xl font-serif italic text-base leading-relaxed text-foreground/70">
+              The following appendices preserve the full technical depth behind the specification — the
+              economics of cloud egress, acoustic and spatial sensor engineering, the hardened sovereign
+              enclave, the reference compute classes, and the localized GraphRAG pipeline — for
+              technically-minded readers and crawlers.
+            </p>
+            <div className="flex flex-col gap-24">
+              {content.appendices.map((appendix: any, idx: number) => (
+                <section
+                  key={appendix.id}
+                  id={`appendix-${appendix.id}`}
+                  className="scroll-mt-24"
+                >
+                  <div className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[#FF5F1F]">
+                    Appendix {String.fromCharCode(65 + idx)}
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-serif font-bold mb-8 text-primary">
+                    {appendix.title}
+                  </h3>
+                  <div className="prose-container">
+                    {renderProse(appendix.prose)}
+
+                    {appendix.list && renderList(appendix.list)}
+
+                    {appendix.postListProse && renderProse(appendix.postListProse)}
+
+                    {appendix.subsections?.map((sub: any, sIdx: number) => (
+                      <div key={sIdx} className="mt-16">
+                        <h4 className="text-xl font-serif font-semibold mb-6 text-foreground/90">
+                          {sub.title}
+                        </h4>
+                        {renderProse(sub.prose)}
+
+                        {sub.principles && renderPrinciples(sub.principles)}
+
+                        {sub.tableData && renderTable(sub.tableData)}
+
+                        {sub.postTableProse && renderProse(sub.postTableProse)}
+
+                        {sub.list && renderList(sub.list)}
+
+                        {sub.blocks && renderBlocks(sub.blocks)}
+
+                        {sub.postListProse && renderProse(sub.postListProse)}
+
+                        {sub.closing && (
+                          <p className="mt-6 font-serif italic text-foreground/80">{renderText(sub.closing)}</p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              ))}
+            </div>
           </section>
         </div>
 
