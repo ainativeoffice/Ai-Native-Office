@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { content } from "@/content";
+import { content, type ListItem, type Principle, type Table, type ContactBlock } from "@/content";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { EgressCalculator } from "@/components/EgressCalculator";
 import { Citation } from "@/components/Citation";
@@ -23,7 +23,7 @@ const renderText = (text: string) =>
  * `{ label, body }` objects, where `label` is a bold lead-in term (modeled as
  * real structure, not markdown asterisks in the content string).
  */
-const renderList = (items: any[]) => (
+const renderList = (items: ListItem[]) => (
   <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
     {items.map((item, i) => (
       <li
@@ -58,7 +58,7 @@ const findMarginNote = (paragraph: string): MarginNote | undefined =>
  * `label` is an optional bold lead-in term (modeled as structure, not markdown).
  * Given a distinct left-border / mono treatment to read as a tenet block.
  */
-const renderPrinciples = (principles: any[]) => (
+const renderPrinciples = (principles: Principle[]) => (
   <div className="my-10 flex flex-col gap-6">
     {principles.map((p, i) => (
       <blockquote
@@ -84,7 +84,7 @@ export default function Home() {
   const sectionIds = content.sections.map((s) => s.id);
   const activeId = useActiveSection(sectionIds);
 
-  const renderTable = (tableData: any) => {
+  const renderTable = (tableData: Table) => {
     return (
       <div className="w-full overflow-x-auto my-10 font-mono text-xs md:text-sm">
         <table className="w-full border-collapse border border-border text-left">
@@ -131,7 +131,7 @@ export default function Home() {
     });
   };
 
-  const renderBlocks = (blocks: any[]) =>
+  const renderBlocks = (blocks: ContactBlock[]) =>
     blocks.map((b, bi) => (
       <div key={bi} className="mt-8">
         {b.label && (
@@ -177,7 +177,7 @@ export default function Home() {
                 }`}
               >
                 <div className={`w-2 h-2 ${activeId === section.id ? "bg-primary" : "bg-transparent border border-muted"}`} />
-                <span className="truncate">{(section as any).navLabel ?? section.title.split(":")[0]}</span>
+                <span className="truncate">{section.navLabel ?? section.title.split(":")[0]}</span>
               </a>
             </li>
           ))}
@@ -243,7 +243,7 @@ export default function Home() {
 
         {/* Sections */}
         <div className="flex flex-col gap-24">
-          {content.sections.map((section: any, idx: number) => (
+          {content.sections.map((section) => (
             <motion.section 
               key={section.id}
               id={section.id}
@@ -268,7 +268,7 @@ export default function Home() {
 
                 {section.id === "architecture" && <ArchitectureBlueprint />}
 
-                {section.subsections?.map((sub: any, sIdx: number) => (
+                {section.subsections?.map((sub, sIdx) => (
                   <div key={sIdx} className="mt-16">
                     <h3 className="text-2xl font-serif font-semibold mb-6 text-foreground/90">
                       {sub.title}

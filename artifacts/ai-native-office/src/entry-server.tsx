@@ -1,6 +1,6 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
-import { content } from "./content";
+import { content, type ListItem, type Table } from "./content";
 import { findBrokenCitations, parseCitation } from "./lib/citations";
 import { metaTitle } from "./lib/spec";
 
@@ -30,8 +30,6 @@ export function assertCitationsValid(): void {
 
 const SITE = "https://ainativeoffice.org";
 
-type Table = { headers: string[]; rows: string[][] };
-
 function tableToMarkdown(table: Table): string {
   const header = `| ${table.headers.join(" | ")} |`;
   const divider = `| ${table.headers.map(() => "---").join(" | ")} |`;
@@ -42,7 +40,7 @@ function tableToMarkdown(table: Table): string {
 // List items are plain strings or `{ label, body }` objects (bold lead-ins
 // modeled as structure, not markdown). Emphasis is re-applied here in the
 // generated markdown export only.
-function listItemMd(item: string | { label: string; body: string }): string {
+function listItemMd(item: ListItem): string {
   return typeof item === "string" ? `- ${item}` : `- **${item.label}** ${item.body}`;
 }
 
@@ -57,7 +55,7 @@ export function getLlmsFull(): string {
   );
   lines.push("");
 
-  for (const section of content.sections as any[]) {
+  for (const section of content.sections) {
     lines.push(`## ${section.title}`);
     lines.push("");
     for (const p of section.prose ?? []) {
@@ -126,14 +124,14 @@ export function getLlmsFull(): string {
 
   lines.push("## Works Cited");
   lines.push("");
-  (content.worksCited as string[]).forEach((c, i) => lines.push(`${i + 1}. ${c}`));
+  content.worksCited.forEach((c, i) => lines.push(`${i + 1}. ${c}`));
   lines.push("");
 
   return lines.join("\n");
 }
 
 function buildJsonLd() {
-  const citations = (content.worksCited as string[]).map((c) => {
+  const citations = content.worksCited.map((c) => {
     const { label, url } = parseCitation(c);
     const name = label.trim();
     return url
@@ -162,7 +160,7 @@ function buildJsonLd() {
       logo: { "@type": "ImageObject", url: `${SITE}/opengraph.jpg` },
     },
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/` },
-    articleSection: (content.sections as any[]).map((s) => s.title),
+    articleSection: content.sections.map((s) => s.title),
     citation: citations,
   };
 }

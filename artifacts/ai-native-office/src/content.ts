@@ -1,4 +1,102 @@
-export const content = {
+/**
+ * A bulleted list item: either a plain string or a `{ label, body }` pair whose
+ * `label` is a bold lead-in term (modeled as structure, not markdown asterisks).
+ */
+export type ListItem = string | { label: string; body: string };
+
+/** A data table rendered in a subsection (header row + body rows). */
+export interface Table {
+  headers: string[];
+  rows: string[][];
+}
+
+/** A principle/tenet callout. `label` is an optional bold lead-in; `body` is required. */
+export interface Principle {
+  label?: string;
+  body: string;
+}
+
+/** A contact/info block inside a subsection (e.g. the "Initialize a Conversation" card). */
+export interface ContactBlock {
+  label?: string;
+  prose?: string[];
+  list?: ListItem[];
+  lines?: string[];
+}
+
+/** A subsection within a top-level section. All structured fields beyond title/prose are optional. */
+export interface Subsection {
+  title: string;
+  prose: string[];
+  principles?: Principle[];
+  tableData?: Table;
+  postTableProse?: string[];
+  list?: ListItem[];
+  blocks?: ContactBlock[];
+  postListProse?: string[];
+  closing?: string;
+}
+
+/** A top-level manifesto section. `navLabel` overrides the sidebar label; structured fields are optional. */
+export interface Section {
+  id: string;
+  navLabel?: string;
+  title: string;
+  prose: string[];
+  list?: ListItem[];
+  postListProse?: string[];
+  subsections?: Subsection[];
+}
+
+interface Author {
+  name: string;
+  email: string;
+}
+
+interface Spec {
+  version: string;
+  status: string;
+}
+
+interface Hero {
+  title: string;
+  subtitle?: string;
+  spec: Spec;
+  authors: Author[];
+}
+
+interface Subscribe {
+  heading: string;
+  placeholder: string;
+  submitLabel: string;
+  layers: string[];
+  successMessage: string;
+  errorMessage: string;
+}
+
+interface FooterLink {
+  label: string;
+  href: string;
+  disabled: boolean;
+}
+
+interface Footer {
+  publishedBy: string;
+  location: string;
+  links: FooterLink[];
+}
+
+/** The full page content tree — the single source of truth for all copy. */
+export interface Content {
+  hero: Hero;
+  abstract: string;
+  sections: Section[];
+  worksCited: string[];
+  subscribe: Subscribe;
+  footer: Footer;
+}
+
+export const content: Content = {
   hero: {
     title: "The Room as the Machine",
     subtitle: "A Technical Specification for the AI-Native Office",
