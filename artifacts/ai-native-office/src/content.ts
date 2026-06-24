@@ -33,6 +33,10 @@ export interface Subsection {
   /** Optional preformatted code/config block, rendered verbatim in monospace
    *  immediately after `prose`. Never run through the citation tokenizer. */
   code?: CodeBlock;
+  /** Optional prose carrying LaTeX math: inline `$…$` and block `$$…$$`
+   *  formulas (rendered via KaTeX) plus literal `[n, m]` citation brackets.
+   *  Rendered immediately after `prose`. */
+  mathProse?: string[];
   principles?: Principle[];
   tableData?: Table;
   postTableProse?: string[];
@@ -194,6 +198,15 @@ export const content: Content = {
       ]
     },
     {
+      id: "identity",
+      navLabel: "Physical Identity & MCP",
+      title: "Zero-Trust Physical Identity & The MCP Standard",
+      prose: [
+        "A sovereign compute environment is only as secure as its physical access logs. The AI-Native Office architecture mandates the fusion of cryptographic door strikes with BLE spatial positioning to achieve Zero-Trust physical identity. If the localized acoustic array captures an execution command, the orchestration layer must cross-reference the speaker's spatial coordinates with the physical security logs. If an authenticated physical entry event does not exist in the ledger, the packet is deterministically dropped.",
+        "Furthermore, the physical room must be abstracted into a standardized API endpoint utilizing the Model Context Protocol (MCP). By wrapping the hardware sensor stack (uncompressed AV, spatial telemetry, physical door strikes) into an MCP-compliant server, any authorized, localized Large Language Model can securely query the room's physical state using native tool calls, entirely eliminating fragile custom middleware."
+      ]
+    },
+    {
       id: "economics",
       navLabel: "The Economics",
       title: "The Economics of Sovereignty",
@@ -265,16 +278,17 @@ export const content: Content = {
           ]
         },
         {
-          title: "Initialize a Conversation",
+          title: "Initialize an RFC Conversation",
           prose: [
-            "To request a technical briefing or begin a tenant inquiry, contact:"
+            "To request a technical briefing, begin a tenant inquiry, or submit an edge-case for the RFC specification, contact the architectural principals:"
           ],
           blocks: [
             {
-              label: "Tim Walsh",
               lines: [
-                "Armonk, NY",
-                "[contact — Tim to supply]"
+                "[ PGP Public Key Block Available Upon Request ]",
+                "Location: Armonk, NY Reference Node",
+                "Routing: rfc-review@ainativeoffice.org",
+                "Principal: Timothy Walsh"
               ]
             }
           ],

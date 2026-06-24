@@ -78,6 +78,10 @@ export function getLlmsFull(): string {
         lines.push(p);
         lines.push("");
       }
+      for (const p of sub.mathProse ?? []) {
+        lines.push(p);
+        lines.push("");
+      }
       if (sub.code) {
         if (sub.code.caption) {
           lines.push(`*${sub.code.caption}*`);

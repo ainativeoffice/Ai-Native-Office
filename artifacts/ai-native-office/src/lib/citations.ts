@@ -37,6 +37,14 @@ export type Token =
   | { type: "text"; value: string }
   | { type: "cite"; number: number };
 
+/**
+ * A grouped token stream: plain text, or a run of one-or-more consecutive
+ * citation numbers that should render as a single bracketed group `[31, 34]`.
+ */
+export type GroupToken =
+  | { type: "text"; value: string }
+  | { type: "cites"; numbers: number[] };
+
 // Units/measurements that follow a decimal value (never a citation), e.g. "1.25 Mbps",
 // "96.58%", "43.79 tokens per second". Word units need a trailing word boundary; the
 // symbol unit "%" is matched literally (a `\b` after "%" never matches, so it must be
@@ -128,6 +136,44 @@ export function tokenizeCitations(text: string): Token[] {
     }
     tokens.push({ type: "cite", number: marker.number });
     last = marker.end;
+  }
+  if (last < text.length) tokens.push({ type: "text", value: text.slice(last) });
+  return tokens;
+}
+
+/**
+ * Tokenize prose into text and *grouped* citation tokens. Consecutive markers
+ * glued together (`Cores.31.34`, `workloads.34.38`) collapse into one group —
+ * the intervening periods are dropped — so the renderer can show `[31, 34]`
+ * instead of `.31.34`. The period that introduces the first marker of a group
+ * is kept as visible text (e.g. `Cores.` then ` [31, 34]`). Only in-range
+ * numbers (1..SOURCE_COUNT) are treated as citations.
+ */
+export function tokenizeCitationGroups(text: string): GroupToken[] {
+  const markers = scanMarkers(text).filter(
+    (m) => m.number >= 1 && m.number <= SOURCE_COUNT,
+  );
+  const tokens: GroupToken[] = [];
+  let last = 0;
+  let i = 0;
+  while (i < markers.length) {
+    const start = markers[i]!;
+    const numbers = [start.number];
+    let endMarker = start;
+    // Absorb immediately-adjacent markers (next marker's period sits exactly at
+    // the previous marker's end) into the same bracket group.
+    while (i + 1 < markers.length && markers[i + 1]!.dotIdx === endMarker.end) {
+      endMarker = markers[i + 1]!;
+      numbers.push(endMarker.number);
+      i++;
+    }
+    // Emit text up to and including the leading period of the group.
+    if (start.dotIdx + 1 > last) {
+      tokens.push({ type: "text", value: text.slice(last, start.dotIdx + 1) });
+    }
+    tokens.push({ type: "cites", numbers });
+    last = endMarker.end;
+    i++;
   }
   if (last < text.length) tokens.push({ type: "text", value: text.slice(last) });
   return tokens;

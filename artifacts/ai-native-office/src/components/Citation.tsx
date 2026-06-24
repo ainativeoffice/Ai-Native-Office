@@ -7,15 +7,14 @@ import {
 import { getSource } from "@/lib/citations";
 
 const markerClass =
-  "align-super text-[0.62em] font-mono font-medium leading-none ml-px px-[0.15em] " +
-  "text-primary/70 underline decoration-dotted decoration-muted-foreground/60 underline-offset-[3px] " +
-  "transition-colors hover:text-primary hover:decoration-primary hover:decoration-solid " +
+  "font-mono text-zinc-500 underline decoration-dotted decoration-zinc-600/70 underline-offset-2 " +
+  "transition-colors hover:text-primary hover:decoration-primary " +
   "focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary focus-visible:text-primary " +
   "cursor-pointer";
 
 export function Citation({ number }: { number: number }) {
   const source = getSource(number);
-  if (!source) return <sup className="font-mono text-[0.62em]">{number}</sup>;
+  if (!source) return <span className="font-mono text-zinc-500">{number}</span>;
 
   const { label, url, domain } = source;
 
@@ -74,5 +73,34 @@ export function Citation({ number }: { number: number }) {
         )}
       </HoverCardContent>
     </HoverCard>
+  );
+}
+
+/**
+ * Subtle bracketed citation group, e.g. ` [31, 34]`. Brackets and commas are
+ * rendered in muted monospace (zinc-500) so they sit quietly in the reading
+ * flow; each number remains an independent, interactive {@link Citation}.
+ * `leadingSpace` prepends a space before `[` for the word-glued path
+ * (`Cores.` → `Cores. [31, 34]`); literal-bracket source text supplies its own
+ * spacing, so it passes `leadingSpace={false}`.
+ */
+export function CitationBrackets({
+  numbers,
+  leadingSpace = false,
+}: {
+  numbers: number[];
+  leadingSpace?: boolean;
+}) {
+  return (
+    <span className="whitespace-nowrap font-mono text-zinc-500">
+      {leadingSpace ? " " : null}[
+      {numbers.map((n, i) => (
+        <React.Fragment key={`${n}-${i}`}>
+          {i > 0 ? ", " : null}
+          <Citation number={n} />
+        </React.Fragment>
+      ))}
+      ]
+    </span>
   );
 }

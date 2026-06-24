@@ -4,6 +4,7 @@ import {
   SOURCE_COUNT,
   detectCitationNumbers,
   tokenizeCitations,
+  tokenizeCitationGroups,
   findBrokenCitations,
 } from "./citations";
 
@@ -12,6 +13,12 @@ const cites = (text: string): number[] =>
   tokenizeCitations(text)
     .filter((t): t is { type: "cite"; number: number } => t.type === "cite")
     .map((t) => t.number);
+
+/** Convenience: the bracket groups tokenizeCitationGroups emits, in order. */
+const groups = (text: string): number[][] =>
+  tokenizeCitationGroups(text)
+    .filter((t): t is { type: "cites"; numbers: number[] } => t.type === "cites")
+    .map((t) => t.numbers);
 
 /** Convenience: detected citation-shaped numbers (range-agnostic). */
 const detected = (text: string): number[] =>
@@ -41,6 +48,32 @@ test("preserves the period as visible text and drops only the number", () => {
 
 test("detects multiple markers in one string", () => {
   assert.deepEqual(cites("evidence.3 supports the thesis.4 fully"), [3, 4]);
+});
+
+// --- bracketed grouping (tokenizeCitationGroups) -----------------------------
+
+test("groups consecutive glued markers into one bracket group", () => {
+  assert.deepEqual(groups("568 fourth-generation Tensor Cores.31.34"), [[31, 34]]);
+});
+
+test("groups three consecutive glued markers", () => {
+  assert.deepEqual(groups("RAG workloads.34.38.41"), [[34, 38, 41]]);
+});
+
+test("a lone glued marker is a single-number group", () => {
+  assert.deepEqual(groups("ambient data feed.61"), [[61]]);
+});
+
+test("non-adjacent markers stay in separate groups", () => {
+  assert.deepEqual(groups("evidence.3 supports the thesis.4 fully"), [[3], [4]]);
+});
+
+test("keeps the leading period and drops intervening periods when grouping", () => {
+  assert.deepEqual(tokenizeCitationGroups("Cores.31.34 now"), [
+    { type: "text", value: "Cores." },
+    { type: "cites", numbers: [31, 34] },
+    { type: "text", value: " now" },
+  ]);
 });
 
 // --- digit-before-period citations ------------------------------------------

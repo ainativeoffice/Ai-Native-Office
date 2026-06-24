@@ -1,22 +1,76 @@
 import React from "react";
 import { motion } from "framer-motion";
+import katex from "katex";
 import { content, type ListItem, type Principle, type Table, type ContactBlock } from "@/content";
 import { useActiveSection } from "@/hooks/use-active-section";
 import { EgressCalculator } from "@/components/EgressCalculator";
-import { Citation } from "@/components/Citation";
+import { Citation, CitationBrackets } from "@/components/Citation";
 import { SideNote, type MarginNote } from "@/components/SideNote";
 import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
-import { getSource, parseCitation, tokenizeCitations } from "@/lib/citations";
+import { getSource, parseCitation, tokenizeCitationGroups } from "@/lib/citations";
 
 const renderText = (text: string) =>
-  tokenizeCitations(text).map((t, i) =>
+  tokenizeCitationGroups(text).map((t, i) =>
     t.type === "text" ? (
       <React.Fragment key={i}>{t.value}</React.Fragment>
     ) : (
-      <Citation key={i} number={t.number} />
+      <CitationBrackets key={i} numbers={t.numbers} leadingSpace />
     ),
   );
+
+/** KaTeX renders identically on server and client (pure string → HTML), so
+ *  `dangerouslySetInnerHTML` is hydration-safe and needs no client-only guard. */
+const MathInline = ({ tex }: { tex: string }) => (
+  <span
+    dangerouslySetInnerHTML={{
+      __html: katex.renderToString(tex, { throwOnError: false, displayMode: false }),
+    }}
+  />
+);
+
+const MathDisplay = ({ tex }: { tex: string }) => (
+  <div
+    className="my-6 overflow-x-auto text-foreground/90"
+    dangerouslySetInnerHTML={{
+      __html: katex.renderToString(tex, { throwOnError: false, displayMode: true }),
+    }}
+  />
+);
+
+/**
+ * Render math-bearing prose. A string wrapped in `$$…$$` is a display formula;
+ * any other string is a paragraph whose inline `$…$` spans become inline math
+ * and whose literal `[n, m]` brackets become interactive citation groups.
+ */
+const renderMathProse = (paragraphs: string[]) =>
+  paragraphs.map((p, i) => {
+    const display = p.match(/^\$\$([\s\S]+)\$\$$/);
+    if (display) return <MathDisplay key={i} tex={display[1]} />;
+
+    const nodes: React.ReactNode[] = [];
+    const re = /\$([^$]+)\$|\[(\d{1,2}(?:\s*,\s*\d{1,2})*)\]/g;
+    let last = 0;
+    let m: RegExpExecArray | null;
+    let k = 0;
+    while ((m = re.exec(p)) !== null) {
+      if (m.index > last) nodes.push(p.slice(last, m.index));
+      if (m[1] !== undefined) {
+        nodes.push(<MathInline key={`m${k++}`} tex={m[1]} />);
+      } else {
+        const numbers = m[2].split(",").map((n) => parseInt(n.trim(), 10));
+        nodes.push(<CitationBrackets key={`c${k++}`} numbers={numbers} />);
+      }
+      last = re.lastIndex;
+    }
+    if (last < p.length) nodes.push(p.slice(last));
+
+    return (
+      <p key={i} className="mb-6 leading-relaxed text-foreground/90 font-light text-lg">
+        {nodes}
+      </p>
+    );
+  });
 
 /**
  * Renders a bulleted list. Items are either plain strings or structured
@@ -381,6 +435,8 @@ export default function Home() {
                     </h3>
                     {renderProse(sub.prose)}
 
+                    {sub.mathProse && renderMathProse(sub.mathProse)}
+
                     {sub.code && renderCode(sub.code)}
 
                     {sub.principles && renderPrinciples(sub.principles)}
@@ -473,6 +529,8 @@ export default function Home() {
                           {sub.title}
                         </h4>
                         {renderProse(sub.prose)}
+
+                        {sub.mathProse && renderMathProse(sub.mathProse)}
 
                         {sub.code && renderCode(sub.code)}
 
