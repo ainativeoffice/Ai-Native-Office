@@ -78,9 +78,16 @@ for (const [text, label] of [
 
 test("flags a word-glued marker whose number exceeds SOURCE_COUNT", () => {
   const tooBig = SOURCE_COUNT + 1;
-  assert.deepEqual(detectCitationNumbers(`see footnote.${tooBig}`), [
-    { number: tooBig, kind: "word", inRange: false },
-  ]);
+  // A citation marker can only encode a 1–2 digit number. At the 99-source
+  // ceiling there is no representable out-of-range marker (tooBig is 3 digits),
+  // so the detector finds nothing; below the ceiling it flags the marker.
+  if (tooBig <= 99) {
+    assert.deepEqual(detectCitationNumbers(`see footnote.${tooBig}`), [
+      { number: tooBig, kind: "word", inRange: false },
+    ]);
+  } else {
+    assert.deepEqual(detectCitationNumbers(`see footnote.${tooBig}`), []);
+  }
 });
 
 test("marks an in-range glued marker as valid", () => {
@@ -93,11 +100,10 @@ test("range-agnostic detection still excludes decimals and units", () => {
   assert.deepEqual(detected("1.25 Mbps and Llama 3.1"), []);
 });
 
-test("an out-of-range digit-before-period marker is a decimal, not a citation", () => {
-  // e.g. "43.79 tokens per second" — 79 > SOURCE_COUNT, so it is a decimal.
-  assert.deepEqual(detectCitationNumbers("43.79 tokens per second"), [
-    { number: 79, kind: "digit", inRange: false },
-  ]);
+test("a digit-before-period decimal followed by a unit is not a citation", () => {
+  // "43.79 tokens per second" is a throughput decimal: the trailing unit
+  // ("tokens") excludes it regardless of the Works Cited range.
+  assert.deepEqual(detectCitationNumbers("43.79 tokens per second"), []);
 });
 
 test("findBrokenCitations ignores out-of-range digit-before-period decimals", () => {
@@ -107,8 +113,14 @@ test("findBrokenCitations ignores out-of-range digit-before-period decimals", ()
 test("findBrokenCitations flags an out-of-range word-glued citation", () => {
   const tooBig = SOURCE_COUNT + 1;
   const result = findBrokenCitations(`Backed by hard evidence.${tooBig} indeed.`);
-  assert.equal(result.length, 1);
-  assert.equal(result[0]!.number, tooBig);
+  // At the 99-source ceiling a 3-digit "citation" is unrepresentable, so the
+  // guard cannot (and need not) flag it; below the ceiling it is flagged.
+  if (tooBig <= 99) {
+    assert.equal(result.length, 1);
+    assert.equal(result[0]!.number, tooBig);
+  } else {
+    assert.deepEqual(result, []);
+  }
 });
 
 // --- build guard over real content ------------------------------------------

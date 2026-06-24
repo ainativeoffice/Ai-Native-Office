@@ -37,10 +37,11 @@ export type Token =
   | { type: "text"; value: string }
   | { type: "cite"; number: number };
 
-// Units/measurements that follow a decimal value (never a citation), e.g. "1.25 Mbps", "96.58%".
-// Word units need a trailing word boundary; the symbol unit "%" is matched literally
-// (a `\b` after "%" never matches, so it must be handled separately).
-const UNIT = /^\s?(?:(?:Mbps|MBps|Gbps|Kbps|GB|TB|MB|KB|GHz|MHz|kHz|Hz|dB|ms|Watts?|kW|MW|kV|V|Amp|TFLOPS)\b|%)/i;
+// Units/measurements that follow a decimal value (never a citation), e.g. "1.25 Mbps",
+// "96.58%", "43.79 tokens per second". Word units need a trailing word boundary; the
+// symbol unit "%" is matched literally (a `\b` after "%" never matches, so it must be
+// handled separately).
+const UNIT = /^\s?(?:(?:Mbps|MBps|Gbps|Kbps|GB|TB|MB|KB|GHz|MHz|kHz|Hz|dB|ms|Watts?|kW|MW|kV|V|Amp|TFLOPS|tokens?)\b|%)/i;
 // A citation may be glued to a word-ending character: a letter or closing punctuation.
 const WORD_END = /[A-Za-z)\]}"'\u201d\u2019]/;
 

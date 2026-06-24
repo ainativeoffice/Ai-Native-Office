@@ -78,6 +78,16 @@ export function getLlmsFull(): string {
         lines.push(p);
         lines.push("");
       }
+      if (sub.code) {
+        if (sub.code.caption) {
+          lines.push(`*${sub.code.caption}*`);
+          lines.push("");
+        }
+        lines.push("```");
+        lines.push(sub.code.code);
+        lines.push("```");
+        lines.push("");
+      }
       for (const pr of sub.principles ?? []) {
         lines.push(pr.label ? `> **${pr.label}** ${pr.body}` : `> ${pr.body}`);
         lines.push("");

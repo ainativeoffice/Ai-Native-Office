@@ -196,6 +196,19 @@ export default function Home() {
     });
   };
 
+  const renderCode = (block: { caption?: string; code: string }) => (
+    <figure className="my-8">
+      <pre className="overflow-x-auto rounded-none border border-border bg-[hsl(0_0%_2%)] p-5 font-mono text-xs leading-relaxed text-foreground/85">
+        <code>{block.code}</code>
+      </pre>
+      {block.caption && (
+        <figcaption className="mt-3 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
+          {block.caption}
+        </figcaption>
+      )}
+    </figure>
+  );
+
   const renderBlocks = (blocks: ContactBlock[]) =>
     blocks.map((b, bi) => (
       <div key={bi} className="mt-8">
@@ -368,6 +381,8 @@ export default function Home() {
                     </h3>
                     {renderProse(sub.prose)}
 
+                    {sub.code && renderCode(sub.code)}
+
                     {sub.principles && renderPrinciples(sub.principles)}
 
                     {sub.tableData && renderTable(sub.tableData)}
@@ -458,6 +473,8 @@ export default function Home() {
                           {sub.title}
                         </h4>
                         {renderProse(sub.prose)}
+
+                        {sub.code && renderCode(sub.code)}
 
                         {sub.principles && renderPrinciples(sub.principles)}
 

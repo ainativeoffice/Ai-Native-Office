@@ -30,6 +30,9 @@ export interface ContactBlock {
 export interface Subsection {
   title: string;
   prose: string[];
+  /** Optional preformatted code/config block, rendered verbatim in monospace
+   *  immediately after `prose`. Never run through the citation tokenizer. */
+  code?: CodeBlock;
   principles?: Principle[];
   tableData?: Table;
   postTableProse?: string[];
@@ -37,6 +40,12 @@ export interface Subsection {
   blocks?: ContactBlock[];
   postListProse?: string[];
   closing?: string;
+}
+
+/** A verbatim code/config block: an optional caption plus the literal source. */
+export interface CodeBlock {
+  caption?: string;
+  code: string;
 }
 
 /** A top-level manifesto section. `navLabel` overrides the sidebar label; structured fields are optional. */
@@ -320,7 +329,60 @@ export const content: Content = {
     "GraphRAG & Knowledge Graphs: Making Your Data AI-Ready for 2026 | Fluree, accessed June 16, 2026, https://flur.ee/blog/graphrag-knowledge-graphs-making-your-data-ai-ready-for-2026",
     "GraphRAG on Consumer Hardware: Benchmarking Local LLMs for Healthcare EHR Schema Retrieval - arXiv, accessed June 16, 2026, https://arxiv.org/html/2605.20815v1",
     "Methods - GraphRAG - Microsoft Open Source, accessed June 16, 2026, https://microsoft.github.io/graphrag/index/methods/",
-    "How Would Microsoft GraphRAG Work Alongside a Graph Database? - Memgraph, accessed June 16, 2026, https://memgraph.com/blog/how-microsoft-graphrag-works-with-graph-databases"
+    "How Would Microsoft GraphRAG Work Alongside a Graph Database? - Memgraph, accessed June 16, 2026, https://memgraph.com/blog/how-microsoft-graphrag-works-with-graph-databases",
+    "Why Regulated Industries (Pharma, Aerospace) Are Mandating Sovereign AI Stacks, accessed June 24, 2026, https://oxmaint.com/sap-integration/sovereign-ai-regulated-industries",
+    "ArcAI Systems — Sovereign AI Operating System for Human-Machine Continuity, accessed June 24, 2026, https://arcai.systems/",
+    "Ethernet: E-Line, E-LAN - Fusion Networks, accessed June 24, 2026, https://www.fusionnetworks.net/e-line/",
+    "Metro Ethernet - DQE Communications, accessed June 24, 2026, https://dqe.com/metro-ethernet/",
+    "NVIDIA L40S: Pricing, Specs, Best Uses & Where to Run (2026) - Fluence network, accessed June 24, 2026, https://www.fluence.network/blog/nvidia-l40s/",
+    "Underground-Ops/underground-nexus - GitHub, accessed June 24, 2026, https://github.com/Underground-Ops/underground-nexus",
+    "Metro Ethernet - Segra, accessed June 24, 2026, https://www.segra.com/wp-content/uploads/2024/11/SalesSheet_MetroEthernet_E-Line_2024.pdf",
+    "Ethernet Services - Lumen Technologies, accessed June 24, 2026, https://www.lumen.com/en-us/services/ethernet.html",
+    "13. General-Purpose Graphics Processing Unit (GPU) Library - Documentation, accessed June 24, 2026, https://doc.dpdk.org/guides/prog_guide/gpudev.html",
+    "GPUNetIO Programming Guide - NVIDIA Docs, accessed June 24, 2026, https://docs.nvidia.com/doca/archive/doca-v2.2.0/gpunetio-programming-guide/index.html",
+    "PCIe Traffic in DPDK Apps - Intel, accessed June 24, 2026, https://www.intel.com/content/www/us/en/docs/vtune-profiler/cookbook/2024-1/pcie-traffic-in-dpdk-apps.html",
+    "L40S GPU for AI and Graphics Performance - NVIDIA, accessed June 24, 2026, https://www.nvidia.com/en-us/data-center/l40s/",
+    "Boosting Inline Packet Processing Using DPDK and GPUdev with GPUs - NVIDIA Developer, accessed June 24, 2026, https://developer.nvidia.com/blog/optimizing-inline-packet-processing-using-dpdk-and-gpudev-with-gpus/",
+    "How to Build Private AI Infrastructure for Healthcare (2026 Guide) - OneSource Cloud, accessed June 24, 2026, https://www.onesourcecloud.net/blog/private-ai-infrastructure-healthcare",
+    "LiveKit for AI Agents — Real-Time Voice & Video AI Infrastructure | by Fora Soft - Medium, accessed June 24, 2026, https://forasoft.medium.com/livekit-for-ai-agents-real-time-voice-video-ai-infrastructure-17b83418f719",
+    "Why WebRTC beats WebSockets for realtime voice AI - LiveKit, accessed June 24, 2026, https://livekit.com/blog/why-webrtc-beats-websockets-for-voice-ai-agents",
+    "GitHub - livekit/portal: A Simple Transport Layer For Teleoperation And Inference, accessed June 24, 2026, https://github.com/livekit/portal",
+    "Real-Time AI Voice Agents with Asterisk AudioSocket, accessed June 24, 2026, https://medium.com/@shubhanshutiwari74156/real-time-ai-voice-agents-with-asterisk-audiosocket-build-conversational-telephony-systems-in-4768a7a80a76",
+    "How to build an AI voice agent with OpenAI Realtime API + Asterisk, accessed June 24, 2026, https://towardsai.net/p/machine-learning/how-to-build-an-ai-voice-agent-with-openai-realtime-api-asterisk-sip-2025-using-python-with-github-repo",
+    "Channels - Asterisk Documentation, accessed June 24, 2026, https://docs.asterisk.org/Latest_API/API_Documentation/Asterisk_REST_Interface/Channels_REST_API/",
+    "How Can Asterisk Play the Real-Time Audio Stream?, accessed June 24, 2026, https://community.asterisk.org/t/how-can-asterisk-play-the-real-time-audio-stream/105166",
+    "Asterisk Community: stream both parties audio, accessed June 24, 2026, https://community.asterisk.org/t/hello-i-want-to-stream-both-the-parties-audio-separately-to-a-web-socket-for-real-time-transcription-and-diarization-speaker-labelling-i-am-able-to-record-the-audio-separately-using-monitor-for-both-agent-and-costumer-but-i-want-to-steam-the-audio/103197",
+    "ARI ExternalMedia and slin format with 8 kHz 16 bit, accessed June 24, 2026, https://community.asterisk.org/t/ari-externalmedia-and-slin-format-with-8-khz-16-bit/97605",
+    "Search Results: \"rmh\" - Planet Debian, accessed June 24, 2026, https://planet-search.debian.org/cgi-bin/search.cgi?terms=%22rmh%22",
+    "Search Results: \"noodles\" - Planet Debian, accessed June 24, 2026, https://planet-search.debian.org/cgi-bin/search.cgi?terms=%22noodles%22",
+    "sniffer/config/voipmonitor.conf at master - GitHub, accessed June 24, 2026, https://github.com/voipmonitor/sniffer/blob/master/config/voipmonitor.conf",
+    "Guillaume MULLER's tips and tricks, accessed June 24, 2026, http://guillaumemuller1.free.fr/",
+    "Casambi | Developer Site, accessed June 24, 2026, https://developer.casambi.com/",
+    "How AoA & AoD changed the direction of Bluetooth® Location Services, accessed June 24, 2026, https://www.bluetooth.com/blog/new-aoa-aod-bluetooth-capabilities/",
+    "UG103.18: Bluetooth Direction Finding Fundamentals - Silicon Labs, accessed June 24, 2026, https://www.silabs.com/documents/public/user-guides/ug103-18-bluetooth-direction-finding-fundamentals.pdf",
+    "STM32WB0 Bluetooth® LE Direction Finding - stm32mcu - ST wiki, accessed June 24, 2026, https://wiki.st.com/stm32mcu/wiki/Connectivity:STM32WB0_Bluetooth_LE_Direction_Finding",
+    "Bluetooth Direction Finding, accessed June 24, 2026, https://www.bluetooth.com/wp-content/uploads/Files/developer/RDF_Technical_Overview.pdf",
+    "Bluetooth Location and Direction Finding - MATLAB & Simulink, accessed June 24, 2026, https://www.mathworks.com/help/bluetooth/ug/bluetooth-direction-finding.html",
+    "GraphRAG with Qdrant and Neo4j, accessed June 24, 2026, https://qdrant.tech/documentation/examples/graphrag-qdrant-neo4j/",
+    "Video Anomaly Detection Part 1: Architecture, Twelve Labs, and NVIDIA VSS - Qdrant, accessed June 24, 2026, https://qdrant.tech/documentation/tutorials-build-essentials/video-anomaly-edge-part-1/",
+    "The GraphRAG Implementation Guide: From Zero to Production | by Aftab - Medium, accessed June 24, 2026, https://medium.com/@aftab001x/the-graphrag-implementation-guide-from-zero-to-production-c1f007590dc9",
+    "How do NVIDIA's L40 and L40S GPUs compare to other NVIDIA GPUs in terms of security features?, accessed June 24, 2026, https://massedcompute.com/faq-answers/?question=How%20do%20NVIDIA%27s%20L40%20and%20L40S%20GPUs%20compare%20to%20other%20NVIDIA%20GPUs%20in%20terms%20of%20security%20features?",
+    "What is Confidential Computing? | Secure Data Processing | OVHcloud, accessed June 24, 2026, https://www.ovhcloud.com/en/learn/what-is-confidential-computing/",
+    "Compliance Training AI Agent for Healthcare | ibl.ai, accessed June 24, 2026, https://ibl.ai/solutions/medical-healthcare/agent/compliance-training-agent",
+    "HIPAA Security Rule To Strengthen the Cybersecurity of Electronic Protected Health Information, accessed June 24, 2026, https://www.federalregister.gov/documents/2025/01/06/2024-30983/hipaa-security-rule-to-strengthen-the-cybersecurity-of-electronic-protected-health-information",
+    "Protecting Radiology Data and Devices Against Cybersecurity Threats, accessed June 24, 2026, https://pmc.ncbi.nlm.nih.gov/articles/PMC13103043/",
+    "Audit Trail Requirements: 21 CFR Part 11 Guide | Assyro AI, accessed June 24, 2026, https://www.assyro.com/blog/audit-trail-requirements-guide",
+    "A Complete Checklist for 21 CFR Part 11 Compliance - eMaint, accessed June 24, 2026, https://www.emaint.com/blog/21-cfr-part-11-compliance-checklist/",
+    "Guidance for Industry - Part 11, Electronic Records; Electronic Signatures — Scope and Application, accessed June 24, 2026, https://www.fda.gov/media/75414/download",
+    "SEC Rule 17a-4: Electronic Recordkeeping Requirements Explained - Smarsh, accessed June 24, 2026, https://www.smarsh.com/regulations/sec-rule-17a-4-records-preservation/",
+    "Books and Records | FINRA.org, accessed June 24, 2026, https://www.finra.org/rules-guidance/key-topics/books-records",
+    "Communications Compliance | Call Monitoring & Analytics - Regulativ AI, accessed June 24, 2026, https://www.regulativ.ai/communications-compliance",
+    "SEC 17a-4 Media Storage Requirements - Theta Lake, accessed June 24, 2026, https://thetalake.com/resources/regulations/sec-17a4/",
+    "Can I load the vfio-pci module using a kernel parameter? : r/archlinux - Reddit, accessed June 24, 2026, https://www.reddit.com/r/archlinux/comments/acwv4n/can_i_load_the_vfiopci_module_using_a_kernel/",
+    "The kernel's command-line parameters — The Linux Kernel documentation, accessed June 24, 2026, https://www.kernel.org/doc/html/v4.17/admin-guide/kernel-parameters.html",
+    "Chapter 5. Important changes to external kernel parameters | 9.2 Release Notes | Red Hat Enterprise Linux, accessed June 24, 2026, https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/9.2_release_notes/kernel_parameters_changes",
+    "PCI passthrough via OVMF - ArchWiki, accessed June 24, 2026, https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF",
+    "Kernel 6.0 and VFIO - Heiko's Blog, accessed June 24, 2026, https://www.heiko-sieger.info/vfio-grub-vfio-pci-ids-doesnt-work-with-kernel-6-try-driver-verride-feature/"
   ],
   appendices: archivedSections,
   subscribe: {

@@ -199,5 +199,231 @@ export const archivedSections = [
         ]
       }
     ]
+  },
+  {
+    id: "proxies",
+    title: "The Demise of Cloud Proxies: The Imperative for Physical Sovereignty",
+    prose: [
+      "The prevailing architecture of enterprise artificial intelligence rests on a fundamentally compromised topography. The standard paradigm extracts local physical telemetry, transmits it across public routing infrastructure, and processes it within multi-tenant hyperscaler environments. This cloud-proxy model is in tension with the baseline physics of network latency, cryptographic custody, and deterministic execution. For highly regulated environments — from healthcare diagnostic facilities and defense manufacturing floors to quantitative trading desks — reliance on external API gateways introduces attack vectors and regulatory exposure that cannot be reconciled with the governing statutes.47 Application-layer governance, as currently deployed by the major cloud providers, is inherently probabilistic, bypassable, and impossible to verify at the hardware level.48 Real-time, agentic intelligence therefore requires a shift away from centralized cloud computing toward localized, bare-metal infrastructure governed by strict cryptographic boundaries.",
+      "The Software Integrator operates as the foundational software-integration and operating company (OpCo) that deploys this digital nervous system within an AI-Native Office. In this arrangement the physical and digital domains are strictly bifurcated yet deterministically integrated. The facility landlord provisions the physical Sovereign Shell — acoustically hardened environments and dedicated E-Line fiber-optic infrastructure.49 The enterprise tenant provisions the raw compute substrate, specifically localized NVIDIA L40S PCIe nodes.51 The Software Integrator provides the proprietary, bare-metal operating system: a stateless orchestration layer that fuses the physical sensors to the isolated GPU cluster.52",
+      "By operating entirely on the local area network (LAN) and using direct optical links to the localized compute vault, the localized orchestration layer bypasses public cloud routing entirely. Every action — digital or physical — is bound to verifiable identity, constrained by physical capability ceilings, and evaluated against deterministic rules at the kernel level before execution.48 This enforces an air gap between the ambient reality of the enterprise space and the external internet: telemetry is processed, structured, and actioned without ever traversing an external network boundary. The relevant regulation does not prohibit the use of AI in enterprise environments; it requires that such systems be validated, auditable, traceable, and sovereign.47 The Software Integrator is the architectural response to that mandate."
+    ]
+  },
+  {
+    id: "topography",
+    title: "The Hypervisor for Physical Space: Architectural Topography",
+    prose: [
+      "The localized orchestration layer functions as a hypervisor for physical space. Where a traditional Type-1 hypervisor abstracts hardware resources — CPU cycles, volatile memory, block storage — for the execution of virtual machines, the orchestration layer abstracts multimodal physical telemetry — spatial audio, uncompressed stereoscopic video, and radio-frequency positioning — for autonomous agentic consumption. It is the intermediary execution layer that sits directly between the raw environmental sensors and the tenant's cryptographically isolated GPU cluster."
+    ],
+    subsections: [
+      {
+        title: "E-Line Optical Topography and Network Physics",
+        prose: [
+          "To minimize latency and guarantee physical security, the telemetry transport layer rejects standard internet-facing topologies. Routing raw telemetry over ordinary IP transit introduces jitter, variable latency, and exposure to Border Gateway Protocol (BGP) hijacking. Instead, sensory data is carried over a Metro Ethernet Private Line (E-Line).49 This is a point-to-point Ethernet virtual circuit running over dedicated, physically distinct fiber-optic cable, establishing a Layer 2 architecture in which data never touches the public internet.50",
+          "The optical transport provides sub-millisecond failover and substantial bandwidth headroom, supporting port capacities from 10 Gbps up to 400 Gbps.50 Through physical network segmentation and Virtual Local Area Network (VLAN) isolation, the orchestration layer keeps the ingestion pipeline immune to external packet injection, man-in-the-middle interception, and distributed denial-of-service (DDoS) vectors. The data path runs strictly from the localized multi-sensor arrays, through the dedicated E-Line fiber, and into the isolated server vault on the premises. Compromising the data stream would require physically cutting the fiber or breaching the acoustically hardened Sovereign Shell."
+        ]
+      },
+      {
+        title: "DPDK and GPUDirect RDMA: Bypassing the Kernel Network Stack",
+        prose: [
+          "At the ingestion point of the compute vault, processing raw multimodal telemetry through the standard Linux kernel network stack introduces unacceptable bottlenecks. The conventional Linux stack is interrupt-driven: when a packet arrives at the Network Interface Card (NIC), it raises a hardware interrupt, forcing the CPU to halt execution, context-switch into kernel mode, allocate an sk_buff structure, and copy the packet from kernel space to user space. At the scale of uncompressed multi-camera video and synchronous audio, this interrupt storm starves the CPU and destroys deterministic latency.",
+          "To remove these bottlenecks, the orchestration layer uses the Data Plane Development Kit (DPDK) paired tightly with the gpudev library.55 DPDK Poll Mode Drivers (PMD) disable interrupt-driven networking entirely; dedicated CPU cores instead poll the ConnectX NICs for incoming packets in a continuous loop.57 The telemetry thereby bypasses the host CPU's networking stack altogether.",
+          "Through GPUDirect Remote Direct Memory Access (RDMA), incoming uncompressed video frames and audio payloads are transferred directly from the NIC, over PCIe Gen4 lanes, into the contiguous GDDR6 VRAM of the NVIDIA L40S GPUs.56 GPUDirect RDMA relies on the GPU's ability to expose regions of device memory through a PCI Express Base Address Register (BAR).59 The DPDK gpudev library allocates memory pools whose payload resides strictly in GPU memory, letting the NIC transmit and receive packets using the GPU as the primary memory target.55"
+        ],
+        tableData: {
+          headers: ["Architectural Component", "Traditional OS Network Stack", "Localized Orchestration Layer (DPDK / GPUDirect RDMA)"],
+          rows: [
+            ["Packet Reception", "Hardware interrupt-driven (IRQ)", "Dedicated Poll Mode Driver (PMD)"],
+            ["CPU Involvement", "High context switching, sk_buff allocation", "Zero CPU intervention in the critical data path"],
+            ["Memory Destination", "Host RAM → kernel space → user space → GPU", "Direct to GPU VRAM via PCIe Gen4 BAR"],
+            ["Latency Profile", "Variable milliseconds, high jitter", "Microseconds, deterministic"],
+            ["Security Posture", "Vulnerable to host CPU memory scraping", "Cryptographically isolated within the GPU memory boundary"]
+          ]
+        },
+        postTableProse: [
+          "This GPU-centric network I/O model is an architectural necessity: it maximizes zero-packet-loss throughput at the lowest achievable latency while enforcing a hardware-based security boundary.56 Because the raw telemetry is never resident in the host CPU's memory, an entire class of side-channel memory-scraping attacks is foreclosed.60"
+        ]
+      }
+    ]
+  },
+  {
+    id: "ingestion",
+    title: "Stateless Multimodal Routing: The Ingestion Pipeline",
+    prose: [
+      "Processing ambient reality requires an ingestion architecture that is exceptionally performant yet fundamentally stateless. The overarching mandate of the localized orchestration layer is to perceive everything and retain nothing. The system ingests raw reality, transcodes it into structured data, and then releases the source telemetry at the memory-pointer level. The orchestration layer retains zero packets."
+    ],
+    subsections: [
+      {
+        title: "WebRTC Video Routing via the LiveKit SFU",
+        prose: [
+          "For visual telemetry, the orchestration layer deploys an embedded, local LiveKit Selective Forwarding Unit (SFU) directly on the bare-metal edge nodes.61 Unlike centralized cloud video APIs — which compress video to H.264, ship it over the internet, and await server-side inference — the local SFU operates on raw, low-latency feeds.61",
+          "LiveKit serves as the real-time media backbone, transporting voice and video over WebRTC.61 The SFU does not interpret, reason about, or analyze the video; its sole function is deterministic, latency-optimized routing.61 It manages session parameters over WebSockets, transports the media securely via Datagram Transport Layer Security (DTLS) and the Secure Real-time Transport Protocol (SRTP), and forwards spatial video frames to the appropriate tenant vision models.61"
+        ],
+        list: [
+          "Synchronous observation bundling: to satisfy the requirements of robotics and spatial-awareness policy, outgoing video frames and state packets must arrive bundled. The livekit/portal implementation appends the sender's monotonic clock timestamp (for example, timestamp_us) as packet-trailer metadata on every outgoing frame.63 This guarantees that multi-camera arrays produce perfectly synchronized observations per system tick, letting the backend vision models process aligned stereoscopic frames without jitter-induced hallucination.",
+          "Frame decoding: video streams are decoded the moment they reach the NVIDIA L40S, using the GPU's three onboard NVDEC engines.51 This bypasses CPU decoding overhead entirely.",
+          "Zero-retention mechanism: once a spatial frame has been parsed into structured contextual data — entity bounding boxes, identification hashes, coordinate mapping — by the tenant's vision model, the raw frame buffer in GPU VRAM is overwritten. No uncompressed video frame persists longer than the inference duration."
+        ]
+      },
+      {
+        title: "Telephonic and Spatial Audio Forking via Asterisk PBX",
+        prose: [
+          "Acoustic telemetry — spatial microphones and telephonic inputs — is ingested through a localized Asterisk Private Branch Exchange (PBX). Traditional audio integration relies on application-layer polling such as AGI or EAGI, which operate in blocking modes with limited audio access.64 The orchestration layer replaces this with Asterisk's AudioSocket protocol and the Asterisk REST Interface (ARI) ExternalMedia channels.64",
+          "Dialplan and Stasis initiation: when an inbound audio event reaches the PBX, Asterisk answers it and routes it to a Stasis application via the dialplan (extensions.conf), handing control of the channel to the orchestration layer's ARI client.65",
+          "Snoop channel instantiation: the ARI client creates a mixing bridge and attaches a Snoop channel to passively fork the raw audio, letting the agent monitor the session bidirectionally without disrupting it.67",
+          "ExternalMedia routing: an ExternalMedia channel is instantiated; the client queries the UNICASTRTP_LOCAL_ADDRESS and UNICASTRTP_LOCAL_PORT variables to point the stream at a localized UDP port on the loopback interface (127.0.0.1).65",
+          "The channel is configured through a strict JSON payload injected via the ARI REST endpoint.69"
+        ],
+        code: {
+          caption: "ARI ExternalMedia channel configuration",
+          code: `{
+  "channelId": "SI_EM_AUDIO_01",
+  "app": "software_integrator",
+  "external_host": "127.0.0.1:10000",
+  "encapsulation": "rtp",
+  "transport": "udp",
+  "connection_type": "client",
+  "format": "slin16",
+  "direction": "both"
+}`
+        },
+        postTableProse: [
+          "Payload determinism: the audio format is bound to slin16 (16 kHz, 16-bit signed linear PCM).65 Converting to slin16 avoids the degradation introduced by telephony codecs such as μ-law or A-law and matches the native sample rate expected by modern speech-to-text models.69",
+          "RTP framing mechanics: the slin16 audio is framed at precise 20-millisecond intervals to prevent buffer bloat.65 At a 16,000 Hz sample rate a 20 ms frame yields exactly 320 samples; at 16-bit depth (2 bytes per sample) every RTP payload is exactly 640 bytes.65 This deterministic packet size aligns with memory-allocation limits, eliminating fragmentation and ensuring that memory boundaries are respected during DMA transfers."
+        ]
+      },
+      {
+        title: "Ephemeral Ring Buffers and Streaming Whisper Processing",
+        prose: [
+          "The 640-byte audio payloads are depacketized — RTP headers stripped to isolate the raw PCM — and written into volatile tmpfs ring buffers mounted in /dev/shm (shared memory).65 This forces the operating system to allocate the buffer strictly in RAM, preventing any block-level disk I/O or swap-file caching.70",
+          "These continuous payloads stream directly into an optimized whisper.cpp instance running locally in the GPU execution space.72 Whisper processes the ambient audio in real time, using server-side Voice Activity Detection (VAD) to trigger inference boundaries and executing speech-to-text (STT) and diarization to produce structured JSON (timestamp, speaker ID, text).65",
+          "The core of the stateless mandate is enforced here: the instant the STT model yields its structured string, the /dev/shm ring-buffer pointer is advanced, dropping the raw audio payload. The raw biometric voice data ceases to exist within milliseconds of its creation. The resulting structured JSON is handed off to the tenant's isolated data lake. In this way the orchestration layer extracts the semantic reality of a room while cryptographically guaranteeing the destruction of the underlying raw biometric telemetry."
+        ]
+      }
+    ]
+  },
+  {
+    id: "orchestration",
+    title: "Edge-Native Agentic Orchestration: The Orchestration Daemon",
+    prose: [
+      "Once ambient reality has been routed, transcribed, and structured into lightweight JSON by the ingestion pipeline, it requires a central logic unit to trigger autonomous action. This is the role of the orchestration daemon — a background process running continuously within the orchestration layer, acting as the deterministic bridge between spatial awareness and the tenant's Large Language Models (LLMs) and hybrid GraphRAG databases."
+    ],
+    subsections: [
+      {
+        title: "Radio-Frequency Telemetry: Bluetooth Angle-of-Arrival (AoA)",
+        prose: [
+          "True spatial intelligence requires absolute coordinate mapping of physical entities within the Sovereign Shell. Audio and video supply semantic context; radio frequency supplies mathematical coordinates. The orchestration layer uses Casambi Bluetooth Angle-of-Arrival (AoA) tracking, via exposed WebSocket APIs, to generate accurate real-time spatial positioning.74",
+          "In the AoA method the tracked entity — a physical asset, an employee badge, a medical terminal — transmits a direction-finding signal from a single antenna.75 The signal carries a Link Layer field known as the Constant Tone Extension (CTE).77 The Sovereign Shell's locator devices, equipped with rapidly switched antenna arrays, receive the signal and perform In-phase and Quadrature (IQ) sampling.77",
+          "By switching rapidly between receiver antennas while the CTE is transmitted, a locator measures the exact phase difference of the arriving radio waves.76 Because the antennas are fixed at known separations, that phase difference correlates directly with the physical angle from which the signal originated; the daemon applies the underlying physics of RF propagation to compute the incident angle.",
+          "Aggregating these angles across multiple locators within the Sovereign Shell, the daemon computes a precise 3D coordinate intersection. These coordinates stream into the daemon alongside the structured JSON transcriptions from the Whisper models, fusing semantic intent with physical location."
+        ]
+      },
+      {
+        title: "Hybrid GraphRAG: Contextual Execution",
+        prose: [
+          "The orchestration daemon continuously writes this fused data — text, timestamp, coordinate space — into the tenant's hybrid Graph Retrieval-Augmented Generation (GraphRAG) architecture.80 A pure vector database is insufficient for agentic execution because it lacks ontological awareness: it can find similar text but cannot model relationships or strict hierarchical permissions. The orchestration layer therefore mandates a dual-database approach at the edge:"
+        ],
+        list: [
+          "Qdrant (vector database): used for semantic similarity search and rapid contextual triage of transcribed text.80 To absorb high-velocity ingestion of live transcripts, Qdrant is deployed at the edge with a two-shard layout — a mutable shard for live writes and an immutable shard mapped to the HNSW (Hierarchical Navigable Small World) synced baseline.81",
+          "Neo4j (graph database): used to store complex relationships, historical state, and spatial topologies.80 Neo4j maps the enterprise ontology — which employees may access which systems, where specific terminals sit within the building geometry, and the hierarchical dependencies of corporate or clinical operations."
+        ],
+        postListProse: [
+          "When the orchestration daemon identifies a trigger condition, it executes a hybrid retrieval. If the Qdrant database matches a spoken command — for example, \"update patient file\" — the daemon extracts the associated user and entity IDs and queries the Neo4j graph for the contextual relationships linked to those IDs.80",
+          "Crucially, the Neo4j graph correlates the speaker's current Casambi AoA coordinate against the authorized physical zone for clinical data access. If the user is authorized, the daemon spawns a localized agent.82 That edge-native agent retrieves the relevant graph context, processes the localized decision through the tenant's air-gapped LLM, and executes the digital API call to update the clinical-trial file.80",
+          "The orchestration is entirely deterministic. Every agentic action is constrained by physical-proximity capability ceilings and hardware-evaluated identity rules.48 If the Bluetooth AoA data places the speaker in the hallway outside the authorized acoustic perimeter, the daemon nullifies the execution request — physically preventing the action regardless of any software-level permission or API token the user may hold. Governance lives in the kernel, tied directly to physical space.48"
+        ]
+      }
+    ]
+  },
+  {
+    id: "isolation",
+    title: "Cryptographic Isolation and the Zero-Trust Moat",
+    prose: [
+      "In highly regulated domains, data governance is not a matter of corporate preference; it is a matter of federal statute and civil liability. Deploying omnipresent sensory AI in these settings demands mathematical verifiability that data cannot be extracted, compromised, or retained outside defined regulatory bounds. The localized orchestration layer's stateless architecture is the verifiable mechanism by which HIPAA, FDA, and SEC mandates can be satisfied simultaneously without constraining the system's autonomous capability."
+    ],
+    subsections: [
+      {
+        title: "Bring Your Own Silicon (BYOS) Security Model",
+        prose: [
+          "The boundary between Software Integrator orchestration and tenant data custody is absolute. The Software Integrator enforces a strict \"Bring Your Own Silicon\" (BYOS) model: the localized orchestration layer provides the stateless routing, parsing, and execution logic, while the tenant retains physical ownership of the hardware, the cryptographic keys, and the resulting structured data lakes.",
+          "The computational engine of this architecture is the NVIDIA L40S GPU.51 Chosen for its independence from forced hyperscaler interconnects and its versatility in edge deployment, the L40S balances inference, graphics, and video processing.51 Built on the Ada Lovelace architecture, it provides 48 GB of GDDR6 memory, 18,176 CUDA cores, and 568 fourth-generation Tensor Cores.51",
+          "Security in this environment rests on silicon physics rather than operating-system policy. The L40S is Network Equipment-Building System (NEBS) Level 3 ready and features Secure Boot with a hardware Root of Trust.51"
+        ],
+        list: [
+          "Secure Boot: prevents unauthorized firmware modification, guaranteeing that the power-on execution environment matches the verified cryptographic hash.83",
+          "Confidential computing: the architecture leverages confidential-computing paradigms to protect data in use.83 Hardware-based isolation and encryption ensure that applications, LLMs, and Whisper models are processed within Trusted Execution Environments (TEEs), or enclaves.84 Even if the host OS is compromised by an advanced persistent threat, telemetry resident in GPU VRAM remains cryptographically sealed and inaccessible.83"
+        ],
+        postListProse: [
+          "Under the BYOS model the Software Integrator initiates the Trusted Execution Environment and routes the telemetry, but the enclave is sealed with keys managed entirely by the tenant. The Software Integrator operates the pipes; the tenant holds the cryptographic lock to the processing chamber."
+        ]
+      },
+      {
+        title: "Compliance Mapping: Healthcare, Defense, and Quantitative Funds",
+        prose: [
+          "The architectural constraints of this approach map directly onto the compliance requirements of the most heavily regulated industries."
+        ],
+        tableData: {
+          headers: ["Industry Domain", "Core Regulatory Mandate", "Architectural Solution"],
+          rows: [
+            ["Healthcare", "HIPAA (45 CFR Part 164) — transmission security, ePHI safeguards", "Stateless tmpfs audio destruction, E-Line fiber transit, L40S TEE enclaves"],
+            ["Pharma, Defense", "FDA (21 CFR Part 11) — non-repudiation, timestamped audit trails", "GraphRAG localized state logging, deterministic AoA tracking, isolated LLM execution"],
+            ["Finance, Trading", "SEC (Rule 17a-4) — immutable WORM storage, communication logs", "Hardware-enforced zero-cloud exfiltration, local immutable structured logs via the daemon"]
+          ]
+        },
+        postTableProse: [
+          "Healthcare — HIPAA and 45 CFR Part 164: under the HIPAA Security Rule (45 CFR Part 164), covered entities must implement rigid technical safeguards — access controls, integrity controls, and transmission security for all electronic Protected Health Information (ePHI).60 Cloud deployments introduce unacceptable multi-tenant risk: shared GPU memory across cloud instances is exposed to side-channel attack, and memory states are rarely wiped between hyperscaler jobs.60 The Software Integrator enforces compliance through hardware isolation of the L40S nodes.83 Strict E-Line segmentation, combined with /dev/shm tmpfs ring buffers that deterministically destroy raw voice telemetry milliseconds after ingestion, ensures biometric data never becomes ePHI at rest.60 The localized orchestration layer operates as a true air gap, satisfying the technical-safeguard mandates of 45 CFR § 164.312 without elaborate cloud Business Associate Agreement (BAA) webs.87",
+          "Defense and pharmaceutical manufacturing — FDA 21 CFR Part 11: for biotechnology and defense manufacturing, 21 CFR Part 11 requires secure, computer-generated, timestamped audit trails for all actions on electronic records and signatures.88 Any AI system executing quality control or predictive maintenance must keep its decisions traceable, auditable, and unalterable.47 Sending batch records or ITAR-restricted assembly telemetry to a hyperscaler violates those integrity constraints because the data crosses boundaries outside the manufacturer's control.47 The BYOS approach lets the tenant run validated, locked models directly on the factory floor.47 The orchestration daemon routes system logs and agentic execution graphs into the local Neo4j database.80 The result is a cryptographically signed graph of exactly who requested an action, where they stood (via RF AoA data), what the model parsed, and when it executed — fulfilling the audit-trail mandate of 21 CFR Part 11, subsection 10(e), natively within the edge infrastructure.88",
+          "Quantitative finance — SEC Rule 17a-4: for broker-dealers and quantitative trading firms, SEC Rule 17a-4 requires that all business communications be retained complete, accurate, and unalterable.91 The rule mandates either Write Once, Read Many (WORM) storage or an audit-trail system that logs every modification, preventing destruction of evidence related to market manipulation or insider trading.91 Extracting voice telemetry from a trading floor to a cloud transcription API risks severe non-compliance, particularly around \"off-channel\" communications.93 The Software Integrator ingests trading-floor audio locally through Asterisk, parses it with the isolated Whisper model, and writes the structured text directly to the firm's localized WORM array. The Software Integrator touches the packets for routing but holds no key to write, alter, or delete the destination database; the firm retains absolute custody and a provable, continuous audit trail of all floor intelligence without exposing a single proprietary algorithm or conversation to the open internet.47"
+        ]
+      }
+    ]
+  },
+  {
+    id: "deployment",
+    title: "System Mandate: Bare-Metal PCIe Node Deployment Protocol",
+    prose: [
+      "Deploying the Software Integrator is less an installation than a fusing of silicon and telemetry. The software executes directly above the bare-metal Linux kernel and requires uncompromising control over PCIe lanes, IOMMU groups, and CPU-core isolation to guarantee deterministic, sub-millisecond execution. To deploy the localized orchestration layer onto a tenant node equipped with NVIDIA L40S PCIe accelerators, the following sequence is executed precisely."
+    ],
+    subsections: [
+      {
+        title: "I. GRUB Kernel Parameter Configuration",
+        prose: [
+          "The host operating system is partitioned at the kernel boot level to reserve dedicated resources for the orchestration-layer components and to isolate the GPU hardware for Data Plane Development Kit (DPDK) and Virtual Function I/O (VFIO) mapping. The /etc/default/grub configuration appends the following parameters to the GRUB_CMDLINE_LINUX_DEFAULT string.95"
+        ],
+        code: {
+          caption: "/etc/default/grub — GRUB_CMDLINE_LINUX_DEFAULT",
+          code: `# GRUB configuration requirements
+intel_iommu=on iommu=pt
+pci=realloc
+noats
+vfio-pci.ids=10de:26f5,10de:22ba
+isolcpus=2-15`
+        },
+        list: [
+          "IOMMU activation (intel_iommu=on iommu=pt): hardware-assisted I/O memory management is enabled and set to passthrough (pt), letting PCIe devices bypass host-OS DMA translation and granting the orchestration layer the direct memory access required for zero-copy telemetry transfer from the ConnectX NIC to the L40S.",
+          "PCIe resource reallocation (pci=realloc): forces the kernel to reallocate PCI bridge resources, which is required to accommodate the 48 GB BAR memory window of the NVIDIA L40S and to ensure contiguous allocation for GPUDirect RDMA. If the BIOS allocation is too small for the child devices, the kernel resizes the BAR dynamically.96",
+          "Address Translation Services disablement (noats): disables PCIe ATS (Address Translation Services) and the IOMMU device IOTLB.97 ATS introduces variable latency in translation lookaside buffers; for deterministic edge processing of live audio and video, memory translation must be statically pinned.",
+          "Hardware binding to VFIO (vfio-pci.ids=10de:26f5,10de:22ba): example device IDs for the L40S GPU and its associated HD-audio endpoint.95 This unbinds the NVIDIA GPUs from the default nouveau or proprietary driver during boot, capturing the devices with the vfio-pci stub driver.95 The orchestration layer then asserts control over them from userspace via DPDK.",
+          "CPU-core isolation (isolcpus=2-15): removes the specified logical cores from the kernel's Symmetric Multiprocessing (SMP) balancing and scheduler.96 These cores are dedicated to the LiveKit SFU routing threads, the Asterisk ExternalMedia event loops, and the DPDK polling drivers, guaranteeing zero context-switching interruptions during telemetry ingestion."
+        ]
+      },
+      {
+        title: "II. Execution Environment Initialization",
+        prose: [
+          "After the kernel parameters are configured and grub-mkconfig regenerates the bootloader, the system reboots and initializes the localized orchestration-layer runtime.95"
+        ],
+        code: {
+          caption: "Stateless tmpfs mount",
+          code: `# tmpfs mount for stateless execution
+mount -t tmpfs -o size=1G,mode=1777 tmpfs /dev/shm`
+        },
+        list: [
+          "Memory provisioning: the volatile tmpfs file system is mounted strictly for audio-pipeline ingestion, satisfying the stateless-processing mandate. This provides the 1 GB ephemeral ring buffer required by the whisper.cpp inference engine and guarantees that no audio data is ever written to non-volatile block storage.70",
+          "DPDK binding: using the dpdk-devbind.py utility, the local ConnectX network interfaces are bound to the vfio-pci driver, detaching the NICs from the Linux kernel TCP/IP stack so the PMD can assume control.",
+          "Daemon invocation: the orchestration daemon is initialized within the Trusted Execution Environment. It establishes the local WebSocket listener for the Asterisk PBX, initializes the LiveKit SFU for WebRTC traffic, and mounts the Neo4j and Qdrant GraphRAG connections.64"
+        ],
+        closing: "Once the initialization sequence completes, the node transitions into a fully air-gapped, stateless orchestration state. The ambient reality of the physical room is mapped directly onto localized silicon, governed by cryptographic isolation and operating without dependency on external cloud architecture. The gain is structural rather than incremental: when inference sits adjacent to the sensor, latency, custody, and compliance resolve together rather than in tension."
+      }
+    ]
   }
 ];

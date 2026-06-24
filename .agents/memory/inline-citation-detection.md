@@ -45,6 +45,21 @@ out-of-range marker (`43.79 tokens per second`) is just a decimal → the guard 
 renderer already treats out-of-range digit markers as plain text, so the guard stays
 consistent with what actually renders.
 
+**The 2-digit ceiling is now a hard product constraint (worksCited.length === 99).**
+Markers can only encode a 1–2 digit number, so source #100 is unrepresentable — you cannot
+add a 100th cited source without redesigning the tokenizer. More urgently, the range check
+that *disambiguates* digit-before-period decimals stops protecting you near the ceiling: a
+decimal like `43.79 tokens` was safe only because 79 used to be out of range. At 99 sources
+every 2-digit value is in-range, so any `X.47..X.99` decimal not followed by a listed unit
+will render as a FALSE citation. **Why:** the range was doing double duty as a decimal filter,
+and that filter collapses when the list fills up.
+**How to apply:** when adding sources, grep live content for `[0-9]\.[0-9]{2}` and confirm
+each is either an intended digit-before cite, a 3+digit number (safe — trailing digit
+aborts the match), or followed by a `UNIT` token. The `UNIT` allowlist in `citations.ts`
+(now includes `tokens`) is the ONLY remaining guard for digit-before-period decimals; the
+`findBrokenCitations` build guard does NOT catch these (it ignores `kind:"digit"`). Add new
+metric words to `UNIT` rather than rewording verbatim copy.
+
 **No vitest in this repo** — the npm registry is frequently unreachable here, so a vitest
 install times out. Use Node's `node:test` + `node:assert` run through the already-vendored
 `tsx` (resolves the `@/*` tsconfig path alias); no network install needed.

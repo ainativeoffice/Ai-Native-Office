@@ -34,11 +34,11 @@ The threshold for qualification is not a revenue band. It is a maturity conditio
 
 The governance architecture of the AI-Native Office rests on a clear separation of ownership and responsibility across three parties, each with a distinct role and none with access to what belongs to the other two.
 
-The Landlord — AI Commons — provisions the physical environment. The hardened shell, the acoustic and physical isolation engineering, the dedicated network infrastructure, the power envelopes designed for continuous high-density compute. The Landlord builds and maintains the room. The Landlord does not touch the tenant's compute or data.
+The Landlord provisions the physical environment. The hardened shell, the acoustic and physical isolation engineering, the dedicated network infrastructure, the power envelopes designed for continuous high-density compute. The Landlord builds and maintains the room. The Landlord does not touch the tenant's compute or data.
 
 The Tenant owns the compute hardware outright. Physical custody. Legal title. The silicon that runs the tenant's inference workloads is property of the tenant, installed in the tenant's dedicated space, accessible only to the tenant. There is no shared compute pool. There are no other tenants on the same hardware. There is no mechanism — contractual or technical — by which a third party accesses the tenant's inference runs. No subprocessor agreements govern what happens inside the tenant's hardware envelope, because no subprocessor is present.
 
-Native Agentic deploys and operates the intelligence stack — the software layer that binds the tenant's compute to the physical environment, maintains the ambient intelligence systems, and keeps the full stack current as models and capabilities evolve. Native Agentic operates at the software layer only. It does not hold, transmit, or have access to the tenant's inference data or outputs.
+The Software Integrator deploys and operates the intelligence stack — the software layer that binds the tenant's compute to the physical environment, maintains the ambient intelligence systems, and keeps the full stack current as models and capabilities evolve. The Software Integrator operates at the software layer only. It does not hold, transmit, or have access to the tenant's inference data or outputs.
 
 The result of this structure: no shared infrastructure anywhere in the stack. No vendor lock-in on the data layer, because the data layer is owned by the tenant. No third-party access to sensitive inference. The data sovereignty is not a policy position — it is the logical consequence of who owns what.
 
@@ -72,7 +72,7 @@ Cloud providers charge for data moving out of their infrastructure. For most ent
 
 Sovereign compute replaces that perpetual operating expense with a depreciating capital asset. The hardware is owned, not rented. Depreciation schedules apply. The inference runs at zero marginal cost per query — the hardware is already provisioned, already powered, already present. Once the capital investment is made, the cost per unit of intelligence approaches zero as utilization increases. The cloud model inverts this: cost per unit of intelligence is fixed or rising, with no depreciation benefit and no path to marginal-cost inference. For organizations running high-volume, continuous AI workloads, the arithmetic favors the on-premises model decisively and permanently.
 
-For any workload that does route externally — non-sensitive data, public-source research, external API calls — dedicated private fiber connectivity provides bandwidth at roughly one-tenth the per-gigabyte cost of standard cloud egress. This is not a negotiated discount. It is a different pricing class, structurally available only to organizations with dedicated physical infrastructure. The Lightpath private fiber backbone that serves the AI Commons campus places external connectivity in a cost category that standard cloud-hosted organizations cannot access, regardless of contract size or negotiating leverage.
+For any workload that does route externally — non-sensitive data, public-source research, external API calls — dedicated private fiber connectivity provides bandwidth at a fraction of the per-gigabyte cost of standard cloud egress. Ethernet Private Line architecture connects the physical facility directly to upstream infrastructure without traversing public routing tables, placing external connectivity in a cost class that shared cloud infrastructure cannot match regardless of contract volume. This is not a discount available through negotiation — it is a structural advantage of owning dedicated physical infrastructure.
 
 The cost of inaction has a component that does not appear on any invoice. Organizations that choose to operate AI workloads through public cloud infrastructure on sensitive data must pre-process that data — redacting, tokenizing, anonymizing — before it can be safely submitted for inference. This compliance preprocessing degrades the input quality the model actually receives. The AI operates on a sanitized version of reality, and the output reflects that limitation. Organizations spending significant operational effort on compliance preprocessing are paying twice: once in the direct cost of the redaction workflow, and once in the inference quality penalty. The AI-Native Office eliminates both costs simultaneously. The data enters inference at full fidelity because it never leaves the sovereign environment. The compliance preprocessing step does not exist.
 
@@ -108,13 +108,13 @@ The organizations engaging with this standard now are setting the terms for how 
 
 For technology officers, real estate principals, and infrastructure architects evaluating the AI-Native Office standard for their own environment.
 
-Tour the AI Commons Node One campus in Armonk, NY. The full stack — acoustic isolation, sovereign compute, ambient sensor infrastructure, and the intelligence layer — is deployed and operational. A reference implementation visit is the appropriate first step for organizations evaluating the standard for their own environment: a working system that can be observed, interrogated, and stress-tested against real organizational requirements. This is not a demonstration environment. It is the production standard.
+Tour a reference implementation of the AI-Native Office standard. The full stack — acoustic isolation, sovereign compute, ambient sensor infrastructure, and the intelligence layer — is deployed and operational. A reference implementation visit is the appropriate first step for organizations evaluating the standard for their own environment: a working system that can be observed, interrogated, and stress-tested against real organizational requirements. This is not a demonstration environment. It is the production standard.
 
 ### Tenant Inquiry
 
 For organizations requiring dedicated sovereign AI infrastructure under the tripartite model.
 
-Inquire about tenancy within an AI Commons node. Tenant deployments provide physically isolated, purpose-built sovereign compute environments within the AI Commons campus, operated under the tripartite ownership model described in this specification. The Node provides the hardened shell, base building systems, and Native Agentic integration. The tenant owns and operates the silicon. Tenancy is appropriate for organizations that require dedicated, auditable, physically sovereign inference infrastructure without the capital and operational commitment of building and staffing an independent facility.
+Inquire about tenancy within a qualified AI-Native Office node. Tenant deployments provide physically isolated, purpose-built sovereign compute environments operated under the tripartite ownership model described in this specification. The Node provides the hardened shell, base building systems, and software integration. The tenant owns and operates the silicon. Tenancy is appropriate for organizations that require dedicated, auditable, physically sovereign inference infrastructure without the capital and operational commitment of building and staffing an independent facility.
 
 ### Developer / RFC Contributor
 
@@ -128,7 +128,7 @@ To request a technical briefing or begin a tenant inquiry, contact:
 
 #### Tim Walsh
 
-AI Commons | Armonk, NY
+Armonk, NY
 [contact — Tim to supply]
 
 *The AI-Native Office is a category being built. The organizations that engage now help define what it becomes.*
@@ -181,6 +181,59 @@ AI Commons | Armonk, NY
 44. GraphRAG on Consumer Hardware: Benchmarking Local LLMs for Healthcare EHR Schema Retrieval - arXiv, accessed June 16, 2026, https://arxiv.org/html/2605.20815v1
 45. Methods - GraphRAG - Microsoft Open Source, accessed June 16, 2026, https://microsoft.github.io/graphrag/index/methods/
 46. How Would Microsoft GraphRAG Work Alongside a Graph Database? - Memgraph, accessed June 16, 2026, https://memgraph.com/blog/how-microsoft-graphrag-works-with-graph-databases
+47. Why Regulated Industries (Pharma, Aerospace) Are Mandating Sovereign AI Stacks, accessed June 24, 2026, https://oxmaint.com/sap-integration/sovereign-ai-regulated-industries
+48. ArcAI Systems — Sovereign AI Operating System for Human-Machine Continuity, accessed June 24, 2026, https://arcai.systems/
+49. Ethernet: E-Line, E-LAN - Fusion Networks, accessed June 24, 2026, https://www.fusionnetworks.net/e-line/
+50. Metro Ethernet - DQE Communications, accessed June 24, 2026, https://dqe.com/metro-ethernet/
+51. NVIDIA L40S: Pricing, Specs, Best Uses & Where to Run (2026) - Fluence network, accessed June 24, 2026, https://www.fluence.network/blog/nvidia-l40s/
+52. Underground-Ops/underground-nexus - GitHub, accessed June 24, 2026, https://github.com/Underground-Ops/underground-nexus
+53. Metro Ethernet - Segra, accessed June 24, 2026, https://www.segra.com/wp-content/uploads/2024/11/SalesSheet_MetroEthernet_E-Line_2024.pdf
+54. Ethernet Services - Lumen Technologies, accessed June 24, 2026, https://www.lumen.com/en-us/services/ethernet.html
+55. 13. General-Purpose Graphics Processing Unit (GPU) Library - Documentation, accessed June 24, 2026, https://doc.dpdk.org/guides/prog_guide/gpudev.html
+56. GPUNetIO Programming Guide - NVIDIA Docs, accessed June 24, 2026, https://docs.nvidia.com/doca/archive/doca-v2.2.0/gpunetio-programming-guide/index.html
+57. PCIe Traffic in DPDK Apps - Intel, accessed June 24, 2026, https://www.intel.com/content/www/us/en/docs/vtune-profiler/cookbook/2024-1/pcie-traffic-in-dpdk-apps.html
+58. L40S GPU for AI and Graphics Performance - NVIDIA, accessed June 24, 2026, https://www.nvidia.com/en-us/data-center/l40s/
+59. Boosting Inline Packet Processing Using DPDK and GPUdev with GPUs - NVIDIA Developer, accessed June 24, 2026, https://developer.nvidia.com/blog/optimizing-inline-packet-processing-using-dpdk-and-gpudev-with-gpus/
+60. How to Build Private AI Infrastructure for Healthcare (2026 Guide) - OneSource Cloud, accessed June 24, 2026, https://www.onesourcecloud.net/blog/private-ai-infrastructure-healthcare
+61. LiveKit for AI Agents — Real-Time Voice & Video AI Infrastructure | by Fora Soft - Medium, accessed June 24, 2026, https://forasoft.medium.com/livekit-for-ai-agents-real-time-voice-video-ai-infrastructure-17b83418f719
+62. Why WebRTC beats WebSockets for realtime voice AI - LiveKit, accessed June 24, 2026, https://livekit.com/blog/why-webrtc-beats-websockets-for-voice-ai-agents
+63. GitHub - livekit/portal: A Simple Transport Layer For Teleoperation And Inference, accessed June 24, 2026, https://github.com/livekit/portal
+64. Real-Time AI Voice Agents with Asterisk AudioSocket, accessed June 24, 2026, https://medium.com/@shubhanshutiwari74156/real-time-ai-voice-agents-with-asterisk-audiosocket-build-conversational-telephony-systems-in-4768a7a80a76
+65. How to build an AI voice agent with OpenAI Realtime API + Asterisk, accessed June 24, 2026, https://towardsai.net/p/machine-learning/how-to-build-an-ai-voice-agent-with-openai-realtime-api-asterisk-sip-2025-using-python-with-github-repo
+66. Channels - Asterisk Documentation, accessed June 24, 2026, https://docs.asterisk.org/Latest_API/API_Documentation/Asterisk_REST_Interface/Channels_REST_API/
+67. How Can Asterisk Play the Real-Time Audio Stream?, accessed June 24, 2026, https://community.asterisk.org/t/how-can-asterisk-play-the-real-time-audio-stream/105166
+68. Asterisk Community: stream both parties audio, accessed June 24, 2026, https://community.asterisk.org/t/hello-i-want-to-stream-both-the-parties-audio-separately-to-a-web-socket-for-real-time-transcription-and-diarization-speaker-labelling-i-am-able-to-record-the-audio-separately-using-monitor-for-both-agent-and-costumer-but-i-want-to-steam-the-audio/103197
+69. ARI ExternalMedia and slin format with 8 kHz 16 bit, accessed June 24, 2026, https://community.asterisk.org/t/ari-externalmedia-and-slin-format-with-8-khz-16-bit/97605
+70. Search Results: "rmh" - Planet Debian, accessed June 24, 2026, https://planet-search.debian.org/cgi-bin/search.cgi?terms=%22rmh%22
+71. Search Results: "noodles" - Planet Debian, accessed June 24, 2026, https://planet-search.debian.org/cgi-bin/search.cgi?terms=%22noodles%22
+72. sniffer/config/voipmonitor.conf at master - GitHub, accessed June 24, 2026, https://github.com/voipmonitor/sniffer/blob/master/config/voipmonitor.conf
+73. Guillaume MULLER's tips and tricks, accessed June 24, 2026, http://guillaumemuller1.free.fr/
+74. Casambi | Developer Site, accessed June 24, 2026, https://developer.casambi.com/
+75. How AoA & AoD changed the direction of Bluetooth® Location Services, accessed June 24, 2026, https://www.bluetooth.com/blog/new-aoa-aod-bluetooth-capabilities/
+76. UG103.18: Bluetooth Direction Finding Fundamentals - Silicon Labs, accessed June 24, 2026, https://www.silabs.com/documents/public/user-guides/ug103-18-bluetooth-direction-finding-fundamentals.pdf
+77. STM32WB0 Bluetooth® LE Direction Finding - stm32mcu - ST wiki, accessed June 24, 2026, https://wiki.st.com/stm32mcu/wiki/Connectivity:STM32WB0_Bluetooth_LE_Direction_Finding
+78. Bluetooth Direction Finding, accessed June 24, 2026, https://www.bluetooth.com/wp-content/uploads/Files/developer/RDF_Technical_Overview.pdf
+79. Bluetooth Location and Direction Finding - MATLAB & Simulink, accessed June 24, 2026, https://www.mathworks.com/help/bluetooth/ug/bluetooth-direction-finding.html
+80. GraphRAG with Qdrant and Neo4j, accessed June 24, 2026, https://qdrant.tech/documentation/examples/graphrag-qdrant-neo4j/
+81. Video Anomaly Detection Part 1: Architecture, Twelve Labs, and NVIDIA VSS - Qdrant, accessed June 24, 2026, https://qdrant.tech/documentation/tutorials-build-essentials/video-anomaly-edge-part-1/
+82. The GraphRAG Implementation Guide: From Zero to Production | by Aftab - Medium, accessed June 24, 2026, https://medium.com/@aftab001x/the-graphrag-implementation-guide-from-zero-to-production-c1f007590dc9
+83. How do NVIDIA's L40 and L40S GPUs compare to other NVIDIA GPUs in terms of security features?, accessed June 24, 2026, https://massedcompute.com/faq-answers/?question=How%20do%20NVIDIA%27s%20L40%20and%20L40S%20GPUs%20compare%20to%20other%20NVIDIA%20GPUs%20in%20terms%20of%20security%20features?
+84. What is Confidential Computing? | Secure Data Processing | OVHcloud, accessed June 24, 2026, https://www.ovhcloud.com/en/learn/what-is-confidential-computing/
+85. Compliance Training AI Agent for Healthcare | ibl.ai, accessed June 24, 2026, https://ibl.ai/solutions/medical-healthcare/agent/compliance-training-agent
+86. HIPAA Security Rule To Strengthen the Cybersecurity of Electronic Protected Health Information, accessed June 24, 2026, https://www.federalregister.gov/documents/2025/01/06/2024-30983/hipaa-security-rule-to-strengthen-the-cybersecurity-of-electronic-protected-health-information
+87. Protecting Radiology Data and Devices Against Cybersecurity Threats, accessed June 24, 2026, https://pmc.ncbi.nlm.nih.gov/articles/PMC13103043/
+88. Audit Trail Requirements: 21 CFR Part 11 Guide | Assyro AI, accessed June 24, 2026, https://www.assyro.com/blog/audit-trail-requirements-guide
+89. A Complete Checklist for 21 CFR Part 11 Compliance - eMaint, accessed June 24, 2026, https://www.emaint.com/blog/21-cfr-part-11-compliance-checklist/
+90. Guidance for Industry - Part 11, Electronic Records; Electronic Signatures — Scope and Application, accessed June 24, 2026, https://www.fda.gov/media/75414/download
+91. SEC Rule 17a-4: Electronic Recordkeeping Requirements Explained - Smarsh, accessed June 24, 2026, https://www.smarsh.com/regulations/sec-rule-17a-4-records-preservation/
+92. Books and Records | FINRA.org, accessed June 24, 2026, https://www.finra.org/rules-guidance/key-topics/books-records
+93. Communications Compliance | Call Monitoring & Analytics - Regulativ AI, accessed June 24, 2026, https://www.regulativ.ai/communications-compliance
+94. SEC 17a-4 Media Storage Requirements - Theta Lake, accessed June 24, 2026, https://thetalake.com/resources/regulations/sec-17a4/
+95. Can I load the vfio-pci module using a kernel parameter? : r/archlinux - Reddit, accessed June 24, 2026, https://www.reddit.com/r/archlinux/comments/acwv4n/can_i_load_the_vfiopci_module_using_a_kernel/
+96. The kernel's command-line parameters — The Linux Kernel documentation, accessed June 24, 2026, https://www.kernel.org/doc/html/v4.17/admin-guide/kernel-parameters.html
+97. Chapter 5. Important changes to external kernel parameters | 9.2 Release Notes | Red Hat Enterprise Linux, accessed June 24, 2026, https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/9.2_release_notes/kernel_parameters_changes
+98. PCI passthrough via OVMF - ArchWiki, accessed June 24, 2026, https://wiki.archlinux.org/title/PCI_passthrough_via_OVMF
+99. Kernel 6.0 and VFIO - Heiko's Blog, accessed June 24, 2026, https://www.heiko-sieger.info/vfio-grub-vfio-pci-ids-doesnt-work-with-kernel-6-try-driver-verride-feature/
 
 ---
 
@@ -263,9 +316,9 @@ The sovereign compute architecture relies on a strict tripartite separation of r
 
 - The Landlord provisions the hardened architectural shell and base building infrastructure.
 - The Tenant owns the local PCIe inference silicon, maintaining absolute legal and physical custody of the hardware.
-- The Software Integrator (Native Agentic) weaves the physical sensors and digital infrastructure together, deploying the localized orchestration layer.
+- The Software Integrator weaves the physical sensors and digital infrastructure together, deploying the localized orchestration layer.
 
-Native Agentic is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. Native Agentic operates as the Software Integrator in the tripartite model, translating the physical sovereign enclave into a fully operational intelligence environment.
+The Software Integrator is the cross-functional implementation partnership responsible for deploying and integrating the AI-Native Office stack — spanning physical infrastructure design, acoustic engineering, AI orchestration, and ongoing model operations. The team is assembled per deployment, drawing from specialists across infrastructure, software, real estate, and AI systems disciplines. It translates the physical sovereign enclave into a fully operational intelligence environment.
 
 ### Acoustic Sovereignty and the STC 55 Mandate
 
@@ -314,7 +367,7 @@ Both compute classes fully support the AI-Native Office sensor stack: Dante audi
 
 This specification is a living document. Hardware capabilities in sovereign edge compute are advancing at pace. The authors will update silicon references and compute class definitions as the standard matures and deployment experience accumulates.
 
-Native Agentic provides the software orchestration layer that binds the selected inference platform to the physical sensor array, executing the full intelligence stack independent of public cloud routing.
+The Software Integrator provides the software orchestration layer that binds the selected inference platform to the physical sensor array, executing the full intelligence stack independent of public cloud routing.
 
 ## Appendix D: The Intelligence Flywheel & Absolute Sovereignty: Enterprise GraphRAG
 
@@ -344,3 +397,194 @@ When a user or agent submits a query within the sovereign enclave, the system do
 This architecture creates a self-reinforcing Intelligence Flywheel. Every conversation, spatial movement, and strategic meeting occurring within the hardened shell becomes structured, queryable intelligence. The temporal and medical entities are mapped perfectly without a single piece of data ever touching a public network.
 
 By maintaining the data within an air-gapped local environment, the enterprise ensures HIPAA, FDA, and SEC compliance natively at the hardware level. The intellectual property is perfectly contained. The enterprise retains absolute ownership over not just the data, but the relationships and insights generated from that data. There is no risk of model collapse, no risk of data leakage via public cloud vulnerabilities, and no reliance on third-party security protocols.
+
+## Appendix E: The Demise of Cloud Proxies: The Imperative for Physical Sovereignty
+
+The prevailing architecture of enterprise artificial intelligence rests on a fundamentally compromised topography. The standard paradigm extracts local physical telemetry, transmits it across public routing infrastructure, and processes it within multi-tenant hyperscaler environments. This cloud-proxy model is in tension with the baseline physics of network latency, cryptographic custody, and deterministic execution. For highly regulated environments — from healthcare diagnostic facilities and defense manufacturing floors to quantitative trading desks — reliance on external API gateways introduces attack vectors and regulatory exposure that cannot be reconciled with the governing statutes.47 Application-layer governance, as currently deployed by the major cloud providers, is inherently probabilistic, bypassable, and impossible to verify at the hardware level.48 Real-time, agentic intelligence therefore requires a shift away from centralized cloud computing toward localized, bare-metal infrastructure governed by strict cryptographic boundaries.
+
+The Software Integrator operates as the foundational software-integration and operating company (OpCo) that deploys this digital nervous system within an AI-Native Office. In this arrangement the physical and digital domains are strictly bifurcated yet deterministically integrated. The facility landlord provisions the physical Sovereign Shell — acoustically hardened environments and dedicated E-Line fiber-optic infrastructure.49 The enterprise tenant provisions the raw compute substrate, specifically localized NVIDIA L40S PCIe nodes.51 The Software Integrator provides the proprietary, bare-metal operating system: a stateless orchestration layer that fuses the physical sensors to the isolated GPU cluster.52
+
+By operating entirely on the local area network (LAN) and using direct optical links to the localized compute vault, the localized orchestration layer bypasses public cloud routing entirely. Every action — digital or physical — is bound to verifiable identity, constrained by physical capability ceilings, and evaluated against deterministic rules at the kernel level before execution.48 This enforces an air gap between the ambient reality of the enterprise space and the external internet: telemetry is processed, structured, and actioned without ever traversing an external network boundary. The relevant regulation does not prohibit the use of AI in enterprise environments; it requires that such systems be validated, auditable, traceable, and sovereign.47 The Software Integrator is the architectural response to that mandate.
+
+## Appendix F: The Hypervisor for Physical Space: Architectural Topography
+
+The localized orchestration layer functions as a hypervisor for physical space. Where a traditional Type-1 hypervisor abstracts hardware resources — CPU cycles, volatile memory, block storage — for the execution of virtual machines, the orchestration layer abstracts multimodal physical telemetry — spatial audio, uncompressed stereoscopic video, and radio-frequency positioning — for autonomous agentic consumption. It is the intermediary execution layer that sits directly between the raw environmental sensors and the tenant's cryptographically isolated GPU cluster.
+
+### E-Line Optical Topography and Network Physics
+
+To minimize latency and guarantee physical security, the telemetry transport layer rejects standard internet-facing topologies. Routing raw telemetry over ordinary IP transit introduces jitter, variable latency, and exposure to Border Gateway Protocol (BGP) hijacking. Instead, sensory data is carried over a Metro Ethernet Private Line (E-Line).49 This is a point-to-point Ethernet virtual circuit running over dedicated, physically distinct fiber-optic cable, establishing a Layer 2 architecture in which data never touches the public internet.50
+
+The optical transport provides sub-millisecond failover and substantial bandwidth headroom, supporting port capacities from 10 Gbps up to 400 Gbps.50 Through physical network segmentation and Virtual Local Area Network (VLAN) isolation, the orchestration layer keeps the ingestion pipeline immune to external packet injection, man-in-the-middle interception, and distributed denial-of-service (DDoS) vectors. The data path runs strictly from the localized multi-sensor arrays, through the dedicated E-Line fiber, and into the isolated server vault on the premises. Compromising the data stream would require physically cutting the fiber or breaching the acoustically hardened Sovereign Shell.
+
+### DPDK and GPUDirect RDMA: Bypassing the Kernel Network Stack
+
+At the ingestion point of the compute vault, processing raw multimodal telemetry through the standard Linux kernel network stack introduces unacceptable bottlenecks. The conventional Linux stack is interrupt-driven: when a packet arrives at the Network Interface Card (NIC), it raises a hardware interrupt, forcing the CPU to halt execution, context-switch into kernel mode, allocate an sk_buff structure, and copy the packet from kernel space to user space. At the scale of uncompressed multi-camera video and synchronous audio, this interrupt storm starves the CPU and destroys deterministic latency.
+
+To remove these bottlenecks, the orchestration layer uses the Data Plane Development Kit (DPDK) paired tightly with the gpudev library.55 DPDK Poll Mode Drivers (PMD) disable interrupt-driven networking entirely; dedicated CPU cores instead poll the ConnectX NICs for incoming packets in a continuous loop.57 The telemetry thereby bypasses the host CPU's networking stack altogether.
+
+Through GPUDirect Remote Direct Memory Access (RDMA), incoming uncompressed video frames and audio payloads are transferred directly from the NIC, over PCIe Gen4 lanes, into the contiguous GDDR6 VRAM of the NVIDIA L40S GPUs.56 GPUDirect RDMA relies on the GPU's ability to expose regions of device memory through a PCI Express Base Address Register (BAR).59 The DPDK gpudev library allocates memory pools whose payload resides strictly in GPU memory, letting the NIC transmit and receive packets using the GPU as the primary memory target.55
+
+| Architectural Component | Traditional OS Network Stack | Localized Orchestration Layer (DPDK / GPUDirect RDMA) |
+| --- | --- | --- |
+| Packet Reception | Hardware interrupt-driven (IRQ) | Dedicated Poll Mode Driver (PMD) |
+| CPU Involvement | High context switching, sk_buff allocation | Zero CPU intervention in the critical data path |
+| Memory Destination | Host RAM → kernel space → user space → GPU | Direct to GPU VRAM via PCIe Gen4 BAR |
+| Latency Profile | Variable milliseconds, high jitter | Microseconds, deterministic |
+| Security Posture | Vulnerable to host CPU memory scraping | Cryptographically isolated within the GPU memory boundary |
+
+This GPU-centric network I/O model is an architectural necessity: it maximizes zero-packet-loss throughput at the lowest achievable latency while enforcing a hardware-based security boundary.56 Because the raw telemetry is never resident in the host CPU's memory, an entire class of side-channel memory-scraping attacks is foreclosed.60
+
+## Appendix G: Stateless Multimodal Routing: The Ingestion Pipeline
+
+Processing ambient reality requires an ingestion architecture that is exceptionally performant yet fundamentally stateless. The overarching mandate of the localized orchestration layer is to perceive everything and retain nothing. The system ingests raw reality, transcodes it into structured data, and then releases the source telemetry at the memory-pointer level. The orchestration layer retains zero packets.
+
+### WebRTC Video Routing via the LiveKit SFU
+
+For visual telemetry, the orchestration layer deploys an embedded, local LiveKit Selective Forwarding Unit (SFU) directly on the bare-metal edge nodes.61 Unlike centralized cloud video APIs — which compress video to H.264, ship it over the internet, and await server-side inference — the local SFU operates on raw, low-latency feeds.61
+
+LiveKit serves as the real-time media backbone, transporting voice and video over WebRTC.61 The SFU does not interpret, reason about, or analyze the video; its sole function is deterministic, latency-optimized routing.61 It manages session parameters over WebSockets, transports the media securely via Datagram Transport Layer Security (DTLS) and the Secure Real-time Transport Protocol (SRTP), and forwards spatial video frames to the appropriate tenant vision models.61
+
+- Synchronous observation bundling: to satisfy the requirements of robotics and spatial-awareness policy, outgoing video frames and state packets must arrive bundled. The livekit/portal implementation appends the sender's monotonic clock timestamp (for example, timestamp_us) as packet-trailer metadata on every outgoing frame.63 This guarantees that multi-camera arrays produce perfectly synchronized observations per system tick, letting the backend vision models process aligned stereoscopic frames without jitter-induced hallucination.
+- Frame decoding: video streams are decoded the moment they reach the NVIDIA L40S, using the GPU's three onboard NVDEC engines.51 This bypasses CPU decoding overhead entirely.
+- Zero-retention mechanism: once a spatial frame has been parsed into structured contextual data — entity bounding boxes, identification hashes, coordinate mapping — by the tenant's vision model, the raw frame buffer in GPU VRAM is overwritten. No uncompressed video frame persists longer than the inference duration.
+
+### Telephonic and Spatial Audio Forking via Asterisk PBX
+
+Acoustic telemetry — spatial microphones and telephonic inputs — is ingested through a localized Asterisk Private Branch Exchange (PBX). Traditional audio integration relies on application-layer polling such as AGI or EAGI, which operate in blocking modes with limited audio access.64 The orchestration layer replaces this with Asterisk's AudioSocket protocol and the Asterisk REST Interface (ARI) ExternalMedia channels.64
+
+Dialplan and Stasis initiation: when an inbound audio event reaches the PBX, Asterisk answers it and routes it to a Stasis application via the dialplan (extensions.conf), handing control of the channel to the orchestration layer's ARI client.65
+
+Snoop channel instantiation: the ARI client creates a mixing bridge and attaches a Snoop channel to passively fork the raw audio, letting the agent monitor the session bidirectionally without disrupting it.67
+
+ExternalMedia routing: an ExternalMedia channel is instantiated; the client queries the UNICASTRTP_LOCAL_ADDRESS and UNICASTRTP_LOCAL_PORT variables to point the stream at a localized UDP port on the loopback interface (127.0.0.1).65
+
+The channel is configured through a strict JSON payload injected via the ARI REST endpoint.69
+
+*ARI ExternalMedia channel configuration*
+
+```
+{
+  "channelId": "SI_EM_AUDIO_01",
+  "app": "software_integrator",
+  "external_host": "127.0.0.1:10000",
+  "encapsulation": "rtp",
+  "transport": "udp",
+  "connection_type": "client",
+  "format": "slin16",
+  "direction": "both"
+}
+```
+
+Payload determinism: the audio format is bound to slin16 (16 kHz, 16-bit signed linear PCM).65 Converting to slin16 avoids the degradation introduced by telephony codecs such as μ-law or A-law and matches the native sample rate expected by modern speech-to-text models.69
+
+RTP framing mechanics: the slin16 audio is framed at precise 20-millisecond intervals to prevent buffer bloat.65 At a 16,000 Hz sample rate a 20 ms frame yields exactly 320 samples; at 16-bit depth (2 bytes per sample) every RTP payload is exactly 640 bytes.65 This deterministic packet size aligns with memory-allocation limits, eliminating fragmentation and ensuring that memory boundaries are respected during DMA transfers.
+
+### Ephemeral Ring Buffers and Streaming Whisper Processing
+
+The 640-byte audio payloads are depacketized — RTP headers stripped to isolate the raw PCM — and written into volatile tmpfs ring buffers mounted in /dev/shm (shared memory).65 This forces the operating system to allocate the buffer strictly in RAM, preventing any block-level disk I/O or swap-file caching.70
+
+These continuous payloads stream directly into an optimized whisper.cpp instance running locally in the GPU execution space.72 Whisper processes the ambient audio in real time, using server-side Voice Activity Detection (VAD) to trigger inference boundaries and executing speech-to-text (STT) and diarization to produce structured JSON (timestamp, speaker ID, text).65
+
+The core of the stateless mandate is enforced here: the instant the STT model yields its structured string, the /dev/shm ring-buffer pointer is advanced, dropping the raw audio payload. The raw biometric voice data ceases to exist within milliseconds of its creation. The resulting structured JSON is handed off to the tenant's isolated data lake. In this way the orchestration layer extracts the semantic reality of a room while cryptographically guaranteeing the destruction of the underlying raw biometric telemetry.
+
+## Appendix H: Edge-Native Agentic Orchestration: The Orchestration Daemon
+
+Once ambient reality has been routed, transcribed, and structured into lightweight JSON by the ingestion pipeline, it requires a central logic unit to trigger autonomous action. This is the role of the orchestration daemon — a background process running continuously within the orchestration layer, acting as the deterministic bridge between spatial awareness and the tenant's Large Language Models (LLMs) and hybrid GraphRAG databases.
+
+### Radio-Frequency Telemetry: Bluetooth Angle-of-Arrival (AoA)
+
+True spatial intelligence requires absolute coordinate mapping of physical entities within the Sovereign Shell. Audio and video supply semantic context; radio frequency supplies mathematical coordinates. The orchestration layer uses Casambi Bluetooth Angle-of-Arrival (AoA) tracking, via exposed WebSocket APIs, to generate accurate real-time spatial positioning.74
+
+In the AoA method the tracked entity — a physical asset, an employee badge, a medical terminal — transmits a direction-finding signal from a single antenna.75 The signal carries a Link Layer field known as the Constant Tone Extension (CTE).77 The Sovereign Shell's locator devices, equipped with rapidly switched antenna arrays, receive the signal and perform In-phase and Quadrature (IQ) sampling.77
+
+By switching rapidly between receiver antennas while the CTE is transmitted, a locator measures the exact phase difference of the arriving radio waves.76 Because the antennas are fixed at known separations, that phase difference correlates directly with the physical angle from which the signal originated; the daemon applies the underlying physics of RF propagation to compute the incident angle.
+
+Aggregating these angles across multiple locators within the Sovereign Shell, the daemon computes a precise 3D coordinate intersection. These coordinates stream into the daemon alongside the structured JSON transcriptions from the Whisper models, fusing semantic intent with physical location.
+
+### Hybrid GraphRAG: Contextual Execution
+
+The orchestration daemon continuously writes this fused data — text, timestamp, coordinate space — into the tenant's hybrid Graph Retrieval-Augmented Generation (GraphRAG) architecture.80 A pure vector database is insufficient for agentic execution because it lacks ontological awareness: it can find similar text but cannot model relationships or strict hierarchical permissions. The orchestration layer therefore mandates a dual-database approach at the edge:
+
+- Qdrant (vector database): used for semantic similarity search and rapid contextual triage of transcribed text.80 To absorb high-velocity ingestion of live transcripts, Qdrant is deployed at the edge with a two-shard layout — a mutable shard for live writes and an immutable shard mapped to the HNSW (Hierarchical Navigable Small World) synced baseline.81
+- Neo4j (graph database): used to store complex relationships, historical state, and spatial topologies.80 Neo4j maps the enterprise ontology — which employees may access which systems, where specific terminals sit within the building geometry, and the hierarchical dependencies of corporate or clinical operations.
+
+When the orchestration daemon identifies a trigger condition, it executes a hybrid retrieval. If the Qdrant database matches a spoken command — for example, "update patient file" — the daemon extracts the associated user and entity IDs and queries the Neo4j graph for the contextual relationships linked to those IDs.80
+
+Crucially, the Neo4j graph correlates the speaker's current Casambi AoA coordinate against the authorized physical zone for clinical data access. If the user is authorized, the daemon spawns a localized agent.82 That edge-native agent retrieves the relevant graph context, processes the localized decision through the tenant's air-gapped LLM, and executes the digital API call to update the clinical-trial file.80
+
+The orchestration is entirely deterministic. Every agentic action is constrained by physical-proximity capability ceilings and hardware-evaluated identity rules.48 If the Bluetooth AoA data places the speaker in the hallway outside the authorized acoustic perimeter, the daemon nullifies the execution request — physically preventing the action regardless of any software-level permission or API token the user may hold. Governance lives in the kernel, tied directly to physical space.48
+
+## Appendix I: Cryptographic Isolation and the Zero-Trust Moat
+
+In highly regulated domains, data governance is not a matter of corporate preference; it is a matter of federal statute and civil liability. Deploying omnipresent sensory AI in these settings demands mathematical verifiability that data cannot be extracted, compromised, or retained outside defined regulatory bounds. The localized orchestration layer's stateless architecture is the verifiable mechanism by which HIPAA, FDA, and SEC mandates can be satisfied simultaneously without constraining the system's autonomous capability.
+
+### Bring Your Own Silicon (BYOS) Security Model
+
+The boundary between Software Integrator orchestration and tenant data custody is absolute. The Software Integrator enforces a strict "Bring Your Own Silicon" (BYOS) model: the localized orchestration layer provides the stateless routing, parsing, and execution logic, while the tenant retains physical ownership of the hardware, the cryptographic keys, and the resulting structured data lakes.
+
+The computational engine of this architecture is the NVIDIA L40S GPU.51 Chosen for its independence from forced hyperscaler interconnects and its versatility in edge deployment, the L40S balances inference, graphics, and video processing.51 Built on the Ada Lovelace architecture, it provides 48 GB of GDDR6 memory, 18,176 CUDA cores, and 568 fourth-generation Tensor Cores.51
+
+Security in this environment rests on silicon physics rather than operating-system policy. The L40S is Network Equipment-Building System (NEBS) Level 3 ready and features Secure Boot with a hardware Root of Trust.51
+
+- Secure Boot: prevents unauthorized firmware modification, guaranteeing that the power-on execution environment matches the verified cryptographic hash.83
+- Confidential computing: the architecture leverages confidential-computing paradigms to protect data in use.83 Hardware-based isolation and encryption ensure that applications, LLMs, and Whisper models are processed within Trusted Execution Environments (TEEs), or enclaves.84 Even if the host OS is compromised by an advanced persistent threat, telemetry resident in GPU VRAM remains cryptographically sealed and inaccessible.83
+
+Under the BYOS model the Software Integrator initiates the Trusted Execution Environment and routes the telemetry, but the enclave is sealed with keys managed entirely by the tenant. The Software Integrator operates the pipes; the tenant holds the cryptographic lock to the processing chamber.
+
+### Compliance Mapping: Healthcare, Defense, and Quantitative Funds
+
+The architectural constraints of this approach map directly onto the compliance requirements of the most heavily regulated industries.
+
+| Industry Domain | Core Regulatory Mandate | Architectural Solution |
+| --- | --- | --- |
+| Healthcare | HIPAA (45 CFR Part 164) — transmission security, ePHI safeguards | Stateless tmpfs audio destruction, E-Line fiber transit, L40S TEE enclaves |
+| Pharma, Defense | FDA (21 CFR Part 11) — non-repudiation, timestamped audit trails | GraphRAG localized state logging, deterministic AoA tracking, isolated LLM execution |
+| Finance, Trading | SEC (Rule 17a-4) — immutable WORM storage, communication logs | Hardware-enforced zero-cloud exfiltration, local immutable structured logs via the daemon |
+
+Healthcare — HIPAA and 45 CFR Part 164: under the HIPAA Security Rule (45 CFR Part 164), covered entities must implement rigid technical safeguards — access controls, integrity controls, and transmission security for all electronic Protected Health Information (ePHI).60 Cloud deployments introduce unacceptable multi-tenant risk: shared GPU memory across cloud instances is exposed to side-channel attack, and memory states are rarely wiped between hyperscaler jobs.60 The Software Integrator enforces compliance through hardware isolation of the L40S nodes.83 Strict E-Line segmentation, combined with /dev/shm tmpfs ring buffers that deterministically destroy raw voice telemetry milliseconds after ingestion, ensures biometric data never becomes ePHI at rest.60 The localized orchestration layer operates as a true air gap, satisfying the technical-safeguard mandates of 45 CFR § 164.312 without elaborate cloud Business Associate Agreement (BAA) webs.87
+
+Defense and pharmaceutical manufacturing — FDA 21 CFR Part 11: for biotechnology and defense manufacturing, 21 CFR Part 11 requires secure, computer-generated, timestamped audit trails for all actions on electronic records and signatures.88 Any AI system executing quality control or predictive maintenance must keep its decisions traceable, auditable, and unalterable.47 Sending batch records or ITAR-restricted assembly telemetry to a hyperscaler violates those integrity constraints because the data crosses boundaries outside the manufacturer's control.47 The BYOS approach lets the tenant run validated, locked models directly on the factory floor.47 The orchestration daemon routes system logs and agentic execution graphs into the local Neo4j database.80 The result is a cryptographically signed graph of exactly who requested an action, where they stood (via RF AoA data), what the model parsed, and when it executed — fulfilling the audit-trail mandate of 21 CFR Part 11, subsection 10(e), natively within the edge infrastructure.88
+
+Quantitative finance — SEC Rule 17a-4: for broker-dealers and quantitative trading firms, SEC Rule 17a-4 requires that all business communications be retained complete, accurate, and unalterable.91 The rule mandates either Write Once, Read Many (WORM) storage or an audit-trail system that logs every modification, preventing destruction of evidence related to market manipulation or insider trading.91 Extracting voice telemetry from a trading floor to a cloud transcription API risks severe non-compliance, particularly around "off-channel" communications.93 The Software Integrator ingests trading-floor audio locally through Asterisk, parses it with the isolated Whisper model, and writes the structured text directly to the firm's localized WORM array. The Software Integrator touches the packets for routing but holds no key to write, alter, or delete the destination database; the firm retains absolute custody and a provable, continuous audit trail of all floor intelligence without exposing a single proprietary algorithm or conversation to the open internet.47
+
+## Appendix J: System Mandate: Bare-Metal PCIe Node Deployment Protocol
+
+Deploying the Software Integrator is less an installation than a fusing of silicon and telemetry. The software executes directly above the bare-metal Linux kernel and requires uncompromising control over PCIe lanes, IOMMU groups, and CPU-core isolation to guarantee deterministic, sub-millisecond execution. To deploy the localized orchestration layer onto a tenant node equipped with NVIDIA L40S PCIe accelerators, the following sequence is executed precisely.
+
+### I. GRUB Kernel Parameter Configuration
+
+The host operating system is partitioned at the kernel boot level to reserve dedicated resources for the orchestration-layer components and to isolate the GPU hardware for Data Plane Development Kit (DPDK) and Virtual Function I/O (VFIO) mapping. The /etc/default/grub configuration appends the following parameters to the GRUB_CMDLINE_LINUX_DEFAULT string.95
+
+*/etc/default/grub — GRUB_CMDLINE_LINUX_DEFAULT*
+
+```
+# GRUB configuration requirements
+intel_iommu=on iommu=pt
+pci=realloc
+noats
+vfio-pci.ids=10de:26f5,10de:22ba
+isolcpus=2-15
+```
+
+- IOMMU activation (intel_iommu=on iommu=pt): hardware-assisted I/O memory management is enabled and set to passthrough (pt), letting PCIe devices bypass host-OS DMA translation and granting the orchestration layer the direct memory access required for zero-copy telemetry transfer from the ConnectX NIC to the L40S.
+- PCIe resource reallocation (pci=realloc): forces the kernel to reallocate PCI bridge resources, which is required to accommodate the 48 GB BAR memory window of the NVIDIA L40S and to ensure contiguous allocation for GPUDirect RDMA. If the BIOS allocation is too small for the child devices, the kernel resizes the BAR dynamically.96
+- Address Translation Services disablement (noats): disables PCIe ATS (Address Translation Services) and the IOMMU device IOTLB.97 ATS introduces variable latency in translation lookaside buffers; for deterministic edge processing of live audio and video, memory translation must be statically pinned.
+- Hardware binding to VFIO (vfio-pci.ids=10de:26f5,10de:22ba): example device IDs for the L40S GPU and its associated HD-audio endpoint.95 This unbinds the NVIDIA GPUs from the default nouveau or proprietary driver during boot, capturing the devices with the vfio-pci stub driver.95 The orchestration layer then asserts control over them from userspace via DPDK.
+- CPU-core isolation (isolcpus=2-15): removes the specified logical cores from the kernel's Symmetric Multiprocessing (SMP) balancing and scheduler.96 These cores are dedicated to the LiveKit SFU routing threads, the Asterisk ExternalMedia event loops, and the DPDK polling drivers, guaranteeing zero context-switching interruptions during telemetry ingestion.
+
+### II. Execution Environment Initialization
+
+After the kernel parameters are configured and grub-mkconfig regenerates the bootloader, the system reboots and initializes the localized orchestration-layer runtime.95
+
+*Stateless tmpfs mount*
+
+```
+# tmpfs mount for stateless execution
+mount -t tmpfs -o size=1G,mode=1777 tmpfs /dev/shm
+```
+
+- Memory provisioning: the volatile tmpfs file system is mounted strictly for audio-pipeline ingestion, satisfying the stateless-processing mandate. This provides the 1 GB ephemeral ring buffer required by the whisper.cpp inference engine and guarantees that no audio data is ever written to non-volatile block storage.70
+- DPDK binding: using the dpdk-devbind.py utility, the local ConnectX network interfaces are bound to the vfio-pci driver, detaching the NICs from the Linux kernel TCP/IP stack so the PMD can assume control.
+- Daemon invocation: the orchestration daemon is initialized within the Trusted Execution Environment. It establishes the local WebSocket listener for the Asterisk PBX, initializes the LiveKit SFU for WebRTC traffic, and mounts the Neo4j and Qdrant GraphRAG connections.64
+
+*Once the initialization sequence completes, the node transitions into a fully air-gapped, stateless orchestration state. The ambient reality of the physical room is mapped directly onto localized silicon, governed by cryptographic isolation and operating without dependency on external cloud architecture. The gain is structural rather than incremental: when inference sits adjacent to the sensor, latency, custody, and compliance resolve together rather than in tension.*
