@@ -11,12 +11,26 @@ The AI-Native Office is the technical whitepaper for ainativeoffice.org. It argu
 
 ## Core sections
 
-- Introduction: The Terminal Failure of Public Cloud Architecture
+- The Structural Ceiling: why the public cloud cannot host continuous, ambient multimodal AI
+- Who This Is For
+- How the Architecture Works: the tripartite ownership model and the four principles
+- Zero-Trust Physical Identity & The MCP Standard: fusing cryptographic physical access logs with BLE spatial positioning, and exposing the room as a Model Context Protocol endpoint
+- The Economics of Sovereignty: a depreciating capital asset versus the perpetual cloud egress tax
+- The Compliance Moat: architecture as compliance, and the regulatory landscape
+- Engage: reference implementation visits, tenant inquiries, and the RFC process
+
+## Technical appendices
+
 - The Cloud Egress Trap: The Physics and Economics of Multimodal Data
 - The Space as a Sensory Organ: The Death of the Keyboard
 - The Sovereign Enclave: The Architecture of the Hardened Shell
 - The Intelligence Flywheel & Absolute Sovereignty: Enterprise GraphRAG
-- Conclusion: The Mandate for the AI-Native Asset Class
+- The Demise of Cloud Proxies: The Imperative for Physical Sovereignty
+- The Hypervisor for Physical Space: Architectural Topography
+- Stateless Multimodal Routing: The Ingestion Pipeline
+- Edge-Native Agentic Orchestration: The Orchestration Daemon
+- Cryptographic Isolation and the Zero-Trust Moat
+- System Mandate: Bare-Metal PCIe Node Deployment Protocol
 
 ## Related
 
