@@ -121,8 +121,8 @@ export const content: Content = {
       status: "Request for Comment (RFC)",
     },
     authors: [
-      { name: "Timothy Walsh", email: "tw@trucast.ai" },
-      { name: "Parham Alizadeh", email: "parham@northcastleventures.com" },
+      { name: "Timothy Walsh", email: "tw@ainativeoffice.org" },
+      { name: "Parham Alizadeh", email: "parham@ainativeoffice.org" },
     ],
   },
   abstract:
@@ -288,7 +288,8 @@ export const content: Content = {
                 "[ PGP Public Key Block Available Upon Request ]",
                 "Location: Armonk, NY Reference Node",
                 "Routing: rfc-review@ainativeoffice.org",
-                "Principal: Timothy Walsh"
+                "Principal: Timothy Walsh",
+                "Principal: Parham Alizadeh"
               ]
             }
           ],

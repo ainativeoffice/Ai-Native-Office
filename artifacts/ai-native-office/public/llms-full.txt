@@ -136,6 +136,7 @@ To request a technical briefing, begin a tenant inquiry, or submit an edge-case 
 Location: Armonk, NY Reference Node
 Routing: rfc-review@ainativeoffice.org
 Principal: Timothy Walsh
+Principal: Parham Alizadeh
 
 *The AI-Native Office is a category being built. The organizations that engage now help define what it becomes.*
 
