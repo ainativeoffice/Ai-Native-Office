@@ -100,6 +100,8 @@ interface SocialLink {
   platform: "linkedin" | "x";
   label: string;
   url: string;
+  /** Platform handle (e.g. `@ainativeoffice`), the single source for twitter:site/creator. */
+  handle?: string;
 }
 
 interface Footer {
@@ -431,7 +433,7 @@ export const content: Content = {
     ],
     social: [
       { platform: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/company/ainativeoffice/" },
-      { platform: "x", label: "X", url: "https://x.com/ainativeoffice" },
+      { platform: "x", label: "X", url: "https://x.com/ainativeoffice", handle: "@ainativeoffice" },
     ],
   },
 };

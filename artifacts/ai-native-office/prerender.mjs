@@ -47,6 +47,23 @@ for (const { name, re, replacement } of titleInjections) {
 }
 console.log(`Prerender: synced title/og:title/twitter:title → "${meta.title}".`);
 
+// Sync the Twitter handle (twitter:site/creator) from content.footer.social via
+// entry-server `meta`. The hardcoded handle in index.html is only a dev fallback.
+if (!meta.twitterHandle) {
+  throw new Error("Prerender failed: meta.twitterHandle is empty (expected an X handle in content.footer.social).");
+}
+const handleInjections = [
+  { name: "twitter:site", re: /(<meta name="twitter:site" content=")[^"]*(")/ },
+  { name: "twitter:creator", re: /(<meta name="twitter:creator" content=")[^"]*(")/ },
+];
+for (const { name, re } of handleInjections) {
+  if (!re.test(template)) {
+    throw new Error(`Prerender failed: could not find ${name} to inject the Twitter handle.`);
+  }
+  template = template.replace(re, `$1${meta.twitterHandle}$2`);
+}
+console.log(`Prerender: synced twitter:site/twitter:creator → "${meta.twitterHandle}".`);
+
 const gaId = (process.env.GA_MEASUREMENT_ID || "").trim();
 let gaSnippet = "";
 if (gaId) {

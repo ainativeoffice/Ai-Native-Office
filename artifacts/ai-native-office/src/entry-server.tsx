@@ -6,10 +6,13 @@ import { metaTitle } from "./lib/spec";
 
 /**
  * Build-time meta values consumed by `prerender.mjs` to inject the
- * spec-version-aware <title>/og:title/twitter:title into the static HTML.
+ * spec-version-aware <title>/og:title/twitter:title and the Twitter handle
+ * (twitter:site/creator) into the static HTML. The handle is sourced from
+ * `content.footer.social` so it stays single-source.
  */
 export const meta = {
   title: metaTitle(),
+  twitterHandle: content.footer.social.find((s) => s.platform === "x")?.handle ?? "",
 };
 
 /**
