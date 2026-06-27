@@ -40,3 +40,25 @@ export const SubscribeToUpdatesResponse = zod.object({
 })
 
 
+/**
+ * Answers a reader's question using only the AI-Native Office whitepaper as grounding. Accepts the full conversation so far (prior turns plus the new question) and returns the assistant's reply. Questions outside the whitepaper's scope receive an in-character refusal.
+ * @summary Ask the whitepaper assistant a question
+ */
+export const askWhitepaperBodyMessagesItemContentMax = 4000;
+
+export const askWhitepaperBodyMessagesMax = 30;
+
+
+
+export const AskWhitepaperBody = zod.object({
+  "messages": zod.array(zod.object({
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string().min(1).max(askWhitepaperBodyMessagesItemContentMax)
+})).min(1).max(askWhitepaperBodyMessagesMax)
+})
+
+export const AskWhitepaperResponse = zod.object({
+  "reply": zod.string()
+})
+
+

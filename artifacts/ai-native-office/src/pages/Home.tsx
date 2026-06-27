@@ -10,6 +10,7 @@ import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
 import { SocialLinks } from "@/components/SocialLinks";
 import { ShareLinks } from "@/components/ShareLinks";
+import { AssistantPanel } from "@/components/AssistantPanel";
 import { getSource, parseCitation, tokenizeCitationGroups } from "@/lib/citations";
 
 const renderText = (text: string) =>
@@ -597,6 +598,8 @@ export default function Home() {
           </div>
         </footer>
       </main>
+
+      <AssistantPanel />
     </div>
   );
 }

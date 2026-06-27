@@ -26,3 +26,32 @@ export interface ErrorResponse {
   message: string;
 }
 
+export type AssistantMessageRole = typeof AssistantMessageRole[keyof typeof AssistantMessageRole];
+
+
+export const AssistantMessageRole = {
+  user: 'user',
+  assistant: 'assistant',
+} as const;
+
+export interface AssistantMessage {
+  role: AssistantMessageRole;
+  /**
+     * @minLength 1
+     * @maxLength 4000
+     */
+  content: string;
+}
+
+export interface AssistantConversation {
+  /**
+     * @minItems 1
+     * @maxItems 30
+     */
+  messages: AssistantMessage[];
+}
+
+export interface AssistantReply {
+  reply: string;
+}
+

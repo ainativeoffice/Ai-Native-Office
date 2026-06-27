@@ -12,6 +12,8 @@ tags:
     description: Health operations
   - name: subscribe
     description: Specification update feed subscriptions
+  - name: assistant
+    description: AI assistant grounded in the whitepaper
 paths:
   /healthz:
     get:
@@ -63,6 +65,47 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /assistant/ask:
+    post:
+      operationId: askWhitepaper
+      tags: [assistant]
+      summary: Ask the whitepaper assistant a question
+      description: >-
+        Answers a reader's question using only the AI-Native Office whitepaper as
+        grounding. Accepts the full conversation so far (prior turns plus the new
+        question) and returns the assistant's reply. Questions outside the
+        whitepaper's scope receive an in-character refusal.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssistantConversation"
+      responses:
+        "200":
+          description: Assistant reply
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantReply"
+        "400":
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Server misconfiguration (e.g. AI provider not configured)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "502":
+          description: Upstream AI provider error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -109,3 +152,36 @@ components:
       required:
         - ok
         - message
+    AssistantMessage:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+            - user
+            - assistant
+        content:
+          type: string
+          minLength: 1
+          maxLength: 4000
+      required:
+        - role
+        - content
+    AssistantConversation:
+      type: object
+      properties:
+        messages:
+          type: array
+          minItems: 1
+          maxItems: 30
+          items:
+            $ref: "#/components/schemas/AssistantMessage"
+      required:
+        - messages
+    AssistantReply:
+      type: object
+      properties:
+        reply:
+          type: string
+      required:
+        - reply

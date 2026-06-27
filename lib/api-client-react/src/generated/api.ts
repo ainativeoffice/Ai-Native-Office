@@ -20,6 +20,8 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
+  AssistantConversation,
+  AssistantReply,
   ErrorResponse,
   HealthStatus,
   SubscribeRequest,
@@ -186,5 +188,77 @@ export const useSubscribeToUpdates = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getSubscribeToUpdatesMutationOptions(options));
+    }
+
+export const getAskWhitepaperUrl = () => {
+
+
+
+
+  return `/api/assistant/ask`
+}
+
+/**
+ * Answers a reader's question using only the AI-Native Office whitepaper as grounding. Accepts the full conversation so far (prior turns plus the new question) and returns the assistant's reply. Questions outside the whitepaper's scope receive an in-character refusal.
+ * @summary Ask the whitepaper assistant a question
+ */
+export const askWhitepaper = async (assistantConversation: AssistantConversation, options?: RequestInit): Promise<AssistantReply> => {
+
+  return customFetch<AssistantReply>(getAskWhitepaperUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      assistantConversation,)
+  }
+);}
+
+
+
+
+export const getAskWhitepaperMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof askWhitepaper>>, TError,{data: BodyType<AssistantConversation>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof askWhitepaper>>, TError,{data: BodyType<AssistantConversation>}, TContext> => {
+
+const mutationKey = ['askWhitepaper'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof askWhitepaper>>, {data: BodyType<AssistantConversation>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  askWhitepaper(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AskWhitepaperMutationResult = NonNullable<Awaited<ReturnType<typeof askWhitepaper>>>
+    export type AskWhitepaperMutationBody = BodyType<AssistantConversation>
+    export type AskWhitepaperMutationError = ErrorType<ErrorResponse>
+
+    /**
+ * @summary Ask the whitepaper assistant a question
+ */
+export const useAskWhitepaper = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof askWhitepaper>>, TError,{data: BodyType<AssistantConversation>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof askWhitepaper>>,
+        TError,
+        {data: BodyType<AssistantConversation>},
+        TContext
+      > => {
+      return useMutation(getAskWhitepaperMutationOptions(options));
     }
 

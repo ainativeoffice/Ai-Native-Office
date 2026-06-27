@@ -6,6 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './assistantConversation';
+export * from './assistantMessage';
+export * from './assistantMessageRole';
+export * from './assistantReply';
 export * from './errorResponse';
 export * from './healthStatus';
 export * from './subscribeRequest';
