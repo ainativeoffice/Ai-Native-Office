@@ -9,6 +9,7 @@ import { SideNote, type MarginNote } from "@/components/SideNote";
 import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
 import { SocialLinks } from "@/components/SocialLinks";
+import { ShareLinks } from "@/components/ShareLinks";
 import { getSource, parseCitation, tokenizeCitationGroups } from "@/lib/citations";
 
 const renderText = (text: string) =>
@@ -570,6 +571,7 @@ export default function Home() {
               <div>{content.footer.location}</div>
             </div>
             <SocialLinks />
+            <ShareLinks />
           </div>
           <div className="flex shrink-0 flex-col md:items-end gap-2">
             <span className="whitespace-nowrap opacity-70">[ Changelog v{content.hero.spec.version} ]</span>

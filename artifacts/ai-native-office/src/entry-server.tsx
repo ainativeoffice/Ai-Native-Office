@@ -2,7 +2,7 @@ import { renderToString } from "react-dom/server";
 import App from "./App";
 import { content, type ListItem, type Table, type Section } from "./content";
 import { findBrokenCitations, parseCitation } from "./lib/citations";
-import { metaTitle } from "./lib/spec";
+import { metaTitle, SITE_URL } from "./lib/spec";
 
 /**
  * Build-time meta values consumed by `prerender.mjs` to inject the
@@ -31,7 +31,7 @@ export function assertCitationsValid(): void {
   );
 }
 
-const SITE = "https://ainativeoffice.org";
+const SITE = SITE_URL;
 
 function tableToMarkdown(table: Table): string {
   const header = `| ${table.headers.join(" | ")} |`;

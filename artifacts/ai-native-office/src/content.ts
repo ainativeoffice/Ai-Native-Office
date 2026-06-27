@@ -111,8 +111,20 @@ interface Footer {
   social: SocialLink[];
 }
 
+/** Reader-facing share affordance copy. The canonical URL is sourced from `lib/spec`. */
+interface Share {
+  /** Label for the share strip (mono caption). */
+  heading: string;
+  /** Pre-filled message for the X intent. LinkedIn pulls its own OG preview, so it ignores text. */
+  text: string;
+  /** Confirmation shown after the copy-link control succeeds. */
+  copyLabel: string;
+  copiedLabel: string;
+}
+
 /** The full page content tree — the single source of truth for all copy. */
 export interface Content {
+  share: Share;
   hero: Hero;
   abstract: string;
   sections: Section[];
@@ -123,6 +135,12 @@ export interface Content {
 }
 
 export const content: Content = {
+  share: {
+    heading: "Transmit",
+    text: "The Room as the Machine — a technical specification for the AI-Native Office: sovereign, on-premises compute as a new commercial real estate asset class for regulated institutions.",
+    copyLabel: "Copy Link",
+    copiedLabel: "Link Copied",
+  },
   hero: {
     title: "The Room as the Machine",
     subtitle: "A Technical Specification for the AI-Native Office",

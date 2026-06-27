@@ -9,6 +9,12 @@ import { content } from "../content";
 
 export const SITE_NAME = "The AI-Native Office";
 
+/** Canonical site origin (no trailing slash). Single source for meta, JSON-LD, and share intents. */
+export const SITE_URL = "https://ainativeoffice.org";
+
+/** Canonical page URL used by share intents (origin + trailing slash). */
+export const CANONICAL_URL = `${SITE_URL}/`;
+
 export function specVersion(): string {
   return content.hero.spec.version;
 }
