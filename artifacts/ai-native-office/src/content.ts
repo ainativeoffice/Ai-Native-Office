@@ -95,10 +95,18 @@ interface FooterLink {
   disabled: boolean;
 }
 
+/** A social profile shown in the footer and emitted into the JSON-LD `sameAs` graph. */
+interface SocialLink {
+  platform: "linkedin" | "x";
+  label: string;
+  url: string;
+}
+
 interface Footer {
   publishedBy: string;
   location: string;
   links: FooterLink[];
+  social: SocialLink[];
 }
 
 /** The full page content tree — the single source of truth for all copy. */
@@ -420,6 +428,10 @@ export const content: Content = {
     links: [
       { label: "Security / PGP Key", href: "#", disabled: false },
       { label: "Architecture CAD Repo", href: "#", disabled: true },
+    ],
+    social: [
+      { platform: "linkedin", label: "LinkedIn", url: "https://www.linkedin.com/company/ainativeoffice/" },
+      { platform: "x", label: "X", url: "https://x.com/ainativeoffice" },
     ],
   },
 };

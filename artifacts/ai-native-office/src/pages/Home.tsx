@@ -8,6 +8,7 @@ import { Citation, CitationBrackets } from "@/components/Citation";
 import { SideNote, type MarginNote } from "@/components/SideNote";
 import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
+import { SocialLinks } from "@/components/SocialLinks";
 import { getSource, parseCitation, tokenizeCitationGroups } from "@/lib/citations";
 
 const renderText = (text: string) =>
@@ -563,9 +564,12 @@ export default function Home() {
 
         {/* Institutional footer */}
         <footer className="mt-24 pt-8 border-t border-border flex flex-col md:flex-row md:items-start md:justify-between gap-8 font-mono text-xs">
-          <div className="opacity-70 leading-relaxed">
-            <div>{content.footer.publishedBy}</div>
-            <div>{content.footer.location}</div>
+          <div className="flex flex-col gap-5 opacity-70 leading-relaxed">
+            <div>
+              <div>{content.footer.publishedBy}</div>
+              <div>{content.footer.location}</div>
+            </div>
+            <SocialLinks />
           </div>
           <div className="flex shrink-0 flex-col md:items-end gap-2">
             <span className="whitespace-nowrap opacity-70">[ Changelog v{content.hero.spec.version} ]</span>
