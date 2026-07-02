@@ -8,6 +8,7 @@ import { Citation, CitationBrackets } from "@/components/Citation";
 import { SideNote, type MarginNote } from "@/components/SideNote";
 import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
+import { CopyForLlm } from "@/components/CopyForLlm";
 import { SocialLinks } from "@/components/SocialLinks";
 import { ShareLinks } from "@/components/ShareLinks";
 import { AssistantPanel } from "@/components/AssistantPanel";
@@ -393,6 +394,9 @@ export default function Home() {
             ))}
           </div>
         </header>
+
+        {/* Copy the full document for LLM ingestion */}
+        <CopyForLlm />
 
         {/* Abstract */}
         <section className="mb-24 pl-6 md:pl-8 border-l-4 border-[#FF5F1F]">

@@ -122,9 +122,34 @@ interface Share {
   copiedLabel: string;
 }
 
+/**
+ * Copy for the "copy the full document for your LLM" control. The control
+ * copies the served `/llms-full.txt` static asset (generated at build time)
+ * to the reader's clipboard, degrading to a plain link to the raw file.
+ */
+interface LlmExport {
+  /** Mono caption above the control. */
+  heading: string;
+  /** One-line helper explaining what the button does. */
+  description: string;
+  /** Idle button label (brutalist `[ … ]` form). */
+  buttonLabel: string;
+  /** Button label while fetching + writing to the clipboard. */
+  pendingLabel: string;
+  /** Button label after a successful copy (safety-orange). */
+  copiedLabel: string;
+  /** Terminal-style success line shown next to the button. */
+  successMessage: string;
+  /** Terminal-style error line when the clipboard is blocked or fetch fails. */
+  errorMessage: string;
+  /** Label for the visible fallback link to the raw file. */
+  fallbackLabel: string;
+}
+
 /** The full page content tree — the single source of truth for all copy. */
 export interface Content {
   share: Share;
+  llmExport: LlmExport;
   hero: Hero;
   abstract: string;
   sections: Section[];
@@ -140,6 +165,17 @@ export const content: Content = {
     text: "The Room as the Machine — a technical specification for the AI-Native Office: sovereign, on-premises compute as a new commercial real estate asset class for regulated institutions.",
     copyLabel: "Copy Link",
     copiedLabel: "Link Copied",
+  },
+  llmExport: {
+    heading: "Machine-Readable Transfer",
+    description:
+      "The complete specification, rendered as plain markdown for LLM ingestion. Copy the full document and paste it into ChatGPT, Claude, or any model as grounding context.",
+    buttonLabel: "[ COPY FULL SPEC FOR YOUR LLM ]",
+    pendingLabel: "[ BUFFERING... ]",
+    copiedLabel: "[ COPIED ]",
+    successMessage: "200 OK: Full specification → clipboard.",
+    errorMessage: "ERR: Clipboard access denied.",
+    fallbackLabel: "Open raw llms-full.txt",
   },
   hero: {
     title: "The Room as the Machine",
