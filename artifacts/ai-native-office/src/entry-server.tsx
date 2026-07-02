@@ -4,6 +4,8 @@ import {
   content,
   PAPER_DATE_PUBLISHED,
   LAUNCH_POST_SLUG,
+  SPEC_REVISION_DATE,
+  latestIsoDate,
   type ListItem,
   type Table,
   type Section,
@@ -36,9 +38,17 @@ import {
  * Document dates for JSON-LD and the generated sitemap. The publish date is
  * shared with the RFC Log launch post via `PAPER_DATE_PUBLISHED` in the
  * whitepaper lib — never hardcode it here (the two copies drifted once).
+ * The modified date is DERIVED, never hand-set here: it is the max of the
+ * spec-copy revision date (`SPEC_REVISION_DATE` in `lib/whitepaper/src/dates.ts`)
+ * and every RFC Log post / Signal Log entry date, so shipping new content can
+ * never leave `dateModified` / sitemap `lastmod` stale.
  */
 const DATE_PUBLISHED = PAPER_DATE_PUBLISHED;
-const DATE_MODIFIED = "2026-07-02";
+const DATE_MODIFIED = latestIsoDate([
+  SPEC_REVISION_DATE,
+  ...blogPages.map((p) => p.date),
+  ...signalEntries.map((e) => e.date),
+]);
 
 /**
  * Build-time meta values consumed by `prerender.mjs` to inject the
