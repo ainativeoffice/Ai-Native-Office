@@ -12,6 +12,8 @@ const {
   renderBlogPost,
   getBlogPages,
   blogIndexMeta,
+  renderSignals,
+  signalsMeta,
   getRssXml,
   getSitemapXml,
   getLlmsFull,
@@ -165,6 +167,19 @@ for (const post of blogPages) {
 }
 console.log(`Prerender: wrote /blog/ index + ${blogPages.length} post page(s).`);
 
+// 3b) The Signal Log evidence ledger at /signals/ (validates the ledger too).
+const signalsDir = path.join(__dirname, "dist/public/signals");
+mkdirSync(signalsDir, { recursive: true });
+writeFileSync(
+  path.join(signalsDir, "index.html"),
+  renderPage(
+    template,
+    { title: signalsMeta.metaTitle, description: signalsMeta.description, url: signalsMeta.url },
+    renderSignals(),
+  ),
+);
+console.log("Prerender: wrote /signals/ evidence ledger.");
+
 // 4) RSS feed generated from the same post registry (dist output + dev copy).
 const rss = getRssXml();
 writeFileSync(path.join(__dirname, "dist/public/rss.xml"), rss);
@@ -175,7 +190,7 @@ console.log(`Prerender: rss.xml generated with ${blogPages.length} item(s).`);
 const sitemap = getSitemapXml();
 writeFileSync(path.join(__dirname, "dist/public/sitemap.xml"), sitemap);
 writeFileSync(path.join(__dirname, "public/sitemap.xml"), sitemap);
-console.log(`Prerender: sitemap.xml generated with ${sectionPages.length + blogPages.length + 2} URLs.`);
+console.log(`Prerender: sitemap.xml generated with ${sectionPages.length + blogPages.length + 3} URLs.`);
 
 // 6) llms-full.txt from the same content tree.
 const llmsFull = getLlmsFull();

@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import SectionPage from "@/pages/SectionPage";
 import BlogIndex from "@/pages/BlogIndex";
 import BlogPost from "@/pages/BlogPost";
+import Signals from "@/pages/Signals";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,8 @@ function Router() {
       <Route path="/blog/" component={BlogIndex} />
       <Route path="/blog/:slug" component={BlogPost} />
       <Route path="/blog/:slug/" component={BlogPost} />
+      <Route path="/signals" component={Signals} />
+      <Route path="/signals/" component={Signals} />
       <Route component={NotFound} />
     </Switch>
   );

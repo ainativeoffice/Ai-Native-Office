@@ -597,3 +597,68 @@ mount -t tmpfs -o size=1G,mode=1777 tmpfs /dev/shm
 - Daemon invocation: the orchestration daemon is initialized within the Trusted Execution Environment. It establishes the local WebSocket listener for the Asterisk PBX, initializes the LiveKit SFU for WebRTC traffic, and mounts the Neo4j and Qdrant GraphRAG connections.64
 
 *Once the initialization sequence completes, the node transitions into a fully air-gapped, stateless orchestration state. The ambient reality of the physical room is mapped directly onto localized silicon, governed by cryptographic isolation and operating without dependency on external cloud architecture. The gain is structural rather than incremental: when inference sits adjacent to the sensor, latency, custody, and compliance resolve together rather than in tension.*
+
+---
+
+# Signal Log
+
+The evidence ledger for the AI-Native Office specification: a dated, numbered log of real-world events — announcements, market data, policy commitments — that validate the sovereign on-premises compute thesis.
+
+Canonical ledger: https://ainativeoffice.org/signals/ (each entry has a permanent anchor).
+
+## EVIDENCE LOG // 005 — 2026-06-30 — Palantir and NVIDIA put Nemotron open models inside sovereign environments
+
+Permalink: https://ainativeoffice.org/signals/#log-005
+
+Palantir and NVIDIA expanded their jointly published Sovereign AI Operating System reference architecture with a production engine for deploying NVIDIA Nemotron open models entirely inside sovereign, closed environments — open-weight frontier models running where the data lives, with no external inference path. The two companies that define the frontier of AI deployment are now shipping a named reference architecture for exactly the deployment model this specification describes: sovereign inference as production infrastructure, not compliance workaround.
+
+Sources:
+- NVIDIA blog — Open Models, Closed Environments (Jun 2026): https://blogs.nvidia.com/blog/palantir-secure-ai-us-agencies-nemotron-open-models/
+- Business Wire — Palantir launches Nemotron sovereign deployment engine (Jun 29, 2026): https://www.businesswire.com/news/home/20260629390275/en/Palantir-Launches-Engine-for-Deploying-NVIDIA-Nemotron-Open-Models-in-Sovereign-Environments
+- Palantir — Sovereign AI OS reference architecture: https://www.palantir.com/sovereignaios/
+
+Validates: https://ainativeoffice.org/sections/ceiling/, https://ainativeoffice.org/sections/architecture/
+
+## EVIDENCE LOG // 004 — 2026-06-09 — Broadcom: 83% of enterprises weigh cloud repatriation; 50% have already moved workloads
+
+Permalink: https://ainativeoffice.org/signals/#log-004
+
+Broadcom's Private Cloud Outlook 2026 — a survey of 1,800 senior IT decision-makers — reports that 83% of enterprises are considering repatriating workloads from public to private cloud and 50% have already done so, with cost predictability now the second biggest repatriation driver. 97% of IT leaders believe some of their public cloud spend is wasted. The report's central finding: production AI inference is shifting decisively to private infrastructure. The repatriation wave the specification's economics section predicts is now the measured enterprise mainstream.
+
+Sources:
+- Broadcom — Private Cloud Outlook 2026 press release (Jun 9, 2026): https://news.broadcom.com/releases/broadcom-private-cloud-outlook-2026
+
+Validates: https://ainativeoffice.org/sections/economics/, https://ainativeoffice.org/sections/ceiling/
+
+## EVIDENCE LOG // 003 — 2026-06-08 — UK commits £1.1 billion to sovereign AI compute and chip capability
+
+Permalink: https://ainativeoffice.org/signals/#log-003
+
+At London Tech Week, the UK government announced a £1.1 billion plan to back domestic chip firms, expand national computing power, and build sovereign AI capability — state-level capital allocated to the premise that AI infrastructure under one's own physical and legal control is a strategic necessity, not a preference. When governments underwrite sovereign compute at the national scale, the same logic applies with equal force to the regulated institutions this specification addresses.
+
+Sources:
+- GOV.UK — £1.1 billion AI hardware and skills plan (Jun 8, 2026): https://www.gov.uk/government/news/a-decisive-shift-to-power-british-ai-new-11-billion-plan-to-back-chip-firms-boost-computing-power-and-skills-for-the-ai-revolution
+
+Validates: https://ainativeoffice.org/sections/ceiling/, https://ainativeoffice.org/sections/compliance/
+
+## EVIDENCE LOG // 002 — 2026-02-09 — Gartner: worldwide sovereign cloud IaaS spending to total $80 billion in 2026
+
+Permalink: https://ainativeoffice.org/signals/#log-002
+
+Gartner forecasts that worldwide spending on sovereign cloud infrastructure-as-a-service will total $80 billion in 2026, with European spending on sovereign cloud infrastructure set to triple between 2025 and 2027. Sovereignty is no longer a niche procurement criterion — it is an $80 billion annual market category, growing fastest exactly where regulatory obligation is strictest.
+
+Sources:
+- Gartner press release (Feb 9, 2026): https://www.gartner.com/en/newsroom/press-releases/2026-02-09-gartner-says-worldwide-sovereign-cloud-iaas-spending-will-total-us-dollars-80-billion-in-2026
+
+Validates: https://ainativeoffice.org/sections/ceiling/, https://ainativeoffice.org/sections/compliance/
+
+## EVIDENCE LOG // 001 — 2026-02-04 — Lenovo TCO study: on-prem GenAI breaks even in under four months at high utilization
+
+Permalink: https://ainativeoffice.org/signals/#log-001
+
+Lenovo Press published the 2026 edition of its on-premise-vs-cloud generative AI total-cost-of-ownership study. For sustained inference workloads, owned infrastructure reaches breakeven against hyperscale cloud in under four months — compressed from 12–18 month cycles in prior hardware generations — and the study's token-economics framework finds up to an 18x cost advantage per million tokens versus Model-as-a-Service APIs. A system used just ~4.3 hours per day beats renting. This is the depreciating-capital-asset arithmetic of the specification's economics section, independently quantified by a tier-one OEM.
+
+Sources:
+- Lenovo Press — GenAI TCO, 2026 Edition (Feb 4, 2026): https://lenovopress.lenovo.com/lp2368-on-premise-vs-cloud-generative-ai-total-cost-of-ownership-2026-edition
+
+Validates: https://ainativeoffice.org/sections/economics/, https://ainativeoffice.org/sections/egress/

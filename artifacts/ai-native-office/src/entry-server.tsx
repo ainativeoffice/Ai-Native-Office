@@ -13,6 +13,17 @@ import {
   BLOG_META_TITLE,
   BLOG_DESCRIPTION,
 } from "./lib/blogPages";
+import {
+  signalEntries,
+  signalDesignation,
+  signalEntryUrl,
+  assertSignalsValid,
+  SIGNALS_PATH,
+  SIGNALS_URL,
+  SIGNALS_TITLE,
+  SIGNALS_META_TITLE,
+  SIGNALS_DESCRIPTION,
+} from "./lib/signalsPage";
 
 /** Document dates: single source for JSON-LD and the generated sitemap. */
 const DATE_PUBLISHED = "2026-06-16";
@@ -179,6 +190,33 @@ export function getLlmsFull(): string {
     emitSectionBody(appendix);
   });
 
+  lines.push("---");
+  lines.push("");
+  lines.push(`# ${SIGNALS_TITLE}`);
+  lines.push("");
+  lines.push(SIGNALS_DESCRIPTION);
+  lines.push("");
+  lines.push(`Canonical ledger: ${SIGNALS_URL} (each entry has a permanent anchor).`);
+  lines.push("");
+  for (const entry of signalEntries) {
+    lines.push(`## ${signalDesignation(entry)} — ${entry.date} — ${entry.headline}`);
+    lines.push("");
+    lines.push(`Permalink: ${signalEntryUrl(entry)}`);
+    lines.push("");
+    lines.push(entry.body);
+    lines.push("");
+    lines.push("Sources:");
+    for (const source of entry.sources) {
+      lines.push(`- ${source.label}: ${source.url}`);
+    }
+    lines.push("");
+    const validates = entry.validatesSectionIds
+      .map((id) => `${SITE_URL}/sections/${id}/`)
+      .join(", ");
+    lines.push(`Validates: ${validates}`);
+    lines.push("");
+  }
+
   return lines.join("\n");
 }
 
@@ -336,6 +374,7 @@ export function getSitemapXml(): string {
     ...sectionPages.map((p) => ({ loc: p.url, lastmod: DATE_MODIFIED, priority: "0.7" })),
     { loc: BLOG_URL, lastmod: blogPages[0]?.date ?? DATE_MODIFIED, priority: "0.8" },
     ...blogPages.map((p) => ({ loc: p.url, lastmod: p.date, priority: "0.7" })),
+    { loc: SIGNALS_URL, lastmod: signalEntries[0]?.date ?? DATE_MODIFIED, priority: "0.8" },
   ];
   const entries = urls
     .map(
@@ -469,6 +508,67 @@ export function renderBlogPost(slug: string) {
   if (!page) throw new Error(`renderBlogPost: unknown blog slug "${slug}"`);
   const html = renderToString(<App ssrPath={page.path} />);
   return { html, head: toJsonLdScripts(buildBlogPostJsonLd(slug)) };
+}
+
+/* ------------------------------ Signal Log -------------------------------- */
+
+/** Build-time meta for the Signal Log page, consumed by `prerender.mjs`. */
+export const signalsMeta = {
+  path: SIGNALS_PATH,
+  url: SIGNALS_URL,
+  metaTitle: SIGNALS_META_TITLE,
+  description: SIGNALS_DESCRIPTION,
+};
+
+/**
+ * Signal Log JSON-LD: BreadcrumbList + an ItemList of the ledger entries,
+ * each item pointing at its permanent `#log-NNN` anchor URL.
+ */
+function buildSignalsJsonLd() {
+  const list = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: `${SITE_NAME} — ${SIGNALS_TITLE}`,
+    description: SIGNALS_DESCRIPTION,
+    url: SIGNALS_URL,
+    inLanguage: "en",
+    itemListOrder: "https://schema.org/ItemListOrderDescending",
+    numberOfItems: signalEntries.length,
+    itemListElement: signalEntries.map((entry, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: signalEntryUrl(entry),
+      item: {
+        "@type": "CreativeWork",
+        name: `${signalDesignation(entry)} — ${entry.headline}`,
+        datePublished: entry.date,
+        url: signalEntryUrl(entry),
+        citation: entry.sources.map((s) => ({
+          "@type": "CreativeWork",
+          name: s.label,
+          url: s.url,
+        })),
+      },
+    })),
+  };
+  return [
+    blogBreadcrumb([
+      { name: SITE_NAME, item: `${SITE_URL}/` },
+      { name: SIGNALS_TITLE, item: SIGNALS_URL },
+    ]),
+    list,
+  ];
+}
+
+/**
+ * Prerender the Signal Log route to HTML + its JSON-LD head. Also validates
+ * the ledger (section refs, unique numbers, newest-first order) so a bad
+ * entry fails the build instead of shipping.
+ */
+export function renderSignals() {
+  assertSignalsValid();
+  const html = renderToString(<App ssrPath={SIGNALS_PATH} />);
+  return { html, head: toJsonLdScripts(buildSignalsJsonLd()) };
 }
 
 const escapeXml = (s: string) =>

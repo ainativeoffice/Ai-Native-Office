@@ -108,6 +108,15 @@ export default function Home() {
               <span>RFC Log</span>
             </Link>
           </li>
+          <li className="mt-4">
+            <Link
+              href="/signals/"
+              className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground/80"
+            >
+              <div className="w-2 h-2 bg-transparent border border-muted" />
+              <span>Signal Log</span>
+            </Link>
+          </li>
         </ul>
       </nav>
 
@@ -308,6 +317,12 @@ export default function Home() {
               className="whitespace-nowrap opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
             >
               [ RFC Log ]
+            </Link>
+            <Link
+              href="/signals/"
+              className="whitespace-nowrap opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
+            >
+              [ Signal Log ]
             </Link>
             {content.footer.links.map((link) =>
               link.disabled ? (
