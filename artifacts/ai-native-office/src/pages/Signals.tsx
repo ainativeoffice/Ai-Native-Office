@@ -22,7 +22,7 @@ export default function Signals() {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-      <main className="mx-auto w-full max-w-4xl px-6 py-12 md:px-10 md:py-16 lg:py-20">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-4xl px-6 py-12 md:px-10 md:py-16 lg:py-20 pb-28 md:pb-28 lg:pb-28">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="no-print mb-16 border-b border-border pb-6">
           <ol className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
@@ -135,7 +135,7 @@ export default function Signals() {
 
         {/* Footer */}
         <footer className="mt-20 flex flex-col gap-6 border-t border-border pt-8 font-mono text-xs md:flex-row md:items-start md:justify-between">
-          <div className="flex flex-col gap-5 leading-relaxed opacity-70">
+          <div className="flex flex-col gap-5 leading-relaxed text-muted-foreground">
             <div>
               <div>{content.footer.publishedBy}</div>
               <div>{content.footer.location}</div>
@@ -144,7 +144,7 @@ export default function Signals() {
           </div>
           <Link
             href="/"
-            className="whitespace-nowrap opacity-70 transition-opacity hover:text-primary hover:opacity-100"
+            className="whitespace-nowrap text-muted-foreground transition-colors hover:text-primary"
           >
             [ Full Specification — v{content.hero.spec.version} ]
           </Link>

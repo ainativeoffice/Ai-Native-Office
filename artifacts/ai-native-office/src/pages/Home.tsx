@@ -106,7 +106,7 @@ export default function Home() {
                         activeId === appendix.id ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
                       }`}
                     >
-                      <span className={`shrink-0 ${activeId === appendix.id ? "text-primary" : "text-muted-foreground/60"}`}>
+                      <span className={`shrink-0 ${activeId === appendix.id ? "text-primary" : "text-muted-foreground"}`}>
                         {appendix.letter}
                       </span>
                       <span className="truncate normal-case tracking-normal">{appendix.label}</span>
@@ -138,7 +138,7 @@ export default function Home() {
       </nav>
 
       {/* Main Content */}
-      <main className="flex-1 w-full max-w-5xl mx-auto px-6 py-12 md:p-16 lg:py-24 lg:pl-24 lg:pr-[19rem] relative">
+      <main id="main-content" tabIndex={-1} className="flex-1 w-full max-w-5xl mx-auto px-6 py-12 md:p-16 lg:py-24 lg:pl-24 lg:pr-[19rem] pb-28 md:pb-28 lg:pb-32 relative">
         
         {/* Hero */}
         <header className="mb-24 pb-12 border-b border-border">
@@ -319,7 +319,7 @@ export default function Home() {
 
         {/* Institutional footer */}
         <footer className="mt-24 pt-8 border-t border-border flex flex-col md:flex-row md:items-start md:justify-between gap-8 font-mono text-xs">
-          <div className="flex flex-col gap-5 opacity-70 leading-relaxed">
+          <div className="flex flex-col gap-5 text-muted-foreground leading-relaxed">
             <div>
               <div>{content.footer.publishedBy}</div>
               <div>{content.footer.location}</div>
@@ -328,16 +328,16 @@ export default function Home() {
             <ShareLinks />
           </div>
           <div className="flex shrink-0 flex-col md:items-end gap-2">
-            <span className="whitespace-nowrap opacity-70">[ Changelog v{content.hero.spec.version} ]</span>
+            <span className="whitespace-nowrap text-muted-foreground">[ Changelog v{content.hero.spec.version} ]</span>
             <Link
               href="/blog/"
-              className="whitespace-nowrap opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
+              className="whitespace-nowrap text-muted-foreground hover:text-primary transition-colors"
             >
               [ RFC Log ]
             </Link>
             <Link
               href="/signals/"
-              className="whitespace-nowrap opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
+              className="whitespace-nowrap text-muted-foreground hover:text-primary transition-colors"
             >
               [ Signal Log ]
             </Link>
@@ -354,7 +354,7 @@ export default function Home() {
                 <a
                   key={link.label}
                   href={link.href}
-                  className="whitespace-nowrap opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
+                  className="whitespace-nowrap text-muted-foreground hover:text-primary transition-colors"
                 >
                   [ {link.label} ]
                 </a>

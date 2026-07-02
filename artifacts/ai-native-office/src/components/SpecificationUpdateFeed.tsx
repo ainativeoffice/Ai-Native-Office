@@ -44,7 +44,7 @@ export function SpecificationUpdateFeed() {
 
   return (
     <section className="no-print mt-32 pt-16 border-t border-border">
-      <div className="font-mono text-xs uppercase tracking-widest opacity-70 mb-8">
+      <div className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-8">
         {heading}
       </div>
 
@@ -80,6 +80,7 @@ export function SpecificationUpdateFeed() {
                 key={layer}
                 role="checkbox"
                 aria-checked={checked}
+                aria-labelledby={`rfc-layer-${i}`}
                 onClick={() => toggle(i)}
                 disabled={isPending}
                 className="flex items-start gap-3 bg-background p-4 text-left font-mono text-xs sm:text-sm leading-snug hover:bg-primary hover:text-primary-foreground transition-colors disabled:opacity-60"
@@ -87,7 +88,7 @@ export function SpecificationUpdateFeed() {
                 <span aria-hidden="true" className="select-none whitespace-pre">
                   {checked ? "[X]" : "[ ]"}
                 </span>
-                <span>{layer}</span>
+                <span id={`rfc-layer-${i}`}>{layer}</span>
               </button>
             );
           })}

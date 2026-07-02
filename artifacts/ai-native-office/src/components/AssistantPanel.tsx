@@ -23,6 +23,9 @@ export function AssistantPanel() {
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const panelRef = useRef<HTMLElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
+  const shouldReturnFocus = useRef(false);
 
   // Gate all rendering until after hydration so the SSG-prerendered HTML never
   // contains the assistant — it is purely additive and activates client-side.
@@ -50,10 +53,52 @@ export function AssistantPanel() {
   }, [messages, isPending, error, open]);
 
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (open) {
+      inputRef.current?.focus();
+    } else if (shouldReturnFocus.current) {
+      // Restore focus to the launcher after the dialog closes.
+      shouldReturnFocus.current = false;
+      launcherRef.current?.focus();
+    }
   }, [open]);
 
   if (!mounted) return null;
+
+  const closePanel = () => {
+    shouldReturnFocus.current = true;
+    setOpen(false);
+  };
+
+  // Modal keyboard behavior: Escape closes, Tab is trapped inside the panel.
+  const onPanelKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      e.preventDefault();
+      e.stopPropagation();
+      closePanel();
+      return;
+    }
+    if (e.key !== "Tab") return;
+    const panel = panelRef.current;
+    if (!panel) return;
+    const focusables = Array.from(
+      panel.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    const active = document.activeElement;
+    if (e.shiftKey) {
+      if (active === first || !panel.contains(active)) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else if (active === last || !panel.contains(active)) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
 
   const send = (text: string) => {
     const trimmed = text.trim();
@@ -75,10 +120,12 @@ export function AssistantPanel() {
       {/* Launcher */}
       {!open && (
         <button
+          ref={launcherRef}
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Open the whitepaper assistant"
-          className="fixed bottom-5 right-5 z-50 border border-primary bg-background px-5 py-3 font-mono text-[11px] uppercase tracking-widest text-foreground transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
+          aria-haspopup="dialog"
+          className="fixed bottom-3 right-3 z-50 border border-primary bg-background px-3 py-2 font-mono text-[10px] uppercase tracking-widest text-foreground transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary sm:bottom-5 sm:right-5 sm:px-5 sm:py-3 sm:text-[11px]"
         >
           <span aria-hidden="true" style={{ color: SAFETY_ORANGE }}>
             &gt;_
@@ -90,8 +137,11 @@ export function AssistantPanel() {
       {/* Panel */}
       {open && (
         <section
+          ref={panelRef}
           role="dialog"
+          aria-modal="true"
           aria-label="Whitepaper assistant"
+          onKeyDown={onPanelKeyDown}
           className="fixed z-50 flex flex-col border border-border bg-background shadow-2xl
             inset-x-3 bottom-3 top-3 sm:inset-auto sm:bottom-5 sm:right-5 sm:top-auto sm:h-[min(80vh,640px)] sm:w-[420px]"
         >
@@ -105,7 +155,7 @@ export function AssistantPanel() {
             </div>
             <button
               type="button"
-              onClick={() => setOpen(false)}
+              onClick={closePanel}
               aria-label="Close the assistant"
               className="font-mono text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
             >
@@ -123,7 +173,7 @@ export function AssistantPanel() {
 
             {messages.length === 0 && (
               <div className="space-y-2 pt-2">
-                <div className="text-[10px] uppercase tracking-widest text-muted-foreground/60">
+                <div className="text-[10px] uppercase tracking-widest text-muted-foreground">
                   Try
                 </div>
                 {SUGGESTIONS.map((s) => (
@@ -209,7 +259,7 @@ export function AssistantPanel() {
                 disabled={isPending}
                 maxLength={4000}
                 spellCheck={false}
-                className="flex-1 bg-transparent py-3 pr-2 outline-none placeholder:opacity-40 disabled:opacity-60"
+                className="flex-1 bg-transparent py-3 pr-2 text-[16px] outline-none placeholder:opacity-40 disabled:opacity-60"
               />
               <button
                 type="submit"

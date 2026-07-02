@@ -24,7 +24,7 @@ export function SocialLinks() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Connect with the AI-Native Office on ${s.label} (opens in a new tab)`}
-            className="group inline-flex items-center gap-2 border border-border px-3 py-2 opacity-70 transition-all hover:border-primary hover:text-primary hover:opacity-100 focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary focus-visible:text-primary focus-visible:opacity-100"
+            className="group inline-flex items-center gap-2 border border-border px-3 py-2 text-muted-foreground transition-all hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary focus-visible:text-primary"
           >
             <Icon aria-hidden className="h-3.5 w-3.5" />
             <span className="whitespace-nowrap">{s.label}</span>

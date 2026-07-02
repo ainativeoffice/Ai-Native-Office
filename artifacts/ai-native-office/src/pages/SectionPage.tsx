@@ -38,7 +38,8 @@ export default function SectionPage() {
   useEffect(() => {
     if (page) {
       document.title = page.metaTitle;
-      window.scrollTo(0, 0);
+      // ScrollToHash (App) handles hash targets after client-side navigation.
+      if (!window.location.hash) window.scrollTo(0, 0);
     }
   }, [page]);
 
@@ -48,7 +49,7 @@ export default function SectionPage() {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground selection:bg-primary selection:text-primary-foreground">
-      <main className="mx-auto w-full max-w-4xl px-6 py-12 md:px-10 md:py-16 lg:py-20">
+      <main id="main-content" tabIndex={-1} className="mx-auto w-full max-w-4xl px-6 py-12 md:px-10 md:py-16 lg:py-20 pb-28 md:pb-28 lg:pb-28">
         {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="no-print mb-16 border-b border-border pb-6">
           <ol className="flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
@@ -70,12 +71,12 @@ export default function SectionPage() {
           <h1 className="mb-6 font-serif text-4xl font-bold leading-tight tracking-tight text-primary md:text-5xl">
             {page.title}
           </h1>
-          <a
-            href={`${base}#${page.anchor}`}
+          <Link
+            href={`/#${page.anchor}`}
             className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-primary hover:decoration-primary"
           >
             Read in the full specification ↗
-          </a>
+          </Link>
         </header>
 
         {/* Section body — same renderer as the full paper */}
@@ -95,7 +96,7 @@ export default function SectionPage() {
 
         {/* Footer */}
         <footer className="mt-20 flex flex-col gap-6 border-t border-border pt-8 font-mono text-xs md:flex-row md:items-start md:justify-between">
-          <div className="flex flex-col gap-5 leading-relaxed opacity-70">
+          <div className="flex flex-col gap-5 leading-relaxed text-muted-foreground">
             <div>
               <div>{content.footer.publishedBy}</div>
               <div>{content.footer.location}</div>
@@ -104,7 +105,7 @@ export default function SectionPage() {
           </div>
           <Link
             href="/"
-            className="whitespace-nowrap opacity-70 transition-opacity hover:text-primary hover:opacity-100"
+            className="whitespace-nowrap text-muted-foreground transition-colors hover:text-primary"
           >
             [ Full Specification — v{content.hero.spec.version} ]
           </Link>
