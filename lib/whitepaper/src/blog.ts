@@ -1,4 +1,5 @@
 import type { Section } from "./content";
+import { PAPER_DATE_PUBLISHED, LAUNCH_POST_SLUG } from "./dates";
 
 /**
  * Blog post model for the RFC Log (`/blog/`). Publishing is git-based: add a
@@ -94,9 +95,10 @@ export const blogPosts: BlogPost[] = [
     },
   },
   {
-    slug: "rfc-v0-5-open-for-comment",
+    slug: LAUNCH_POST_SLUG,
     title: "RFC v0.5: The Specification Is Open for Comment",
-    date: "2026-06-16",
+    // Launch note: dated to the paper's publish date by construction — see dates.ts.
+    date: PAPER_DATE_PUBLISHED,
     description:
       "The AI-Native Office specification is published as a Request for Comment. What v0.5 defines, who it is for, and how to file a comment against the draft.",
     relatedSectionIds: ["ceiling", "architecture", "compliance"],

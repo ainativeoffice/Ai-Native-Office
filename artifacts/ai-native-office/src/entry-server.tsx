@@ -1,6 +1,13 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
-import { content, type ListItem, type Table, type Section } from "./content";
+import {
+  content,
+  PAPER_DATE_PUBLISHED,
+  LAUNCH_POST_SLUG,
+  type ListItem,
+  type Table,
+  type Section,
+} from "./content";
 import { findBrokenCitations, parseCitation } from "./lib/citations";
 import { metaTitle, SITE_NAME, SITE_URL } from "./lib/spec";
 import { sectionPages, getSectionPage } from "./lib/sectionPages";
@@ -25,8 +32,12 @@ import {
   SIGNALS_DESCRIPTION,
 } from "./lib/signalsPage";
 
-/** Document dates: single source for JSON-LD and the generated sitemap. */
-const DATE_PUBLISHED = "2026-06-16";
+/**
+ * Document dates for JSON-LD and the generated sitemap. The publish date is
+ * shared with the RFC Log launch post via `PAPER_DATE_PUBLISHED` in the
+ * whitepaper lib — never hardcode it here (the two copies drifted once).
+ */
+const DATE_PUBLISHED = PAPER_DATE_PUBLISHED;
 const DATE_MODIFIED = "2026-07-02";
 
 /**
@@ -54,6 +65,26 @@ export function assertCitationsValid(): void {
   throw new Error(
     `Citation check failed: ${broken.length} inline citation(s) point outside the Works Cited range:\n${details}`,
   );
+}
+
+/**
+ * Build-time guard: throws if the RFC Log launch post's date ever diverges
+ * from the paper's publish date. Both derive from `PAPER_DATE_PUBLISHED` by
+ * construction, so this only fires if someone reintroduces a hardcoded date —
+ * exactly the drift that shipped once before. Called by `prerender.mjs`.
+ */
+export function assertLaunchPostDateValid(): void {
+  const launchPost = blogPages.find((p) => p.slug === LAUNCH_POST_SLUG);
+  if (!launchPost) {
+    throw new Error(
+      `Launch post date check failed: no blog post with slug "${LAUNCH_POST_SLUG}" — if the launch post was renamed, update LAUNCH_POST_SLUG in lib/whitepaper/src/dates.ts.`,
+    );
+  }
+  if (launchPost.date !== PAPER_DATE_PUBLISHED) {
+    throw new Error(
+      `Launch post date check failed: launch post "${LAUNCH_POST_SLUG}" is dated ${launchPost.date} but the paper's publish date is ${PAPER_DATE_PUBLISHED}. Both must derive from PAPER_DATE_PUBLISHED in lib/whitepaper/src/dates.ts — never hardcode either date.`,
+    );
+  }
 }
 
 const SITE = SITE_URL;

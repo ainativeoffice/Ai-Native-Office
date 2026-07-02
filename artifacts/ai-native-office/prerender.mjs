@@ -18,11 +18,14 @@ const {
   getSitemapXml,
   getLlmsFull,
   assertCitationsValid,
+  assertLaunchPostDateValid,
   meta,
 } = await import(path.join(__dirname, "dist/server/entry-server.js"));
 
 // Fail the build if any inline citation points outside the Works Cited range.
 assertCitationsValid();
+// Fail the build if the launch post's date drifts from the paper's publish date.
+assertLaunchPostDateValid();
 
 const indexPath = path.join(__dirname, "dist/public/index.html");
 let template = readFileSync(indexPath, "utf-8");
