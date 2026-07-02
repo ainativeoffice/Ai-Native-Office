@@ -27,6 +27,73 @@ export interface BlogPost {
  */
 export const blogPosts: BlogPost[] = [
   {
+    slug: "the-tenth-principle-physical-envelope",
+    title: "The 10th Principle: Why Software Sovereignty Dies Without Physical Concrete",
+    date: "2026-07-02",
+    description:
+      "Palantir's nine-point manifesto on AI sovereignty is correct — and incomplete. Software custody ends at the wall. The tenth principle is the physical envelope.",
+    relatedSectionIds: ["architecture", "compliance", "economics"],
+    body: {
+      id: "the-tenth-principle-physical-envelope",
+      title: "The 10th Principle: Why Software Sovereignty Dies Without Physical Concrete",
+      prose: [
+        "On July 1, 2026, Palantir published a nine-point manifesto on AI sovereignty. It is correct on every point it makes. It is also incomplete, because every point it makes stops at the software layer.",
+        "Weights run on silicon. Silicon sits in a building. The building has walls, power, and a shared network riser. Software cryptography cannot protect a perimeter it cannot see. This is the tenth principle, and it is the one the cloud cannot sell you.",
+      ],
+      subsections: [
+        {
+          title: "The Software Thesis Is Correct",
+          prose: [
+            "Palantir's argument is sound. Data retention is the treasure. Weight custody is fate. Renting intelligence from a frontier API is a recurring tax — tokenmaxxing — levied on your most sensitive workflows in perpetuity.",
+            "For regulated institutions — defense, healthcare, quantitative finance — the frontier cloud labs are not a convenience. They are a structural liability. Every inference call ships privileged context across a boundary the tenant does not own, to a model the tenant cannot inspect, under terms the tenant cannot audit. No procurement addendum closes that gap. The delivery model itself creates the exposure.",
+            "On this, the manifesto and this specification agree without reservation.",
+          ],
+        },
+        {
+          title: "The Vulnerability Palantir Does Not Name",
+          prose: [
+            "Then the manifesto stops one layer too high.",
+            "You cannot control your weights if those weights reside on rented hyperscaler hardware. Custody of a model you do not physically possess is a licensing arrangement, not ownership. The kill switch is held by someone else.",
+            "You cannot protect your data if the room leaks. STC-35 drywall passes intelligible speech into the public corridor. A shared telecom riser carries your traffic beside a stranger's. An open-plenum ceiling is an acoustic broadcast antenna. Encryption does not reach the air in the room or the copper in the wall.",
+            "Physical leakage is not a software problem. It cannot be patched. It can only be built out.",
+          ],
+        },
+        {
+          title: "The 10th Principle: The Physical Envelope",
+          prose: [
+            "The tenth principle of AI sovereignty is the physical envelope. True enterprise sovereignty requires hardware custody — the silicon that runs the weights must sit inside a perimeter the tenant owns and controls. Three requirements make the envelope real:",
+          ],
+          list: [
+            {
+              label: "The room as the sensor.",
+              body: "Ambient intelligence is ingested at the edge through zero-egress acoustic capture. Context never leaves the shell to be transcribed. The sensory interface is the architecture, not an API call.",
+            },
+            {
+              label: "Silicon on-premises.",
+              body: "Localized PCIe compute — an NVIDIA L40S-class node — plugged into dedicated 208V power loops. The model runs feet from the people it serves, on power the tenant provisioned.",
+            },
+            {
+              label: "A sealed shell.",
+              body: "Acoustic isolation hardened to STC-55, private risers, and no shared plenum. The perimeter is masonry and copper, not a policy document.",
+            },
+          ],
+          postListProse: [
+            "Cryptography secures the bits. The envelope secures the physics. Sovereignty requires both, or it is not sovereignty.",
+          ],
+        },
+        {
+          title: "Sovereignty Is a Real Estate Asset",
+          prose: [
+            "This reframes sovereignty from an abstract cloud posture into a line item on a balance sheet.",
+            "The AI-Native Office standard, published as open RFC v0.5, specifies how a standard commercial lease becomes a private, value-add data center: the core-and-shell requirements, the acoustic envelope, the reference compute classes, and the tripartite ownership model that keeps operator, landlord, and tenant blind to one another's domain.",
+            "Any enterprise that can sign a Class-A lease can build this. The barrier was never the physics. The barrier was the absence of a standard. The standard now exists, and it is open for comment.",
+            "Stop renting your intelligence. Own the hardware. Secure the masonry.",
+          ],
+        },
+      ],
+    },
+  },
+  {
     slug: "rfc-v0-5-open-for-comment",
     title: "RFC v0.5: The Specification Is Open for Comment",
     date: "2026-07-02",
