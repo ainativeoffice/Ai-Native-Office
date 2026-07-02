@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { content } from "@/content";
+import { SITE_URL } from "@/lib/spec";
 
 /**
  * "Copy the full document for your LLM" control, surfaced beneath the hero.
@@ -27,7 +28,23 @@ const {
   successMessage,
   errorMessage,
   fallbackLabel,
+  openPrompt,
+  openChatGptLabel,
+  openClaudeLabel,
 } = content.llmExport;
+
+/**
+ * Deep links that open the reader's LLM with a prefilled prompt pointing at
+ * the canonical public `llms-full.txt` (the LLM fetches it from the live
+ * site, so this must be the production URL, not a relative path). Plain
+ * SSR-rendered anchors — they work without JS.
+ */
+const LLM_PROMPT = encodeURIComponent(`${openPrompt} ${SITE_URL}/llms-full.txt`);
+
+const LLM_DEEP_LINKS = [
+  { label: openChatGptLabel, href: `https://chatgpt.com/?q=${LLM_PROMPT}` },
+  { label: openClaudeLabel, href: `https://claude.ai/new?q=${LLM_PROMPT}` },
+];
 
 type Status = "idle" | "pending" | "copied" | "error";
 
@@ -103,6 +120,17 @@ export function CopyForLlm() {
         >
           {label}
         </a>
+        {LLM_DEEP_LINKS.map(({ label: linkLabel, href }) => (
+          <a
+            key={href}
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block whitespace-nowrap border border-border px-4 py-3 font-mono text-[10px] sm:text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:border-primary hover:text-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary focus-visible:text-primary"
+          >
+            {linkLabel}
+          </a>
+        ))}
         {status === "copied" && (
           <output role="status" aria-live="polite" className="font-mono text-xs sm:text-sm" style={{ color: "#FF5F1F" }}>
             {successMessage}

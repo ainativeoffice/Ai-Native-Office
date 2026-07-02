@@ -144,6 +144,15 @@ interface LlmExport {
   errorMessage: string;
   /** Label for the visible fallback link to the raw file. */
   fallbackLabel: string;
+  /**
+   * Prefilled prompt for the "open in your LLM" deep links. The canonical
+   * public URL of `llms-full.txt` is appended by the renderer.
+   */
+  openPrompt: string;
+  /** Chip label for the ChatGPT deep link (brutalist `[ … ]` form). */
+  openChatGptLabel: string;
+  /** Chip label for the Claude deep link (brutalist `[ … ]` form). */
+  openClaudeLabel: string;
 }
 
 /** The full page content tree — the single source of truth for all copy. */
@@ -176,6 +185,10 @@ export const content: Content = {
     successMessage: "200 OK: Full specification → clipboard.",
     errorMessage: "ERR: Clipboard access denied.",
     fallbackLabel: "Open raw llms-full.txt",
+    openPrompt:
+      "Read this technical specification and answer my questions about it:",
+    openChatGptLabel: "[ OPEN IN CHATGPT ↗ ]",
+    openClaudeLabel: "[ OPEN IN CLAUDE ↗ ]",
   },
   hero: {
     title: "The Room as the Machine",
