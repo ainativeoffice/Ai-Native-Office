@@ -9,6 +9,7 @@ import { CopyForLlm } from "@/components/CopyForLlm";
 import { SocialLinks } from "@/components/SocialLinks";
 import { ShareLinks } from "@/components/ShareLinks";
 import { AssistantPanel } from "@/components/AssistantPanel";
+import { BackToTop } from "@/components/BackToTop";
 import { parseCitation } from "@/lib/citations";
 import { sectionPages } from "@/lib/sectionPages";
 
@@ -219,7 +220,7 @@ export default function Home() {
                     <span className="shrink-0 text-border group-hover:text-primary/60">
                       {page.appendixLetter}
                     </span>
-                    <span className="truncate underline decoration-border underline-offset-4 group-hover:decoration-primary">
+                    <span className="underline decoration-border underline-offset-4 group-hover:decoration-primary">
                       {page.navLabel}
                     </span>
                   </Link>
@@ -364,6 +365,7 @@ export default function Home() {
         </footer>
       </main>
 
+      <BackToTop />
       <AssistantPanel />
     </div>
   );

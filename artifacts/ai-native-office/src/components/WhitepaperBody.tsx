@@ -195,7 +195,7 @@ const renderPrinciples = (principles: Principle[]) => (
 );
 
 const renderTable = (tableData: Table) => (
-  <div className="w-full overflow-x-auto my-10 font-mono text-xs md:text-sm">
+  <div className="table-scroll w-full overflow-x-auto my-10 font-mono text-xs md:text-sm">
     <table className="w-full border-collapse border border-border text-left">
       <thead>
         <tr className="bg-secondary/30">
