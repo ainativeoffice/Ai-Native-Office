@@ -8,6 +8,11 @@ const {
   render,
   renderSection,
   getSectionPages,
+  renderBlogIndex,
+  renderBlogPost,
+  getBlogPages,
+  blogIndexMeta,
+  getRssXml,
   getSitemapXml,
   getLlmsFull,
   assertCitationsValid,
@@ -133,13 +138,46 @@ for (const page of sectionPages) {
 }
 console.log(`Prerender: wrote ${sectionPages.length} section pages under /sections/.`);
 
-// 3) Sitemap generated from the content tree (dist output + dev copy in public/).
+// 3) The blog: index at /blog/ plus every post at /blog/<slug>/, each with its
+//    own meta + BlogPosting JSON-LD.
+const blogDir = path.join(__dirname, "dist/public/blog");
+mkdirSync(blogDir, { recursive: true });
+writeFileSync(
+  path.join(blogDir, "index.html"),
+  renderPage(
+    template,
+    { title: blogIndexMeta.metaTitle, description: blogIndexMeta.description, url: blogIndexMeta.url },
+    renderBlogIndex(),
+  ),
+);
+const blogPages = getBlogPages();
+for (const post of blogPages) {
+  const outDir = path.join(blogDir, post.slug);
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(
+    path.join(outDir, "index.html"),
+    renderPage(
+      template,
+      { title: post.metaTitle, description: post.description, url: post.url },
+      renderBlogPost(post.slug),
+    ),
+  );
+}
+console.log(`Prerender: wrote /blog/ index + ${blogPages.length} post page(s).`);
+
+// 4) RSS feed generated from the same post registry (dist output + dev copy).
+const rss = getRssXml();
+writeFileSync(path.join(__dirname, "dist/public/rss.xml"), rss);
+writeFileSync(path.join(__dirname, "public/rss.xml"), rss);
+console.log(`Prerender: rss.xml generated with ${blogPages.length} item(s).`);
+
+// 5) Sitemap generated from the content tree (dist output + dev copy in public/).
 const sitemap = getSitemapXml();
 writeFileSync(path.join(__dirname, "dist/public/sitemap.xml"), sitemap);
 writeFileSync(path.join(__dirname, "public/sitemap.xml"), sitemap);
-console.log(`Prerender: sitemap.xml generated with ${sectionPages.length + 1} URLs.`);
+console.log(`Prerender: sitemap.xml generated with ${sectionPages.length + blogPages.length + 2} URLs.`);
 
-// 4) llms-full.txt from the same content tree.
+// 6) llms-full.txt from the same content tree.
 const llmsFull = getLlmsFull();
 writeFileSync(path.join(__dirname, "dist/public/llms-full.txt"), llmsFull);
 writeFileSync(path.join(__dirname, "public/llms-full.txt"), llmsFull);

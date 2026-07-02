@@ -4,6 +4,15 @@ import { content, type ListItem, type Table, type Section } from "./content";
 import { findBrokenCitations, parseCitation } from "./lib/citations";
 import { metaTitle, SITE_NAME, SITE_URL } from "./lib/spec";
 import { sectionPages, getSectionPage } from "./lib/sectionPages";
+import {
+  blogPages,
+  getBlogPage,
+  BLOG_PATH,
+  BLOG_URL,
+  BLOG_TITLE,
+  BLOG_META_TITLE,
+  BLOG_DESCRIPTION,
+} from "./lib/blogPages";
 
 /** Document dates: single source for JSON-LD and the generated sitemap. */
 const DATE_PUBLISHED = "2026-06-16";
@@ -318,19 +327,182 @@ export function renderSection(id: string) {
 }
 
 /**
- * Generated sitemap: `/` plus every section/appendix URL, derived from the
- * content tree at build time (replaces the old hand-written single-entry file).
+ * Generated sitemap: `/`, every section/appendix URL, the blog index, and
+ * every blog post, derived from the content tree at build time.
  */
 export function getSitemapXml(): string {
   const urls = [
-    { loc: `${SITE_URL}/`, priority: "1.0" },
-    ...sectionPages.map((p) => ({ loc: p.url, priority: "0.7" })),
+    { loc: `${SITE_URL}/`, lastmod: DATE_MODIFIED, priority: "1.0" },
+    ...sectionPages.map((p) => ({ loc: p.url, lastmod: DATE_MODIFIED, priority: "0.7" })),
+    { loc: BLOG_URL, lastmod: blogPages[0]?.date ?? DATE_MODIFIED, priority: "0.8" },
+    ...blogPages.map((p) => ({ loc: p.url, lastmod: p.date, priority: "0.7" })),
   ];
   const entries = urls
     .map(
       (u) =>
-        `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${DATE_MODIFIED}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`,
+        `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`,
     )
     .join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`;
+}
+
+/* ------------------------------ Blog (RFC Log) ----------------------------- */
+
+/** BreadcrumbList item helper for blog pages. */
+function blogBreadcrumb(items: { name: string; item: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: it.item,
+    })),
+  };
+}
+
+/** Blog index JSON-LD: BreadcrumbList + a Blog entity listing all posts. */
+function buildBlogIndexJsonLd() {
+  const blog = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: `${SITE_NAME} — ${BLOG_TITLE}`,
+    description: BLOG_DESCRIPTION,
+    url: BLOG_URL,
+    inLanguage: "en",
+    publisher: {
+      ...ORG,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph.jpg` },
+    },
+    blogPost: blogPages.map((p) => ({
+      "@type": "BlogPosting",
+      headline: p.title,
+      url: p.url,
+      datePublished: p.date,
+      description: p.description,
+    })),
+  };
+  return [
+    blogBreadcrumb([
+      { name: SITE_NAME, item: `${SITE_URL}/` },
+      { name: BLOG_TITLE, item: BLOG_URL },
+    ]),
+    blog,
+  ];
+}
+
+/** Per-post JSON-LD: BreadcrumbList + a BlogPosting that isPartOf the blog. */
+function buildBlogPostJsonLd(slug: string) {
+  const page = getBlogPage(slug);
+  if (!page) throw new Error(`buildBlogPostJsonLd: unknown blog slug "${slug}"`);
+  const posting = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: page.title,
+    name: page.title,
+    description: page.description,
+    url: page.url,
+    inLanguage: "en",
+    datePublished: page.date,
+    dateModified: page.date,
+    image: `${SITE_URL}/opengraph.jpg`,
+    author: ORG,
+    publisher: {
+      ...ORG,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph.jpg` },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": page.url },
+    isPartOf: {
+      "@type": "Blog",
+      name: `${SITE_NAME} — ${BLOG_TITLE}`,
+      url: BLOG_URL,
+    },
+  };
+  return [
+    blogBreadcrumb([
+      { name: SITE_NAME, item: `${SITE_URL}/` },
+      { name: BLOG_TITLE, item: BLOG_URL },
+      { name: page.title, item: page.url },
+    ]),
+    posting,
+  ];
+}
+
+const toJsonLdScripts = (objs: object[]) =>
+  objs
+    .map(
+      (obj) =>
+        `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\\u003c")}</script>`,
+    )
+    .join("");
+
+/** Build-time list of blog pages for the multi-route prerender + RSS. */
+export function getBlogPages() {
+  return blogPages.map((p) => ({
+    slug: p.slug,
+    path: p.path,
+    url: p.url,
+    metaTitle: p.metaTitle,
+    description: p.description,
+    date: p.date,
+  }));
+}
+
+/** Build-time meta for the blog index page. */
+export const blogIndexMeta = {
+  path: BLOG_PATH,
+  url: BLOG_URL,
+  metaTitle: BLOG_META_TITLE,
+  description: BLOG_DESCRIPTION,
+};
+
+/** Prerender the blog index route to HTML + its JSON-LD head. */
+export function renderBlogIndex() {
+  const html = renderToString(<App ssrPath={BLOG_PATH} />);
+  return { html, head: toJsonLdScripts(buildBlogIndexJsonLd()) };
+}
+
+/** Prerender one blog post route to HTML + its JSON-LD head. */
+export function renderBlogPost(slug: string) {
+  const page = getBlogPage(slug);
+  if (!page) throw new Error(`renderBlogPost: unknown blog slug "${slug}"`);
+  const html = renderToString(<App ssrPath={page.path} />);
+  return { html, head: toJsonLdScripts(buildBlogPostJsonLd(slug)) };
+}
+
+const escapeXml = (s: string) =>
+  s
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+
+/**
+ * RSS 2.0 feed for the blog, generated at build time from the same post
+ * registry as the pages, sitemap, and JSON-LD. Served at `/rss.xml` and
+ * referenced from every page head via `<link rel="alternate">`.
+ */
+export function getRssXml(): string {
+  const items = blogPages
+    .map((p) => {
+      const pubDate = new Date(`${p.date}T00:00:00Z`).toUTCString();
+      return `    <item>\n      <title>${escapeXml(p.title)}</title>\n      <link>${p.url}</link>\n      <guid isPermaLink="true">${p.url}</guid>\n      <pubDate>${pubDate}</pubDate>\n      <description>${escapeXml(p.description)}</description>\n    </item>`;
+    })
+    .join("\n");
+  const lastBuild = new Date(`${blogPages[0]?.date ?? DATE_MODIFIED}T00:00:00Z`).toUTCString();
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${escapeXml(`${SITE_NAME} — ${BLOG_TITLE}`)}</title>
+    <link>${BLOG_URL}</link>
+    <atom:link href="${SITE_URL}/rss.xml" rel="self" type="application/rss+xml"/>
+    <description>${escapeXml(BLOG_DESCRIPTION)}</description>
+    <language>en</language>
+    <lastBuildDate>${lastBuild}</lastBuildDate>
+${items}
+  </channel>
+</rss>
+`;
 }

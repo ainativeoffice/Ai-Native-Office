@@ -99,6 +99,15 @@ export default function Home() {
               ))}
             </ul>
           </li>
+          <li className="mt-8 border-t border-border pt-8">
+            <Link
+              href="/blog/"
+              className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground/80"
+            >
+              <div className="w-2 h-2 bg-transparent border border-muted" />
+              <span>RFC Log</span>
+            </Link>
+          </li>
         </ul>
       </nav>
 
@@ -294,6 +303,12 @@ export default function Home() {
           </div>
           <div className="flex shrink-0 flex-col md:items-end gap-2">
             <span className="whitespace-nowrap opacity-70">[ Changelog v{content.hero.spec.version} ]</span>
+            <Link
+              href="/blog/"
+              className="whitespace-nowrap opacity-70 hover:opacity-100 hover:text-primary transition-opacity"
+            >
+              [ RFC Log ]
+            </Link>
             {content.footer.links.map((link) =>
               link.disabled ? (
                 <span
