@@ -96,7 +96,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "rfc-v0-5-open-for-comment",
     title: "RFC v0.5: The Specification Is Open for Comment",
-    date: "2026-07-02",
+    date: "2026-06-16",
     description:
       "The AI-Native Office specification is published as a Request for Comment. What v0.5 defines, who it is for, and how to file a comment against the draft.",
     relatedSectionIds: ["ceiling", "architecture", "compliance"],
