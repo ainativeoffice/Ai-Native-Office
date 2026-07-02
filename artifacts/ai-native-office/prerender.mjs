@@ -1,20 +1,24 @@
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const { render, getLlmsFull, assertCitationsValid, meta } = await import(
-  path.join(__dirname, "dist/server/entry-server.js")
-);
+const {
+  render,
+  renderSection,
+  getSectionPages,
+  getSitemapXml,
+  getLlmsFull,
+  assertCitationsValid,
+  meta,
+} = await import(path.join(__dirname, "dist/server/entry-server.js"));
 
 // Fail the build if any inline citation points outside the Works Cited range.
 assertCitationsValid();
 
 const indexPath = path.join(__dirname, "dist/public/index.html");
 let template = readFileSync(indexPath, "utf-8");
-
-const { html, head } = render();
 
 if (!template.includes('<div id="root"></div>')) {
   throw new Error('Prerender failed: could not find <div id="root"></div> in built index.html');
@@ -23,44 +27,49 @@ if (!template.includes("</head>")) {
   throw new Error("Prerender failed: could not find </head> in built index.html");
 }
 
-// Sync the spec-version-aware title across <title>, og:title, twitter:title from
-// the single source of truth (content.hero.spec via entry-server `meta`). The
-// hardcoded strings in index.html are only a dev fallback; prod always rewrites.
-const titleInjections = [
-  { name: "<title>", re: /<title>[\s\S]*?<\/title>/, replacement: `<title>${meta.title}</title>` },
-  {
-    name: "og:title",
-    re: /(<meta property="og:title" content=")[^"]*(")/,
-    replacement: `$1${meta.title}$2`,
-  },
-  {
-    name: "twitter:title",
-    re: /(<meta name="twitter:title" content=")[^"]*(")/,
-    replacement: `$1${meta.title}$2`,
-  },
-];
-for (const { name, re, replacement } of titleInjections) {
-  if (!re.test(template)) {
-    throw new Error(`Prerender failed: could not find ${name} to inject the spec version label.`);
+const escapeAttr = (s) =>
+  s.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+
+/** Replace a meta pattern in `html`, throwing if the pattern is missing. */
+function inject(html, name, re, replacement) {
+  if (!re.test(html)) {
+    throw new Error(`Prerender failed: could not find ${name} to inject.`);
   }
-  template = template.replace(re, replacement);
+  return html.replace(re, replacement);
 }
-console.log(`Prerender: synced title/og:title/twitter:title → "${meta.title}".`);
+
+/** Rewrite the page-identity meta set (title, descriptions, canonical, og:url). */
+function applyPageMeta(html, { title, description, url }) {
+  const t = escapeAttr(title);
+  const d = escapeAttr(description);
+  html = inject(html, "<title>", /<title>[\s\S]*?<\/title>/, `<title>${t}</title>`);
+  html = inject(html, "og:title", /(<meta property="og:title" content=")[^"]*(")/, `$1${t}$2`);
+  html = inject(html, "twitter:title", /(<meta name="twitter:title" content=")[^"]*(")/, `$1${t}$2`);
+  html = inject(html, "description", /(<meta name="description" content=")[^"]*(")/, `$1${d}$2`);
+  html = inject(html, "og:description", /(<meta property="og:description" content=")[^"]*(")/, `$1${d}$2`);
+  html = inject(
+    html,
+    "twitter:description",
+    /(<meta name="twitter:description" content=")[^"]*(")/,
+    `$1${d}$2`,
+  );
+  html = inject(html, "canonical", /(<link rel="canonical" href=")[^"]*(")/, `$1${url}$2`);
+  html = inject(html, "og:url", /(<meta property="og:url" content=")[^"]*(")/, `$1${url}$2`);
+  return html;
+}
 
 // Sync the Twitter handle (twitter:site/creator) from content.footer.social via
 // entry-server `meta`. The hardcoded handle in index.html is only a dev fallback.
 if (!meta.twitterHandle) {
   throw new Error("Prerender failed: meta.twitterHandle is empty (expected an X handle in content.footer.social).");
 }
-const handleInjections = [
-  { name: "twitter:site", re: /(<meta name="twitter:site" content=")[^"]*(")/ },
-  { name: "twitter:creator", re: /(<meta name="twitter:creator" content=")[^"]*(")/ },
-];
-for (const { name, re } of handleInjections) {
-  if (!re.test(template)) {
-    throw new Error(`Prerender failed: could not find ${name} to inject the Twitter handle.`);
-  }
-  template = template.replace(re, `$1${meta.twitterHandle}$2`);
+for (const name of ["twitter:site", "twitter:creator"]) {
+  template = inject(
+    template,
+    name,
+    new RegExp(`(<meta name="${name}" content=")[^"]*(")`),
+    `$1${meta.twitterHandle}$2`,
+  );
 }
 console.log(`Prerender: synced twitter:site/twitter:creator → "${meta.twitterHandle}".`);
 
@@ -85,13 +94,54 @@ if (gaId) {
   console.log("Prerender: GA_MEASUREMENT_ID not set — skipping analytics injection.");
 }
 
-template = template.replace('<div id="root"></div>', `<div id="root">${html}</div>`);
-template = template.replace("</head>", `    ${gaSnippet}${head}\n  </head>`);
+// `template` is now the shared base (handle + GA-ready) for every page.
+const renderPage = (baseHtml, pageMeta, rendered) => {
+  let html = applyPageMeta(baseHtml, pageMeta);
+  html = html.replace('<div id="root"></div>', `<div id="root">${rendered.html}</div>`);
+  html = html.replace("</head>", `    ${gaSnippet}${rendered.head}\n  </head>`);
+  return html;
+};
 
-writeFileSync(indexPath, template);
+// 1) The full manifesto at `/` — unchanged single-page experience.
+const canonicalDesc = template.match(/<meta name="description" content="([^"]*)"/)?.[1];
+if (!canonicalDesc) {
+  throw new Error("Prerender failed: could not read the meta description from index.html.");
+}
+writeFileSync(
+  indexPath,
+  renderPage(
+    template,
+    { title: meta.title, description: canonicalDesc, url: "https://ainativeoffice.org/" },
+    render(),
+  ),
+);
+console.log(`Prerender: wrote / → "${meta.title}".`);
 
+// 2) Every section/appendix at `/sections/<id>/` with its own meta + JSON-LD.
+const sectionPages = getSectionPages();
+for (const page of sectionPages) {
+  const outDir = path.join(__dirname, "dist/public/sections", page.id);
+  mkdirSync(outDir, { recursive: true });
+  writeFileSync(
+    path.join(outDir, "index.html"),
+    renderPage(
+      template,
+      { title: page.metaTitle, description: page.description, url: page.url },
+      renderSection(page.id),
+    ),
+  );
+}
+console.log(`Prerender: wrote ${sectionPages.length} section pages under /sections/.`);
+
+// 3) Sitemap generated from the content tree (dist output + dev copy in public/).
+const sitemap = getSitemapXml();
+writeFileSync(path.join(__dirname, "dist/public/sitemap.xml"), sitemap);
+writeFileSync(path.join(__dirname, "public/sitemap.xml"), sitemap);
+console.log(`Prerender: sitemap.xml generated with ${sectionPages.length + 1} URLs.`);
+
+// 4) llms-full.txt from the same content tree.
 const llmsFull = getLlmsFull();
 writeFileSync(path.join(__dirname, "dist/public/llms-full.txt"), llmsFull);
 writeFileSync(path.join(__dirname, "public/llms-full.txt"), llmsFull);
 
-console.log("Prerender complete: static HTML, JSON-LD, and llms-full.txt written.");
+console.log("Prerender complete: static HTML, JSON-LD, sitemap.xml, and llms-full.txt written.");

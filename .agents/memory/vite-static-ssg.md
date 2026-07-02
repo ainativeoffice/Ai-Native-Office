@@ -32,6 +32,16 @@ To verify content far down the page: grep the built `dist/public/index.html`
 for self-contained SVG figures, rasterize a standalone copy with `magick` and
 view the PNG. Reserve live screenshots for above-the-fold layout.
 
+## Multi-route SSG (per-section pages)
+When adding more prerendered routes: build ONE shared base template first
+(global injections like analytics/social handles), then per page regex-replace
+the identity meta set (`<title>`, description, canonical, `og:url`, og/twitter
+title+description) with HTML-attr-escaped values and write
+`dist/public/<route>/index.html`. Give the router both `/x/:id` and `/x/:id/`
+routes — the prerendered canonical uses a trailing slash and wouter treats them
+as different paths. Generate `sitemap.xml` from the same registry at build time
+(write to both `dist/public/` and `public/` so dev serves it too).
+
 ## OG image without a headless browser
 ImageMagick (`magick`, not the deprecated `convert`) is available in the Replit
 runtime. Author the card as an SVG and rasterize:

@@ -2,7 +2,12 @@ import { renderToString } from "react-dom/server";
 import App from "./App";
 import { content, type ListItem, type Table, type Section } from "./content";
 import { findBrokenCitations, parseCitation } from "./lib/citations";
-import { metaTitle, SITE_URL } from "./lib/spec";
+import { metaTitle, SITE_NAME, SITE_URL } from "./lib/spec";
+import { sectionPages, getSectionPage } from "./lib/sectionPages";
+
+/** Document dates: single source for JSON-LD and the generated sitemap. */
+const DATE_PUBLISHED = "2026-06-16";
+const DATE_MODIFIED = "2026-07-02";
 
 /**
  * Build-time meta values consumed by `prerender.mjs` to inject the
@@ -187,8 +192,8 @@ function buildJsonLd() {
     inLanguage: "en",
     version: content.hero.spec.version,
     creativeWorkStatus: `Draft Specification — ${content.hero.spec.status}`,
-    datePublished: "2026-06-16",
-    dateModified: "2026-06-16",
+    datePublished: DATE_PUBLISHED,
+    dateModified: DATE_MODIFIED,
     image: `${SITE}/opengraph.jpg`,
     author: {
       "@type": "Organization",
@@ -214,4 +219,118 @@ export function render() {
   const jsonLd = JSON.stringify(buildJsonLd()).replace(/</g, "\\u003c");
   const head = `<script type="application/ld+json">${jsonLd}</script>`;
   return { html, head };
+}
+
+const ORG = {
+  "@type": "Organization",
+  name: SITE_NAME,
+  url: SITE_URL,
+  sameAs: content.footer.social.map((s) => s.url),
+};
+
+/**
+ * Per-section JSON-LD: a BreadcrumbList (full paper → section) plus a
+ * TechArticle scoped to the section via `isPartOf` the main document. The
+ * full-document JSON-LD (citation list etc.) is deliberately NOT duplicated
+ * onto section pages — `/` remains the canonical full document.
+ */
+function buildSectionJsonLd(pageId: string) {
+  const page = getSectionPage(pageId);
+  if (!page) throw new Error(`buildSectionJsonLd: unknown section id "${pageId}"`);
+  const displayName = page.isAppendix
+    ? `Appendix ${page.appendixLetter}: ${page.title}`
+    : page.title;
+
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: SITE_NAME,
+        item: `${SITE_URL}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: displayName,
+        item: page.url,
+      },
+    ],
+  };
+
+  const article = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: displayName,
+    name: displayName,
+    description: page.description,
+    url: page.url,
+    inLanguage: "en",
+    version: content.hero.spec.version,
+    datePublished: DATE_PUBLISHED,
+    dateModified: DATE_MODIFIED,
+    image: `${SITE_URL}/opengraph.jpg`,
+    author: ORG,
+    publisher: {
+      ...ORG,
+      logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph.jpg` },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": page.url },
+    isPartOf: {
+      "@type": "TechArticle",
+      headline: content.hero.title,
+      name: SITE_NAME,
+      url: `${SITE_URL}/`,
+    },
+  };
+
+  return [breadcrumb, article];
+}
+
+/**
+ * Build-time list of section pages for the multi-route prerender. Each entry
+ * carries the output path, canonical URL, and per-page meta values.
+ */
+export function getSectionPages() {
+  return sectionPages.map((p) => ({
+    id: p.id,
+    path: p.path,
+    url: p.url,
+    metaTitle: p.metaTitle,
+    description: p.description,
+  }));
+}
+
+/** Prerender one section/appendix route to HTML + its scoped JSON-LD head. */
+export function renderSection(id: string) {
+  const page = getSectionPage(id);
+  if (!page) throw new Error(`renderSection: unknown section id "${id}"`);
+  const html = renderToString(<App ssrPath={page.path} />);
+  const head = buildSectionJsonLd(id)
+    .map(
+      (obj) =>
+        `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\\u003c")}</script>`,
+    )
+    .join("");
+  return { html, head };
+}
+
+/**
+ * Generated sitemap: `/` plus every section/appendix URL, derived from the
+ * content tree at build time (replaces the old hand-written single-entry file).
+ */
+export function getSitemapXml(): string {
+  const urls = [
+    { loc: `${SITE_URL}/`, priority: "1.0" },
+    ...sectionPages.map((p) => ({ loc: p.url, priority: "0.7" })),
+  ];
+  const entries = urls
+    .map(
+      (u) =>
+        `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${DATE_MODIFIED}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`,
+    )
+    .join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`;
 }

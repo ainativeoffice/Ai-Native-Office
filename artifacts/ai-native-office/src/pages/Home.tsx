@@ -1,196 +1,16 @@
 import React from "react";
 import { motion } from "framer-motion";
-import katex from "katex";
-import { content, type ListItem, type Principle, type Table, type ContactBlock } from "@/content";
+import { Link } from "wouter";
+import { content } from "@/content";
 import { useActiveSection } from "@/hooks/use-active-section";
-import { EgressCalculator } from "@/components/EgressCalculator";
-import { Citation, CitationBrackets } from "@/components/Citation";
-import { SideNote, type MarginNote } from "@/components/SideNote";
-import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
+import { SectionBody } from "@/components/WhitepaperBody";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
 import { CopyForLlm } from "@/components/CopyForLlm";
 import { SocialLinks } from "@/components/SocialLinks";
 import { ShareLinks } from "@/components/ShareLinks";
 import { AssistantPanel } from "@/components/AssistantPanel";
-import { getSource, parseCitation, tokenizeCitationGroups } from "@/lib/citations";
-
-const renderText = (text: string) =>
-  tokenizeCitationGroups(text).map((t, i) =>
-    t.type === "text" ? (
-      <React.Fragment key={i}>{t.value}</React.Fragment>
-    ) : (
-      <CitationBrackets key={i} numbers={t.numbers} leadingSpace />
-    ),
-  );
-
-/** KaTeX renders identically on server and client (pure string → HTML), so
- *  `dangerouslySetInnerHTML` is hydration-safe and needs no client-only guard. */
-const MathInline = ({ tex }: { tex: string }) => (
-  <span
-    dangerouslySetInnerHTML={{
-      __html: katex.renderToString(tex, { throwOnError: false, displayMode: false }),
-    }}
-  />
-);
-
-const MathDisplay = ({ tex }: { tex: string }) => (
-  <div
-    className="my-6 overflow-x-auto text-foreground/90"
-    dangerouslySetInnerHTML={{
-      __html: katex.renderToString(tex, { throwOnError: false, displayMode: true }),
-    }}
-  />
-);
-
-/**
- * Render math-bearing prose. A string wrapped in `$$…$$` is a display formula;
- * any other string is a paragraph whose inline `$…$` spans become inline math
- * and whose literal `[n, m]` brackets become interactive citation groups.
- */
-const renderMathProse = (paragraphs: string[]) =>
-  paragraphs.map((p, i) => {
-    const display = p.match(/^\$\$([\s\S]+)\$\$$/);
-    if (display) return <MathDisplay key={i} tex={display[1]} />;
-
-    const nodes: React.ReactNode[] = [];
-    const re = /\$([^$]+)\$|\[(\d{1,2}(?:\s*,\s*\d{1,2})*)\]/g;
-    let last = 0;
-    let m: RegExpExecArray | null;
-    let k = 0;
-    while ((m = re.exec(p)) !== null) {
-      if (m.index > last) nodes.push(p.slice(last, m.index));
-      if (m[1] !== undefined) {
-        nodes.push(<MathInline key={`m${k++}`} tex={m[1]} />);
-      } else {
-        const numbers = m[2].split(",").map((n) => parseInt(n.trim(), 10));
-        nodes.push(<CitationBrackets key={`c${k++}`} numbers={numbers} />);
-      }
-      last = re.lastIndex;
-    }
-    if (last < p.length) nodes.push(p.slice(last));
-
-    return (
-      <p key={i} className="mb-6 leading-relaxed text-foreground/90 font-light text-lg">
-        {nodes}
-      </p>
-    );
-  });
-
-/**
- * Renders a bulleted list. Items are either plain strings or structured
- * `{ label, body }` objects, where `label` is a bold lead-in term (modeled as
- * real structure, not markdown asterisks in the content string).
- */
-const renderList = (items: ListItem[]) => (
-  <ul className="my-8 flex flex-col gap-4 font-mono text-sm border-l border-border pl-6">
-    {items.map((item, i) => (
-      <li
-        key={i}
-        className="text-muted-foreground relative before:content-['>'] before:absolute before:-left-5 before:text-border"
-      >
-        {typeof item === "string" ? (
-          renderText(item)
-        ) : (
-          <>
-            <strong className="font-semibold text-foreground">{renderText(item.label)}</strong>{" "}
-            {renderText(item.body)}
-          </>
-        )}
-      </li>
-    ))}
-  </ul>
-);
-
-/**
- * Tufte-style marginalia, matched verbatim against paragraph text at render time
- * (never annotated in content.ts). Each `match` is a unique substring of the
- * paragraph it should sit beside; the note grounds itself in an existing source.
- */
-const MARGIN_NOTES: MarginNote[] = [];
-
-const findMarginNote = (paragraph: string): MarginNote | undefined =>
-  MARGIN_NOTES.find((n) => paragraph.includes(n.match));
-
-/**
- * Data-driven cross-links from a simplified main section to the appendices that
- * carry its full technical depth. Keyed by section id → appendix ids; the
- * appendix letter (A, B, …) is derived from the appendix's position so it never
- * drifts from the rendered list. Rendered as plain anchors to existing
- * `#appendix-<id>` targets, so they degrade gracefully in the prerendered HTML.
- */
-const SECTION_APPENDIX_LINKS: Record<string, string[]> = {
-  economics: ["egress"],
-  architecture: ["sensory", "enclave"],
-  compliance: ["flywheel"],
-};
-
-const appendixIndexById = new Map(content.appendices.map((a, i) => [a.id, i]));
-
-interface AppendixLink {
-  id: string;
-  letter: string;
-  label: string;
-}
-
-const resolveAppendixLinks = (sectionId: string): AppendixLink[] =>
-  (SECTION_APPENDIX_LINKS[sectionId] ?? []).flatMap((id) => {
-    const idx = appendixIndexById.get(id);
-    if (idx === undefined) return [];
-    return [
-      {
-        id,
-        letter: String.fromCharCode(65 + idx),
-        label: content.appendices[idx].title.split(":")[0],
-      },
-    ];
-  });
-
-/**
- * Small, in-aesthetic "See Appendix X" links connecting a main section to its
- * supporting appendices. Plain anchors → no JS required.
- */
-const renderAppendixLinks = (links: AppendixLink[]) =>
-  links.length === 0 ? null : (
-    <div className="no-print mt-10 flex flex-wrap items-center gap-3 border-t border-border pt-6 font-mono text-[11px] uppercase tracking-widest">
-      <span className="text-border">{"// full technical detail"}</span>
-      {links.map((a) => (
-        <a
-          key={a.id}
-          href={`#appendix-${a.id}`}
-          className="border border-border px-3 py-2 text-muted-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
-        >
-          See Appendix {a.letter} — {a.label} ↗
-        </a>
-      ))}
-    </div>
-  );
-
-/**
- * Renders a set of principle callouts. Each entry is `{ label?, body }`, where
- * `label` is an optional bold lead-in term (modeled as structure, not markdown).
- * Given a distinct left-border / mono treatment to read as a tenet block.
- */
-const renderPrinciples = (principles: Principle[]) => (
-  <div className="my-10 flex flex-col gap-6">
-    {principles.map((p, i) => (
-      <blockquote
-        key={i}
-        className="border-l-2 border-primary bg-card/40 py-3 pl-6 pr-4 font-mono text-sm leading-relaxed text-muted-foreground"
-      >
-        {p.label ? (
-          <>
-            <strong className="font-semibold uppercase tracking-wider text-foreground">
-              {renderText(p.label)}
-            </strong>{" "}
-            {renderText(p.body)}
-          </>
-        ) : (
-          renderText(p.body)
-        )}
-      </blockquote>
-    ))}
-  </div>
-);
+import { parseCitation } from "@/lib/citations";
+import { sectionPages } from "@/lib/sectionPages";
 
 export default function Home() {
   const appendixNav = content.appendices.map((a, idx) => ({
@@ -207,85 +27,8 @@ export default function Home() {
   const activeId = useActiveSection(sectionIds);
   const isAppendixActive = activeId === "appendices" || activeId.startsWith("appendix-");
 
-  const renderTable = (tableData: Table) => {
-    return (
-      <div className="w-full overflow-x-auto my-10 font-mono text-xs md:text-sm">
-        <table className="w-full border-collapse border border-border text-left">
-          <thead>
-            <tr className="bg-secondary/30">
-              {tableData.headers.map((h: string, i: number) => (
-                <th key={i} className="border border-border p-3 font-semibold uppercase tracking-wider text-muted-foreground">
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.rows.map((row: string[], i: number) => (
-              <tr key={i} className="hover:bg-card/50 transition-colors">
-                {row.map((cell: string, j: number) => {
-                  const num = /^\d{1,2}$/.test(cell) ? parseInt(cell, 10) : NaN;
-                  const isSourceNote = !Number.isNaN(num) && getSource(num) !== null;
-                  return (
-                    <td key={j} className="border border-border p-3">
-                      {isSourceNote ? <Citation number={num} /> : cell}
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
-  const renderProse = (paragraphs: string[]) => {
-    return paragraphs.map((p, i) => {
-      const note = findMarginNote(p);
-      return (
-        <p key={i} className="mb-6 leading-relaxed text-foreground/90 font-light text-lg">
-          {renderText(p)}
-          {note && (
-            <SideNote id={note.id} label={note.label} note={note.note} source={note.source} />
-          )}
-        </p>
-      );
-    });
-  };
-
-  const renderCode = (block: { caption?: string; code: string }) => (
-    <figure className="my-8">
-      <pre className="overflow-x-auto rounded-none border border-border bg-[hsl(0_0%_2%)] p-5 font-mono text-xs leading-relaxed text-foreground/85">
-        <code>{block.code}</code>
-      </pre>
-      {block.caption && (
-        <figcaption className="mt-3 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground">
-          {block.caption}
-        </figcaption>
-      )}
-    </figure>
-  );
-
-  const renderBlocks = (blocks: ContactBlock[]) =>
-    blocks.map((b, bi) => (
-      <div key={bi} className="mt-8">
-        {b.label && (
-          <h4 className="mb-3 font-serif text-xl font-semibold text-foreground/90">
-            {renderText(b.label)}
-          </h4>
-        )}
-        {b.prose && renderProse(b.prose)}
-        {b.list && renderList(b.list)}
-        {b.lines && (
-          <div className="font-mono text-sm leading-relaxed text-muted-foreground space-y-1">
-            {b.lines.map((line: string, i: number) => (
-              <div key={i}>{renderText(line)}</div>
-            ))}
-          </div>
-        )}
-      </div>
-    ));
+  const tocSections = sectionPages.filter((p) => !p.isAppendix);
+  const tocAppendices = sectionPages.filter((p) => p.isAppendix);
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground flex flex-col md:flex-row selection:bg-primary selection:text-primary-foreground">
@@ -408,6 +151,49 @@ export default function Home() {
           </p>
         </section>
 
+        {/* Table of contents — crawlable links to the standalone section pages */}
+        <nav aria-label="Contents" className="no-print mb-24 border border-border">
+          <div className="border-b border-border px-6 py-4 font-mono text-sm font-bold uppercase tracking-[0.3em] text-foreground">
+            Contents
+          </div>
+          <div className="grid gap-x-12 gap-y-8 p-6 md:grid-cols-2">
+            <ol className="flex flex-col gap-3 font-mono text-xs uppercase tracking-wider">
+              {tocSections.map((page, i) => (
+                <li key={page.id}>
+                  <Link
+                    href={page.path}
+                    className="group flex items-baseline gap-3 text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    <span className="shrink-0 text-border group-hover:text-primary/60">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="underline decoration-border underline-offset-4 group-hover:decoration-primary">
+                      {page.navLabel}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+            <ol className="flex flex-col gap-3 font-mono text-xs tracking-wider">
+              {tocAppendices.map((page) => (
+                <li key={page.id}>
+                  <Link
+                    href={page.path}
+                    className="group flex items-baseline gap-3 text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    <span className="shrink-0 text-border group-hover:text-primary/60">
+                      {page.appendixLetter}
+                    </span>
+                    <span className="truncate underline decoration-border underline-offset-4 group-hover:decoration-primary">
+                      {page.navLabel}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </nav>
+
         {/* Sections */}
         <div className="flex flex-col gap-24">
           {content.sections.map((section) => (
@@ -424,48 +210,11 @@ export default function Home() {
                 {section.title}
               </h2>
               
-              <div className="prose-container">
-                {renderProse(section.prose)}
-
-                {section.id === "for" && <EgressCalculator />}
-
-                {section.list && renderList(section.list)}
-
-                {section.postListProse && renderProse(section.postListProse)}
-
-                {section.id === "architecture" && <ArchitectureBlueprint />}
-
-                {section.subsections?.map((sub, sIdx) => (
-                  <div key={sIdx} className="mt-16">
-                    <h3 className="text-2xl font-serif font-semibold mb-6 text-foreground/90">
-                      {sub.title}
-                    </h3>
-                    {renderProse(sub.prose)}
-
-                    {sub.mathProse && renderMathProse(sub.mathProse)}
-
-                    {sub.code && renderCode(sub.code)}
-
-                    {sub.principles && renderPrinciples(sub.principles)}
-
-                    {sub.tableData && renderTable(sub.tableData)}
-                    
-                    {sub.postTableProse && renderProse(sub.postTableProse)}
-                    
-                    {sub.list && renderList(sub.list)}
-
-                    {sub.blocks && renderBlocks(sub.blocks)}
-
-                    {sub.postListProse && renderProse(sub.postListProse)}
-
-                    {sub.closing && (
-                      <p className="mt-6 font-serif italic text-foreground/80">{renderText(sub.closing)}</p>
-                    )}
-                  </div>
-                ))}
-
-                {renderAppendixLinks(resolveAppendixLinks(section.id))}
-              </div>
+              <SectionBody
+                section={section}
+                subheading="h3"
+                appendixHref={(id) => `#appendix-${id}`}
+              />
             </motion.section>
           ))}
 
@@ -511,7 +260,7 @@ export default function Home() {
               technically-minded readers and crawlers.
             </p>
             <div className="flex flex-col gap-24">
-              {content.appendices.map((appendix: any, idx: number) => (
+              {content.appendices.map((appendix, idx) => (
                 <section
                   key={appendix.id}
                   id={`appendix-${appendix.id}`}
@@ -523,42 +272,7 @@ export default function Home() {
                   <h3 className="text-2xl md:text-3xl font-serif font-bold mb-8 text-primary">
                     {appendix.title}
                   </h3>
-                  <div className="prose-container">
-                    {renderProse(appendix.prose)}
-
-                    {appendix.list && renderList(appendix.list)}
-
-                    {appendix.postListProse && renderProse(appendix.postListProse)}
-
-                    {appendix.subsections?.map((sub: any, sIdx: number) => (
-                      <div key={sIdx} className="mt-16">
-                        <h4 className="text-xl font-serif font-semibold mb-6 text-foreground/90">
-                          {sub.title}
-                        </h4>
-                        {renderProse(sub.prose)}
-
-                        {sub.mathProse && renderMathProse(sub.mathProse)}
-
-                        {sub.code && renderCode(sub.code)}
-
-                        {sub.principles && renderPrinciples(sub.principles)}
-
-                        {sub.tableData && renderTable(sub.tableData)}
-
-                        {sub.postTableProse && renderProse(sub.postTableProse)}
-
-                        {sub.list && renderList(sub.list)}
-
-                        {sub.blocks && renderBlocks(sub.blocks)}
-
-                        {sub.postListProse && renderProse(sub.postListProse)}
-
-                        {sub.closing && (
-                          <p className="mt-6 font-serif italic text-foreground/80">{renderText(sub.closing)}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                  <SectionBody section={appendix} subheading="h4" />
                 </section>
               ))}
             </div>
