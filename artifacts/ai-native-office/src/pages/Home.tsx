@@ -26,6 +26,8 @@ export default function Home() {
   ];
   const activeId = useActiveSection(sectionIds);
   const isAppendixActive = activeId === "appendices" || activeId.startsWith("appendix-");
+  const [appendixOpen, setAppendixOpen] = React.useState(false);
+  const appendixExpanded = isAppendixActive || appendixOpen;
 
   const tocSections = sectionPages.filter((p) => !p.isAppendix);
   const tocAppendices = sectionPages.filter((p) => p.isAppendix);
@@ -34,19 +36,19 @@ export default function Home() {
     <div className="min-h-[100dvh] bg-background text-foreground flex flex-col md:flex-row selection:bg-primary selection:text-primary-foreground">
       
       {/* Sidebar Navigation */}
-      <nav className="no-print hidden md:block w-72 shrink-0 border-r border-border p-8 sticky top-0 h-[100dvh] overflow-y-auto">
-        <button
-          type="button"
-          onClick={() => window.print()}
-          className="mb-10 w-full border border-border px-4 py-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground transition-colors hover:bg-primary hover:text-primary-foreground hover:border-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
-        >
-          [ Download as Whitepaper / PDF ]
-        </button>
-        <div className="mb-12">
+      <nav className="no-print hidden md:flex md:flex-col w-72 shrink-0 border-r border-border p-6 sticky top-0 h-[100dvh] overflow-y-auto">
+        <div className="mb-6">
           <div className="text-xl font-serif font-bold tracking-tight text-primary">ai-native-office</div>
-          <div className="text-xs font-mono uppercase tracking-widest text-muted-foreground mt-2 border-t border-border pt-2">Draft Spec v{content.hero.spec.version} · {content.hero.spec.status}</div>
+          <div className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground mt-2 border-t border-border pt-2">Draft Spec v{content.hero.spec.version} · {content.hero.spec.status}</div>
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="mt-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:text-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
+          >
+            [ Download / PDF ]
+          </button>
         </div>
-        <ul className="flex flex-col gap-4 font-mono text-xs uppercase tracking-wider">
+        <ul className="flex flex-col gap-3 font-mono text-xs uppercase tracking-wider">
           {content.sections.map((section) => (
             <li key={section.id}>
               <a 
@@ -60,7 +62,7 @@ export default function Home() {
               </a>
             </li>
           ))}
-          <li className="mt-8 border-t border-border pt-8">
+          <li className="mt-5 border-t border-border pt-5">
             <a 
               href="#works-cited" 
               className={`flex items-center gap-3 transition-colors ${
@@ -72,34 +74,49 @@ export default function Home() {
             </a>
           </li>
           <li>
-            <a
-              href="#appendices"
-              className={`flex items-center gap-3 transition-colors ${
-                isAppendixActive ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
-              }`}
-            >
-              <div className={`w-2 h-2 ${isAppendixActive ? "bg-primary" : "bg-transparent border border-muted"}`} />
-              <span>Appendices</span>
-            </a>
-            <ul className="mt-3 ml-[3px] flex flex-col gap-3 border-l border-border pl-4">
-              {appendixNav.map((appendix) => (
-                <li key={appendix.id}>
-                  <a
-                    href={`#${appendix.id}`}
-                    className={`flex items-center gap-2 transition-colors ${
-                      activeId === appendix.id ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
-                    }`}
-                  >
-                    <span className={`shrink-0 ${activeId === appendix.id ? "text-primary" : "text-muted-foreground/60"}`}>
-                      {appendix.letter}
-                    </span>
-                    <span className="truncate normal-case tracking-normal">{appendix.label}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <div className="flex items-center gap-3">
+              <a
+                href="#appendices"
+                onClick={() => setAppendixOpen(true)}
+                className={`flex flex-1 items-center gap-3 transition-colors ${
+                  isAppendixActive ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
+                }`}
+              >
+                <div className={`w-2 h-2 ${isAppendixActive ? "bg-primary" : "bg-transparent border border-muted"}`} />
+                <span>Appendices</span>
+              </a>
+              <button
+                type="button"
+                aria-expanded={appendixExpanded}
+                aria-controls="appendix-sublist"
+                aria-label={appendixExpanded ? "Collapse appendices" : "Expand appendices"}
+                onClick={() => setAppendixOpen((v) => !v)}
+                className="shrink-0 px-1 leading-none text-muted-foreground transition-colors hover:text-foreground/80 focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
+              >
+                {appendixExpanded ? "−" : "+"}
+              </button>
+            </div>
+            {appendixExpanded && (
+              <ul id="appendix-sublist" className="mt-2 ml-[3px] flex flex-col gap-2 border-l border-border pl-4">
+                {appendixNav.map((appendix) => (
+                  <li key={appendix.id}>
+                    <a
+                      href={`#${appendix.id}`}
+                      className={`flex items-center gap-2 transition-colors ${
+                        activeId === appendix.id ? "text-primary font-bold" : "text-muted-foreground hover:text-foreground/80"
+                      }`}
+                    >
+                      <span className={`shrink-0 ${activeId === appendix.id ? "text-primary" : "text-muted-foreground/60"}`}>
+                        {appendix.letter}
+                      </span>
+                      <span className="truncate normal-case tracking-normal">{appendix.label}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
-          <li className="mt-8 border-t border-border pt-8">
+          <li className="mt-5 border-t border-border pt-5">
             <Link
               href="/blog/"
               className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground/80"
@@ -108,7 +125,7 @@ export default function Home() {
               <span>RFC Log</span>
             </Link>
           </li>
-          <li className="mt-4">
+          <li className="mt-3">
             <Link
               href="/signals/"
               className="flex items-center gap-3 text-muted-foreground transition-colors hover:text-foreground/80"
