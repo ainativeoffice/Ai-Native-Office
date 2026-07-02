@@ -26,7 +26,7 @@ if (!basePath) {
   );
 }
 
-export default defineConfig({
+export default defineConfig(async ({ isSsrBuild }) => ({
   base: basePath,
   plugins: [
     react(),
@@ -57,6 +57,27 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
+    // Split heavy vendors out of the main bundle so no chunk exceeds the
+    // 500 kB warning threshold. Client build only — the SSR build inlines
+    // dynamic imports into a single file and must not use manualChunks.
+    ...(isSsrBuild
+      ? {}
+      : {
+          rollupOptions: {
+            output: {
+              manualChunks(id: string) {
+                if (!id.includes("node_modules")) return undefined;
+                if (id.includes("/katex/")) return "katex";
+                if (
+                  /\/node_modules\/(react|react-dom|scheduler)\//.test(id)
+                ) {
+                  return "react-vendor";
+                }
+                return undefined;
+              },
+            },
+          },
+        }),
   },
   server: {
     port,
@@ -72,4 +93,4 @@ export default defineConfig({
     host: "0.0.0.0",
     allowedHosts: true,
   },
-});
+}));
