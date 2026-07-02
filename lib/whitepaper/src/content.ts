@@ -153,6 +153,8 @@ interface LlmExport {
   openChatGptLabel: string;
   /** Chip label for the Claude deep link (brutalist `[ … ]` form). */
   openClaudeLabel: string;
+  /** Chip label for the Perplexity deep link (brutalist `[ … ]` form). */
+  openPerplexityLabel: string;
 }
 
 /** The full page content tree — the single source of truth for all copy. */
@@ -189,6 +191,7 @@ export const content: Content = {
       "Read this technical specification and answer my questions about it:",
     openChatGptLabel: "[ OPEN IN CHATGPT ↗ ]",
     openClaudeLabel: "[ OPEN IN CLAUDE ↗ ]",
+    openPerplexityLabel: "[ OPEN IN PERPLEXITY ↗ ]",
   },
   hero: {
     title: "The Room as the Machine",

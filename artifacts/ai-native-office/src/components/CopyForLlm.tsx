@@ -32,6 +32,7 @@ const {
   openPrompt,
   openChatGptLabel,
   openClaudeLabel,
+  openPerplexityLabel,
 } = content.llmExport;
 
 /**
@@ -39,12 +40,21 @@ const {
  * the canonical public `llms-full.txt` (the LLM fetches it from the live
  * site, so this must be the production URL, not a relative path). Plain
  * SSR-rendered anchors — they work without JS.
+ *
+ * Only providers with a verified native prefill URL are listed. Gemini is
+ * deliberately absent: gemini.google.com ignores `?q=`/`?prompt=` (prefill
+ * only works via browser extensions), so a chip would open an empty chat.
  */
 const LLM_PROMPT = encodeURIComponent(`${openPrompt} ${SITE_URL}/llms-full.txt`);
 
 const LLM_DEEP_LINKS = [
   { provider: "chatgpt", label: openChatGptLabel, href: `https://chatgpt.com/?q=${LLM_PROMPT}` },
   { provider: "claude", label: openClaudeLabel, href: `https://claude.ai/new?q=${LLM_PROMPT}` },
+  {
+    provider: "perplexity",
+    label: openPerplexityLabel,
+    href: `https://www.perplexity.ai/search?q=${LLM_PROMPT}`,
+  },
 ];
 
 type Status = "idle" | "pending" | "copied" | "error";
