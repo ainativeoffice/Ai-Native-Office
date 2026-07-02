@@ -432,7 +432,7 @@ function buildBlogIndexJsonLd() {
 }
 
 /** Per-post JSON-LD: BreadcrumbList + a BlogPosting that isPartOf the blog. */
-function buildBlogPostJsonLd(slug: string) {
+function buildBlogPostJsonLd(slug: string, ogImageUrl?: string) {
   const page = getBlogPage(slug);
   if (!page) throw new Error(`buildBlogPostJsonLd: unknown blog slug "${slug}"`);
   const posting = {
@@ -445,7 +445,7 @@ function buildBlogPostJsonLd(slug: string) {
     inLanguage: "en",
     datePublished: page.date,
     dateModified: page.date,
-    image: `${SITE_URL}/opengraph.jpg`,
+    image: ogImageUrl ?? `${SITE_URL}/opengraph.jpg`,
     author: ORG,
     publisher: {
       ...ORG,
@@ -482,9 +482,12 @@ export function getBlogPages() {
     slug: p.slug,
     path: p.path,
     url: p.url,
+    title: p.title,
     metaTitle: p.metaTitle,
     description: p.description,
     date: p.date,
+    ogImagePath: p.ogImagePath,
+    ogImageUrl: p.ogImageUrl,
   }));
 }
 
@@ -502,12 +505,16 @@ export function renderBlogIndex() {
   return { html, head: toJsonLdScripts(buildBlogIndexJsonLd()) };
 }
 
-/** Prerender one blog post route to HTML + its JSON-LD head. */
-export function renderBlogPost(slug: string) {
+/**
+ * Prerender one blog post route to HTML + its JSON-LD head. `ogImageUrl` is
+ * the per-post OG card URL when the card exists in the build output; when
+ * omitted, the JSON-LD image falls back to the site-wide card.
+ */
+export function renderBlogPost(slug: string, ogImageUrl?: string) {
   const page = getBlogPage(slug);
   if (!page) throw new Error(`renderBlogPost: unknown blog slug "${slug}"`);
   const html = renderToString(<App ssrPath={page.path} />);
-  return { html, head: toJsonLdScripts(buildBlogPostJsonLd(slug)) };
+  return { html, head: toJsonLdScripts(buildBlogPostJsonLd(slug, ogImageUrl)) };
 }
 
 /* ------------------------------ Signal Log -------------------------------- */
