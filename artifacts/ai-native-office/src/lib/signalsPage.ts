@@ -38,24 +38,21 @@ export function signalEntryUrl(entry: SignalEntry): string {
 export function assertSignalsValid(): void {
   const seen = new Set<number>();
   let prevNumber = Infinity;
-  let prevDate = "9999-12-31";
   for (const entry of signalEntries) {
     if (seen.has(entry.number)) {
       throw new Error(`Signal Log: duplicate entry number ${signalNumber(entry.number)}`);
     }
     seen.add(entry.number);
+    // Ledger numbers are assigned in logging order and are the permanent
+    // ordering invariant. Event dates are NOT required to be monotonic:
+    // an event can be logged after a more recent event was (e.g. // 006,
+    // dated 2026-06-25, was logged after // 005, dated 2026-06-30).
     if (entry.number > prevNumber) {
       throw new Error(
         `Signal Log: entries must be newest-first — ${signalDesignation(entry)} appears after ${signalNumber(prevNumber)}`,
       );
     }
-    if (entry.date > prevDate) {
-      throw new Error(
-        `Signal Log: entries must be newest-first by date — ${signalDesignation(entry)} (${entry.date}) appears after ${prevDate}`,
-      );
-    }
     prevNumber = entry.number;
-    prevDate = entry.date;
     if (!/^\d{4}-\d{2}-\d{2}$/.test(entry.date)) {
       throw new Error(`Signal Log: ${signalDesignation(entry)} has a non-ISO date "${entry.date}"`);
     }

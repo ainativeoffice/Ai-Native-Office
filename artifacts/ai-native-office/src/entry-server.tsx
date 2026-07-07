@@ -424,7 +424,15 @@ export function getSitemapXml(): string {
     ...sectionPages.map((p) => ({ loc: p.url, lastmod: DATE_MODIFIED, priority: "0.7" })),
     { loc: BLOG_URL, lastmod: blogPages[0]?.date ?? DATE_MODIFIED, priority: "0.8" },
     ...blogPages.map((p) => ({ loc: p.url, lastmod: p.date, priority: "0.7" })),
-    { loc: SIGNALS_URL, lastmod: signalEntries[0]?.date ?? DATE_MODIFIED, priority: "0.8" },
+    // Max entry date, not the first entry's: entry numbers are the ledger
+    // order and event dates may be non-monotonic, so [0] isn't always newest.
+    {
+      loc: SIGNALS_URL,
+      lastmod: signalEntries.length
+        ? latestIsoDate(signalEntries.map((e) => e.date))
+        : DATE_MODIFIED,
+      priority: "0.8",
+    },
   ];
   const entries = urls
     .map(

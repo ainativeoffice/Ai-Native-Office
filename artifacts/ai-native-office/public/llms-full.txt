@@ -606,6 +606,41 @@ The evidence ledger for the AI-Native Office specification: a dated, numbered lo
 
 Canonical ledger: https://ainativeoffice.org/signals/ (each entry has a permanent anchor).
 
+## EVIDENCE LOG // 008 — 2026-07-06 — Fujitsu: 50% of enterprise AI inference workloads to execute locally by 2026
+
+Permalink: https://ainativeoffice.org/signals/#log-008
+
+Market projections by Fujitsu indicate a massive shift toward on-premises infrastructure to avoid the "Cloud Egress Trap." The report forecasts that by 2026, half of all enterprise AI inference workloads will execute entirely locally, and by 2028, 60% of multinational firms will distribute their AI stacks across sovereign zones. This validates the fundamental economic and compliance drivers for maintaining an immutable audit trail on local hardware rather than relying on standard hyperscaler topologies.
+
+Sources:
+- Fujitsu Impact Series — Sovereign AI in the enterprise: Compliance and control in multi-cloud: https://mkt-europe.global.fujitsu.com/FujitsuImpactSeries/AI-Sovereignty
+
+Validates: https://ainativeoffice.org/sections/economics/, https://ainativeoffice.org/sections/compliance/
+
+## EVIDENCE LOG // 007 — 2026-07-01 — SenseNova releases localized Agent OS models for full-loop office productivity
+
+Permalink: https://ainativeoffice.org/signals/#log-007
+
+The open-source and local-compute communities established a new baseline for the AI-Native Office with the release of the SenseNova 6.7 Flash and U1 localized architectures. Bundled into client interfaces like Raccoon, these models plug directly into agent runtimes to execute multi-file data analysis, formal reporting, and autonomous infographic generation entirely locally. This establishes a new operational paradigm: cloud models are reserved for specific heavy reasoning, while the local Agent OS securely observes context and executes enterprise tasks natively.
+
+Sources:
+- GitHub — Modular SenseNova skills for building AI-powered office assistants: https://github.com/OpenSenseNova/SenseNova-Skills
+- GitHub — SenseNova 6.7 Flash-Lite: https://github.com/OpenSenseNova/SenseNova6.7
+
+Validates: https://ainativeoffice.org/sections/architecture/, https://ainativeoffice.org/sections/ceiling/
+
+## EVIDENCE LOG // 006 — 2026-06-25 — Serial entrepreneur allocates $30M to Neo, an AI-native enterprise platform
+
+Permalink: https://ainativeoffice.org/signals/#log-006
+
+Validating the premise that legacy office suites must be structurally rebuilt rather than retrofitted, serial entrepreneur Bhavin Turakhia invested $30 million of personal capital into "Neo." Operating as a model-agnostic, AI-first alternative designed to directly challenge legacy incumbents, Neo highlights the market shift from "prompt engineering" to "Context Engineering." This capital allocation underscores the growing enterprise conviction that knowledge work requires platforms built natively for continuous, autonomous orchestration.
+
+Sources:
+- Apple Podcasts — Bhavin Turakhia's $30M Bet on Neo: AI-Native Office Suite: https://podcasts.apple.com/us/podcast/bhavin-turakhias-%2430m-bet-on-neo-ai-native-office-suite/id1888321433?i=1000775222294&l=vi
+- Windows Forum — Neo by Bhavin Turakhia: AI-Native Office Suite Built on Agent Architecture: https://windowsforum.com/threads/neo-by-bhavin-turakhia-ai-native-office-suite-built-on-agent-architecture.433258/
+
+Validates: https://ainativeoffice.org/sections/economics/, https://ainativeoffice.org/sections/ceiling/
+
 ## EVIDENCE LOG // 005 — 2026-06-30 — Palantir and NVIDIA put Nemotron open models inside sovereign environments
 
 Permalink: https://ainativeoffice.org/signals/#log-005

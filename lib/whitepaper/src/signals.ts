@@ -61,9 +61,58 @@ export function signalDesignation(entry: Pick<SignalEntry, "number">): string {
 
 /**
  * All entries, newest first (render order for the page, llms-full.txt, and
- * any feed). Numbers are chronological, so the array is descending by number.
+ * any feed). Numbers are assigned in logging order, so the array is descending
+ * by number; event dates may be non-monotonic (an event can be logged after a
+ * more recent event was — e.g. // 006 is dated before // 005).
  */
 export const signalLog: SignalEntry[] = [
+  {
+    number: 8,
+    date: "2026-07-06",
+    headline: "Fujitsu: 50% of enterprise AI inference workloads to execute locally by 2026",
+    body: "Market projections by Fujitsu indicate a massive shift toward on-premises infrastructure to avoid the \"Cloud Egress Trap.\" The report forecasts that by 2026, half of all enterprise AI inference workloads will execute entirely locally, and by 2028, 60% of multinational firms will distribute their AI stacks across sovereign zones. This validates the fundamental economic and compliance drivers for maintaining an immutable audit trail on local hardware rather than relying on standard hyperscaler topologies.",
+    sources: [
+      {
+        label: "Fujitsu Impact Series — Sovereign AI in the enterprise: Compliance and control in multi-cloud",
+        url: "https://mkt-europe.global.fujitsu.com/FujitsuImpactSeries/AI-Sovereignty",
+      },
+    ],
+    validatesSectionIds: ["economics", "compliance"],
+  },
+  {
+    number: 7,
+    date: "2026-07-01",
+    headline: "SenseNova releases localized Agent OS models for full-loop office productivity",
+    body: "The open-source and local-compute communities established a new baseline for the AI-Native Office with the release of the SenseNova 6.7 Flash and U1 localized architectures. Bundled into client interfaces like Raccoon, these models plug directly into agent runtimes to execute multi-file data analysis, formal reporting, and autonomous infographic generation entirely locally. This establishes a new operational paradigm: cloud models are reserved for specific heavy reasoning, while the local Agent OS securely observes context and executes enterprise tasks natively.",
+    sources: [
+      {
+        label: "GitHub — Modular SenseNova skills for building AI-powered office assistants",
+        url: "https://github.com/OpenSenseNova/SenseNova-Skills",
+      },
+      {
+        label: "GitHub — SenseNova 6.7 Flash-Lite",
+        url: "https://github.com/OpenSenseNova/SenseNova6.7",
+      },
+    ],
+    validatesSectionIds: ["architecture", "ceiling"],
+  },
+  {
+    number: 6,
+    date: "2026-06-25",
+    headline: "Serial entrepreneur allocates $30M to Neo, an AI-native enterprise platform",
+    body: "Validating the premise that legacy office suites must be structurally rebuilt rather than retrofitted, serial entrepreneur Bhavin Turakhia invested $30 million of personal capital into \"Neo.\" Operating as a model-agnostic, AI-first alternative designed to directly challenge legacy incumbents, Neo highlights the market shift from \"prompt engineering\" to \"Context Engineering.\" This capital allocation underscores the growing enterprise conviction that knowledge work requires platforms built natively for continuous, autonomous orchestration.",
+    sources: [
+      {
+        label: "Apple Podcasts — Bhavin Turakhia's $30M Bet on Neo: AI-Native Office Suite",
+        url: "https://podcasts.apple.com/us/podcast/bhavin-turakhias-%2430m-bet-on-neo-ai-native-office-suite/id1888321433?i=1000775222294&l=vi",
+      },
+      {
+        label: "Windows Forum — Neo by Bhavin Turakhia: AI-Native Office Suite Built on Agent Architecture",
+        url: "https://windowsforum.com/threads/neo-by-bhavin-turakhia-ai-native-office-suite-built-on-agent-architecture.433258/",
+      },
+    ],
+    validatesSectionIds: ["economics", "ceiling"],
+  },
   {
     number: 5,
     date: "2026-06-30",
