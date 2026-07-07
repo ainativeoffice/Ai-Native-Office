@@ -15,10 +15,38 @@ import { getSource, tokenizeCitationGroups } from "@/lib/citations";
  * hover-cards behave identically on both surfaces.
  */
 
+/** Inline emphasis spans: `**bold**` or `*italic*` (no nesting, no line breaks). */
+const EMPHASIS = /(\*\*[^*\n]+\*\*|\*[^*\s][^*\n]*\*)/g;
+
+/**
+ * Minimal inline-markdown emphasis for verbatim copy: `**…**` → <strong>,
+ * `*…*` → <em>. Applied only to plain-text segments (after citation
+ * tokenization), so markers can never span a citation boundary. Content
+ * strings contain no other literal asterisks, so unmatched text passes
+ * through untouched.
+ */
+const renderEmphasis = (text: string): React.ReactNode => {
+  const parts = text.split(EMPHASIS);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+      return (
+        <strong key={i} className="font-semibold text-foreground">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
+      return <em key={i}>{part.slice(1, -1)}</em>;
+    }
+    return <React.Fragment key={i}>{part}</React.Fragment>;
+  });
+};
+
 export const renderText = (text: string) =>
   tokenizeCitationGroups(text).map((t, i) =>
     t.type === "text" ? (
-      <React.Fragment key={i}>{t.value}</React.Fragment>
+      <React.Fragment key={i}>{renderEmphasis(t.value)}</React.Fragment>
     ) : (
       <CitationBrackets key={i} numbers={t.numbers} leadingSpace />
     ),

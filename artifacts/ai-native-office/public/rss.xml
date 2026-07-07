@@ -6,7 +6,14 @@
     <atom:link href="https://ainativeoffice.org/rss.xml" rel="self" type="application/rss+xml"/>
     <description>The RFC Log for the AI-Native Office specification: launch notes, revision records, and commentary on sovereign on-premises compute as a commercial real estate asset class.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 02 Jul 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 07 Jul 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>RFC 001: The Tripartite Ownership Model and the Institutional Firewall</title>
+      <link>https://ainativeoffice.org/blog/rfc-001-tripartite-ownership/</link>
+      <guid isPermaLink="true">https://ainativeoffice.org/blog/rfc-001-tripartite-ownership/</guid>
+      <pubDate>Tue, 07 Jul 2026 00:00:00 GMT</pubDate>
+      <description>Why consolidating the physical environment, compute hardware, and intelligence software under a single hyperscaler creates systemic governance failure—and how structural separation mathematically reduces the enterprise attack surface.</description>
+    </item>
     <item>
       <title>The 10th Principle: Why Software Sovereignty Dies Without Physical Concrete</title>
       <link>https://ainativeoffice.org/blog/the-tenth-principle-physical-envelope/</link>

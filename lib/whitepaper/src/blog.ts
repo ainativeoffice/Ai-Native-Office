@@ -28,6 +28,41 @@ export interface BlogPost {
  */
 export const blogPosts: BlogPost[] = [
   {
+    slug: "rfc-001-tripartite-ownership",
+    title: "RFC 001: The Tripartite Ownership Model and the Institutional Firewall",
+    date: "2026-07-07",
+    description:
+      "Why consolidating the physical environment, compute hardware, and intelligence software under a single hyperscaler creates systemic governance failure—and how structural separation mathematically reduces the enterprise attack surface.",
+    relatedSectionIds: ["compliance", "architecture", "economics"],
+    body: {
+      id: "rfc-001-tripartite-ownership",
+      title: "RFC 001: The Tripartite Ownership Model and the Institutional Firewall",
+      prose: [
+        "**Date:** 2026-07-07 · **Category:** Governance & Compliance Architecture",
+        "The deployment of frontier generative AI in highly regulated environments is currently gridlocked by a fundamental architectural flaw: the total consolidation of infrastructure roles. In standard cloud computing environments, the hyperscaler acts simultaneously as the Landlord (owning the data center real estate), the Hardware Owner (managing the GPU clusters), and the Software Integrator (providing the LLM API and intelligence layer).",
+        "This consolidation creates an unmanageable governance vulnerability. A single policy change, API exploit, or subprocessor injection at the hyperscaler level instantly exposes the enterprise's most sensitive, unredacted data. Software-level compliance—reliant on Data Processing Agreements and SLAs—is procedural. It is entirely dependent on contractual promises about what a vendor will do with data *after* it has already left your physical control.",
+        "The AI-Native Office replaces procedural compliance with architectural compliance through the **Tripartite Ownership Model**. This framework enforces a strict legal and physical separation of duties:",
+      ],
+      list: [
+        {
+          label: "The Landlord (Physical Layer):",
+          body: "Provisions the STC 55 acoustically hardened shell, the E-Line Private Network, and the power/cooling envelope. They possess zero access to the compute hardware or data streams.",
+        },
+        {
+          label: "The Tenant (Compute Layer):",
+          body: "Holds exclusive legal title and physical custody of the sovereign silicon (e.g., NVIDIA L40S cluster) located within the cryptographically secure space. There is no shared compute pool.",
+        },
+        {
+          label: "The Software Integrator (Intelligence Layer):",
+          body: "Operates the connective tissue between the raw hardware and ambient sensory telemetry, without ever holding or transmitting unencrypted inference data externally.",
+        },
+      ],
+      postListProse: [
+        "By decentralizing these roles, the governed state becomes the default state. Departure from compliance requires a physical act, not a software policy change. When subjected to the Google Gemini trust and safety rubrics, this model provides cryptographic proof that AI prompt-and-output logs were generated on sovereign silicon, completely satisfying mandates from bodies like the FCA and SEC.",
+      ],
+    },
+  },
+  {
     slug: "the-tenth-principle-physical-envelope",
     title: "The 10th Principle: Why Software Sovereignty Dies Without Physical Concrete",
     date: "2026-07-02",
