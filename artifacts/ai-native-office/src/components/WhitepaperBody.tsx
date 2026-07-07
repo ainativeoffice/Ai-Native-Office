@@ -6,6 +6,7 @@ import { Citation, CitationBrackets } from "@/components/Citation";
 import { SideNote, type MarginNote } from "@/components/SideNote";
 import { ArchitectureBlueprint } from "@/components/ArchitectureBlueprint";
 import { getSource, tokenizeCitationGroups } from "@/lib/citations";
+import { splitEmphasis } from "@/lib/emphasis";
 
 /**
  * Shared whitepaper section renderer, extracted from Home.tsx so the full
@@ -15,31 +16,28 @@ import { getSource, tokenizeCitationGroups } from "@/lib/citations";
  * hover-cards behave identically on both surfaces.
  */
 
-/** Inline emphasis spans: `**bold**` or `*italic*` (no nesting, no line breaks). */
-const EMPHASIS = /(\*\*[^*\n]+\*\*|\*[^*\s][^*\n]*\*)/g;
-
 /**
  * Minimal inline-markdown emphasis for verbatim copy: `**…**` → <strong>,
- * `*…*` → <em>. Applied only to plain-text segments (after citation
- * tokenization), so markers can never span a citation boundary. Content
- * strings contain no other literal asterisks, so unmatched text passes
- * through untouched.
+ * `*…*` → <em>. Splitting lives in the React-free `@/lib/emphasis` helper
+ * (unit-tested); this just maps its tokens to elements. Applied only to
+ * plain-text segments (after citation tokenization), so markers can never
+ * span a citation boundary. Unmatched asterisks pass through untouched.
  */
 const renderEmphasis = (text: string): React.ReactNode => {
-  const parts = text.split(EMPHASIS);
-  if (parts.length === 1) return text;
-  return parts.map((part, i) => {
-    if (part.startsWith("**") && part.endsWith("**") && part.length > 4) {
+  const tokens = splitEmphasis(text);
+  if (tokens.length === 1 && tokens[0].type === "text") return text;
+  return tokens.map((t, i) => {
+    if (t.type === "strong") {
       return (
         <strong key={i} className="font-semibold text-foreground">
-          {part.slice(2, -2)}
+          {t.value}
         </strong>
       );
     }
-    if (part.startsWith("*") && part.endsWith("*") && part.length > 2) {
-      return <em key={i}>{part.slice(1, -1)}</em>;
+    if (t.type === "em") {
+      return <em key={i}>{t.value}</em>;
     }
-    return <React.Fragment key={i}>{part}</React.Fragment>;
+    return <React.Fragment key={i}>{t.value}</React.Fragment>;
   });
 };
 
