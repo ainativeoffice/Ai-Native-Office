@@ -11,6 +11,7 @@ import {
   type Section,
 } from "./content";
 import { findBrokenCitations, parseCitation } from "./lib/citations";
+import { assertEmphasisValid } from "./lib/emphasisGuard";
 import { metaTitle, SITE_NAME, SITE_URL } from "./lib/spec";
 import { sectionPages, getSectionPage } from "./lib/sectionPages";
 import {
@@ -76,6 +77,14 @@ export function assertCitationsValid(): void {
     `Citation check failed: ${broken.length} inline citation(s) point outside the Works Cited range:\n${details}`,
   );
 }
+
+/**
+ * Build-time guard: throws if any prose string contains a stray asterisk or
+ * an emphasis span not in the intentional-emphasis allowlist (see
+ * `src/lib/emphasisGuard.ts`). Called by `prerender.mjs` so a paragraph that
+ * would be silently reformatted by the inline-markdown pass fails the build.
+ */
+export { assertEmphasisValid };
 
 /**
  * Build-time guard: throws if the RFC Log launch post's date ever diverges

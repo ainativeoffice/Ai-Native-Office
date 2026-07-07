@@ -18,12 +18,16 @@ const {
   getSitemapXml,
   getLlmsFull,
   assertCitationsValid,
+  assertEmphasisValid,
   assertLaunchPostDateValid,
   meta,
 } = await import(path.join(__dirname, "dist/server/entry-server.js"));
 
 // Fail the build if any inline citation points outside the Works Cited range.
 assertCitationsValid();
+// Fail the build if any prose contains a stray asterisk or unapproved emphasis
+// span that the inline-markdown pass would silently transform or half-match.
+assertEmphasisValid();
 // Fail the build if the launch post's date drifts from the paper's publish date.
 assertLaunchPostDateValid();
 
