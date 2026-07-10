@@ -270,6 +270,57 @@ export function getLlmsFull(): string {
   return lines.join("\n");
 }
 
+/** Stable `@id` anchors for the site-level entities, used by page-level references. */
+const ORG_ID = `${SITE_URL}/#organization`;
+const WEBSITE_ID = `${SITE_URL}/#website`;
+
+/**
+ * Canonical Organization node — a full entity with a stable `@id` so every
+ * page-level JSON-LD object can reference it by id rather than re-embed it.
+ */
+const ORG = {
+  "@type": "Organization",
+  "@id": ORG_ID,
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph.jpg` },
+  sameAs: content.footer.social.map((s) => s.url),
+};
+
+/**
+ * Person entities derived from `content.hero.authors` — the single source of
+ * truth for the human authors credited on the homepage. Used in JSON-LD
+ * `author` arrays on the homepage, section pages, and blog posts so crawlers
+ * and AI systems see named individuals, not just the organization.
+ */
+const PERSONS = content.hero.authors.map((a) => ({
+  "@type": "Person",
+  name: a.name,
+  email: a.email,
+  worksFor: { "@id": ORG_ID },
+}));
+
+/**
+ * Shared site-level graph: a standalone Organization entity + a WebSite entity,
+ * each with a stable `@id`. Emitted on every public page so search engines
+ * and AI systems can connect all pages to one canonical brand entity.
+ */
+function buildSiteGraph() {
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      ORG,
+      {
+        "@type": "WebSite",
+        "@id": WEBSITE_ID,
+        name: SITE_NAME,
+        url: `${SITE_URL}/`,
+        publisher: { "@id": ORG_ID },
+      },
+    ],
+  };
+}
+
 function buildJsonLd() {
   const citations = content.worksCited.map((c) => {
     const { label, url } = parseCitation(c);
@@ -292,20 +343,10 @@ function buildJsonLd() {
     datePublished: DATE_PUBLISHED,
     dateModified: DATE_MODIFIED,
     image: `${SITE}/opengraph.jpg`,
-    author: {
-      "@type": "Organization",
-      name: "The AI-Native Office",
-      url: SITE,
-      sameAs: content.footer.social.map((s) => s.url),
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "The AI-Native Office",
-      url: SITE,
-      logo: { "@type": "ImageObject", url: `${SITE}/opengraph.jpg` },
-      sameAs: content.footer.social.map((s) => s.url),
-    },
+    author: PERSONS,
+    publisher: { "@id": ORG_ID },
     mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/` },
+    isPartOf: { "@id": WEBSITE_ID },
     articleSection: [...content.sections, ...content.appendices].map((s) => s.title),
     citation: citations,
   };
@@ -313,17 +354,9 @@ function buildJsonLd() {
 
 export function render() {
   const html = renderToString(<App ssrPath="/" />);
-  const jsonLd = JSON.stringify(buildJsonLd()).replace(/</g, "\\u003c");
-  const head = `<script type="application/ld+json">${jsonLd}</script>`;
+  const head = toJsonLdScripts([buildJsonLd(), buildSiteGraph()]);
   return { html, head };
 }
-
-const ORG = {
-  "@type": "Organization",
-  name: SITE_NAME,
-  url: SITE_URL,
-  sameAs: content.footer.social.map((s) => s.url),
-};
 
 /**
  * Per-section JSON-LD: a BreadcrumbList (full paper → section) plus a
@@ -369,11 +402,8 @@ function buildSectionJsonLd(pageId: string) {
     datePublished: DATE_PUBLISHED,
     dateModified: DATE_MODIFIED,
     image: `${SITE_URL}/opengraph.jpg`,
-    author: ORG,
-    publisher: {
-      ...ORG,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph.jpg` },
-    },
+    author: PERSONS,
+    publisher: { "@id": ORG_ID },
     mainEntityOfPage: { "@type": "WebPage", "@id": page.url },
     isPartOf: {
       "@type": "TechArticle",
@@ -405,12 +435,7 @@ export function renderSection(id: string) {
   const page = getSectionPage(id);
   if (!page) throw new Error(`renderSection: unknown section id "${id}"`);
   const html = renderToString(<App ssrPath={page.path} />);
-  const head = buildSectionJsonLd(id)
-    .map(
-      (obj) =>
-        `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\\u003c")}</script>`,
-    )
-    .join("");
+  const head = toJsonLdScripts([...buildSectionJsonLd(id), buildSiteGraph()]);
   return { html, head };
 }
 
@@ -468,10 +493,7 @@ function buildBlogIndexJsonLd() {
     description: BLOG_DESCRIPTION,
     url: BLOG_URL,
     inLanguage: "en",
-    publisher: {
-      ...ORG,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph.jpg` },
-    },
+    publisher: { "@id": ORG_ID },
     blogPost: blogPages.map((p) => ({
       "@type": "BlogPosting",
       headline: p.title,
@@ -504,11 +526,8 @@ function buildBlogPostJsonLd(slug: string, ogImageUrl?: string) {
     datePublished: page.date,
     dateModified: page.date,
     image: ogImageUrl ?? `${SITE_URL}/opengraph.jpg`,
-    author: ORG,
-    publisher: {
-      ...ORG,
-      logo: { "@type": "ImageObject", url: `${SITE_URL}/opengraph.jpg` },
-    },
+    author: PERSONS,
+    publisher: { "@id": ORG_ID },
     mainEntityOfPage: { "@type": "WebPage", "@id": page.url },
     isPartOf: {
       "@type": "Blog",
@@ -560,7 +579,7 @@ export const blogIndexMeta = {
 /** Prerender the blog index route to HTML + its JSON-LD head. */
 export function renderBlogIndex() {
   const html = renderToString(<App ssrPath={BLOG_PATH} />);
-  return { html, head: toJsonLdScripts(buildBlogIndexJsonLd()) };
+  return { html, head: toJsonLdScripts([...buildBlogIndexJsonLd(), buildSiteGraph()]) };
 }
 
 /**
@@ -572,7 +591,7 @@ export function renderBlogPost(slug: string, ogImageUrl?: string) {
   const page = getBlogPage(slug);
   if (!page) throw new Error(`renderBlogPost: unknown blog slug "${slug}"`);
   const html = renderToString(<App ssrPath={page.path} />);
-  return { html, head: toJsonLdScripts(buildBlogPostJsonLd(slug, ogImageUrl)) };
+  return { html, head: toJsonLdScripts([...buildBlogPostJsonLd(slug, ogImageUrl), buildSiteGraph()]) };
 }
 
 /* ------------------------------ Signal Log -------------------------------- */
@@ -633,7 +652,7 @@ function buildSignalsJsonLd() {
 export function renderSignals() {
   assertSignalsValid();
   const html = renderToString(<App ssrPath={SIGNALS_PATH} />);
-  return { html, head: toJsonLdScripts(buildSignalsJsonLd()) };
+  return { html, head: toJsonLdScripts([...buildSignalsJsonLd(), buildSiteGraph()]) };
 }
 
 const escapeXml = (s: string) =>

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { content } from "@/content";
+import { SITE_NAME } from "@/lib/spec";
 import { SectionBody } from "@/components/WhitepaperBody";
 import { AssistantPanel } from "@/components/AssistantPanel";
 import { SocialLinks } from "@/components/SocialLinks";
@@ -89,6 +90,9 @@ export default function BlogPost() {
           </h1>
           <p className="max-w-3xl font-serif text-lg italic leading-relaxed text-muted-foreground">
             {page.description}
+          </p>
+          <p className="mt-6 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+            {SITE_NAME} — {content.hero.authors.map((a) => a.name).join(", ")}
           </p>
         </header>
 
