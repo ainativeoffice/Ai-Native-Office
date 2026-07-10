@@ -44,7 +44,7 @@ function toPage(post: BlogPost): BlogPageInfo {
     path: `${BLOG_PATH}${post.slug}/`,
     url: `${BLOG_URL}${post.slug}/`,
     title: post.title,
-    metaTitle: `${post.title} — ${SITE_NAME} ${BLOG_TITLE}`,
+    metaTitle: `${post.title} | AI-Native Office`,
     description: post.description,
     date: post.date,
     ogImagePath,
