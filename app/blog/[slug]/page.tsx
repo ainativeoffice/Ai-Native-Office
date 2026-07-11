@@ -53,7 +53,7 @@ export default async function BlogPostPage({ params }: Props) {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
       {/* Top bar */}
-      <header className="border-b border-border px-6 py-4 flex items-center justify-between font-mono text-xs uppercase tracking-widest">
+      <header className="border-b border-border px-7 py-5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em]">
         <Link
           href={BLOG_PATH}
           className="text-muted-foreground transition-colors hover:text-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
@@ -64,9 +64,9 @@ export default async function BlogPostPage({ params }: Props) {
         <ShareLinks />
       </header>
 
-      <main id="main-content" tabIndex={-1} className="max-w-4xl mx-auto px-6 py-16 md:px-12 lg:px-16">
-        {/* Eyebrow */}
-        <div className="mb-4 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+      <main id="main-content" tabIndex={-1} className="max-w-4xl mx-auto px-7 py-20 md:px-12 md:py-24 lg:px-16">
+        {/* Meta */}
+        <div className="mb-5 flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           <time dateTime={page.date}>
             {new Date(page.date + "T00:00:00").toLocaleDateString("en-US", {
               year: "numeric",
@@ -77,11 +77,11 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
 
         {/* Heading */}
-        <h1 className="text-4xl md:text-5xl font-serif font-bold leading-tight tracking-tight mb-6 text-primary text-balance">
+        <h1 className="text-4xl md:text-6xl font-serif font-medium leading-[1.04] tracking-[-0.035em] mb-8 text-foreground text-balance">
           {page.title}
         </h1>
 
-        <p className="mb-12 max-w-2xl font-serif italic text-lg leading-relaxed text-foreground/70 border-l-4 border-[#FF5F1F] pl-6">
+        <p className="mb-14 max-w-2xl font-serif italic text-lg leading-[1.7] text-foreground/70 border-l-[3px] border-primary pl-7">
           {page.description}
         </p>
 
@@ -90,8 +90,8 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Related sections */}
         {relatedSections.length > 0 && (
-          <aside className="mt-16 border border-border p-6">
-            <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+        <aside className="mt-20 border border-border bg-card/50 p-7">
+          <div className="mb-5 font-mono text-[11px] uppercase tracking-[0.26em] text-muted-foreground">
               Read the Specification
             </div>
             <ul className="flex flex-col gap-3">
