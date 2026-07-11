@@ -26,7 +26,7 @@ export default function Home() {
   }));
 
   return (
-    <div className="min-h-[100dvh] bg-background text-foreground flex flex-col md:flex-row selection:bg-primary selection:text-primary-foreground">
+    <div className="min-h-[100dvh] bg-background text-foreground flex flex-col md:flex-row">
       <SidebarNav
         version={content.hero.spec.version}
         status={content.hero.spec.status}
@@ -38,28 +38,29 @@ export default function Home() {
       <main
         id="main-content"
         tabIndex={-1}
-        className="flex-1 w-full max-w-5xl mx-auto px-6 py-12 md:p-16 lg:py-24 lg:pl-24 lg:pr-[19rem] pb-28 md:pb-28 lg:pb-32 relative"
+        className="flex-1 w-full max-w-5xl mx-auto px-6 py-16 md:p-20 lg:py-28 lg:pl-28 lg:pr-[20rem] pb-32 relative"
       >
         {/* Hero */}
-        <header className="mb-24 pb-12 border-b border-border">
-          <div className="mb-8 inline-block border border-border px-4 py-2 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            <span className="text-primary/80">●</span> Draft Specification v{content.hero.spec.version} — {content.hero.spec.status}
+        <header className="mb-28 pb-16 border-b border-border">
+          <div className="mb-6 inline-flex items-center gap-3 border border-border px-4 py-3 font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden />
+            <span>Draft Specification v{content.hero.spec.version} — {content.hero.spec.status}</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight tracking-tight mb-8 text-balance">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif font-medium leading-[1.04] tracking-[-0.035em] mb-10 text-balance text-foreground">
             {content.hero.title}
           </h1>
           {content.hero.subtitle && (
-            <p className="mb-8 max-w-3xl font-serif text-xl italic text-muted-foreground md:text-2xl">
+            <p className="mb-10 max-w-3xl font-serif text-xl md:text-2xl italic leading-relaxed text-muted-foreground">
               {content.hero.subtitle}
             </p>
           )}
-          <div className="flex flex-wrap gap-x-4 gap-y-2 items-center font-mono text-xs text-muted-foreground uppercase tracking-widest">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 items-center font-mono text-[11px] text-muted-foreground uppercase tracking-[0.18em]">
             {content.hero.authors.map((author, idx) => (
               <span key={author.email} className="flex items-center gap-4">
                 {idx > 0 && <span className="w-1 h-1 bg-border rounded-full" aria-hidden />}
                 <a
                   href={`mailto:${author.email}`}
-                  className="text-muted-foreground underline decoration-dotted decoration-muted-foreground/50 underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary focus-visible:text-primary"
+                  className="text-muted-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:text-primary"
                 >
                   {author.name}
                 </a>
@@ -72,49 +73,49 @@ export default function Home() {
         <CopyForLlm />
 
         {/* Abstract */}
-        <section className="mb-24 pl-6 md:pl-8 border-l-4 border-[#FF5F1F]">
-          <h2 className="mb-4 font-mono text-sm font-bold uppercase tracking-[0.3em] text-foreground">
+        <section className="mb-28 pl-7 border-l-[3px] border-primary">
+          <h2 className="mb-4 font-mono text-xs font-semibold uppercase tracking-[0.28em] text-foreground">
             Abstract
           </h2>
-          <p className="font-serif italic text-base leading-relaxed text-foreground/80">
+          <p className="font-serif italic text-lg leading-[1.74] text-foreground/80 max-w-3xl">
             {content.abstract}
           </p>
         </section>
 
         {/* Table of contents */}
-        <nav aria-label="Contents" className="no-print mb-24 border border-border">
-          <div className="border-b border-border px-6 py-4 font-mono text-sm font-bold uppercase tracking-[0.3em] text-foreground">
+        <nav aria-label="Contents" className="no-print mb-28 border border-border bg-card/50">
+          <div className="border-b border-border px-7 py-5 font-mono text-xs font-semibold uppercase tracking-[0.26em] text-foreground">
             Contents
           </div>
-          <div className="grid gap-x-12 gap-y-8 p-6 md:grid-cols-2">
-            <ol className="flex flex-col gap-3 font-mono text-xs uppercase tracking-wider">
+          <div className="grid gap-x-14 gap-y-10 p-7 md:grid-cols-2">
+            <ol className="flex flex-col gap-4 font-mono text-xs uppercase tracking-[0.18em]">
               {tocSections.map((page, i) => (
                 <li key={page.id}>
                   <Link
                     href={page.path}
-                    className="group flex items-baseline gap-3 text-muted-foreground transition-colors hover:text-primary"
+                    className="group flex items-baseline gap-4 text-muted-foreground transition-colors hover:text-primary"
                   >
-                    <span className="shrink-0 text-border group-hover:text-primary/60">
+                    <span className="shrink-0 text-border/80 font-light group-hover:text-primary/70 tabular-nums">
                       {String(i + 1).padStart(2, "0")}
                     </span>
-                    <span className="underline decoration-border underline-offset-4 group-hover:decoration-primary">
+                    <span className="underline decoration-border/60 underline-offset-4 group-hover:decoration-primary">
                       {page.navLabel}
                     </span>
                   </Link>
                 </li>
               ))}
             </ol>
-            <ol className="flex flex-col gap-3 font-mono text-xs tracking-wider">
+            <ol className="flex flex-col gap-4 font-mono text-xs uppercase tracking-[0.18em]">
               {tocAppendices.map((page) => (
                 <li key={page.id}>
                   <Link
                     href={page.path}
-                    className="group flex items-baseline gap-3 text-muted-foreground transition-colors hover:text-primary"
+                    className="group flex items-baseline gap-4 text-muted-foreground transition-colors hover:text-primary"
                   >
-                    <span className="shrink-0 text-border group-hover:text-primary/60">
+                    <span className="shrink-0 text-border/80 font-light group-hover:text-primary/70">
                       {page.appendixLetter}
                     </span>
-                    <span className="underline decoration-border underline-offset-4 group-hover:decoration-primary">
+                    <span className="underline decoration-border/60 underline-offset-4 group-hover:decoration-primary">
                       {page.navLabel}
                     </span>
                   </Link>
@@ -125,14 +126,14 @@ export default function Home() {
         </nav>
 
         {/* Sections */}
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-28">
           {content.sections.map((section) => (
             <section
               key={section.id}
               id={section.id}
-              className="scroll-mt-24"
+              className="scroll-mt-28"
             >
-              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-8 text-primary">
+              <h2 className="text-3xl md:text-4xl font-serif font-medium leading-tight tracking-[-0.02em] mb-10 text-foreground">
                 {section.title}
               </h2>
               <SectionBody
@@ -144,15 +145,15 @@ export default function Home() {
           ))}
 
           {/* Works Cited */}
-          <section id="works-cited" className="pt-24 border-t border-border scroll-mt-24">
-            <h2 className="text-2xl font-mono font-bold mb-8 uppercase tracking-widest text-muted-foreground">
+          <section id="works-cited" className="pt-28 border-t border-border scroll-mt-28">
+            <h2 className="text-2xl font-mono font-semibold mb-10 uppercase tracking-[0.22em] text-muted-foreground">
               Works Cited
             </h2>
-            <ol className="list-decimal list-outside ml-6 font-mono text-xs text-muted-foreground space-y-3">
+            <ol className="list-decimal list-outside ml-7 font-mono text-xs text-muted-foreground space-y-4">
               {content.worksCited.map((citation, i) => {
                 const { label, url } = parseCitation(citation);
                 return (
-                  <li key={i} id={`source-${i + 1}`} className="pl-4 break-words scroll-mt-24">
+                  <li key={i} id={`source-${i + 1}`} className="pl-5 break-words scroll-mt-28 leading-relaxed">
                     <span>{label}</span>
                     {url && (
                       <>
@@ -161,7 +162,7 @@ export default function Home() {
                           href={url}
                           target="_blank"
                           rel="noopener external"
-                          className="text-foreground/70 underline decoration-border underline-offset-2 transition-colors hover:text-primary break-all"
+                          className="text-foreground/70 underline decoration-border/60 underline-offset-2 transition-colors hover:text-primary hover:decoration-primary break-all"
                         >
                           {url}
                         </a>
@@ -174,27 +175,27 @@ export default function Home() {
           </section>
 
           {/* Appendices */}
-          <section id="appendices" className="pt-24 border-t border-border scroll-mt-24">
-            <h2 className="text-2xl font-mono font-bold mb-4 uppercase tracking-widest text-muted-foreground">
+          <section id="appendices" className="pt-28 border-t border-border scroll-mt-28">
+            <h2 className="text-2xl font-mono font-semibold mb-5 uppercase tracking-[0.22em] text-muted-foreground">
               Appendices
             </h2>
-            <p className="mb-16 max-w-3xl font-serif italic text-base leading-relaxed text-foreground/70">
+            <p className="mb-20 max-w-3xl font-serif italic text-lg leading-[1.7] text-foreground/70">
               The following appendices preserve the full technical depth behind the specification — the
               economics of cloud egress, acoustic and spatial sensor engineering, the hardened sovereign
               enclave, the reference compute classes, and the localized GraphRAG pipeline — for
               technically-minded readers and crawlers.
             </p>
-            <div className="flex flex-col gap-24">
+            <div className="flex flex-col gap-28">
               {content.appendices.map((appendix, idx) => (
                 <section
                   key={appendix.id}
                   id={`appendix-${appendix.id}`}
-                  className="scroll-mt-24"
+                  className="scroll-mt-28"
                 >
-                  <div className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[#FF5F1F]">
+                  <div className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-primary">
                     Appendix {String.fromCharCode(65 + idx)}
                   </div>
-                  <h3 className="text-2xl md:text-3xl font-serif font-bold mb-8 text-primary">
+                  <h3 className="text-2xl md:text-3xl font-serif font-medium leading-tight tracking-[-0.02em] mb-10 text-foreground">
                     {appendix.title}
                   </h3>
                   <SectionBody section={appendix} subheading="h4" />
@@ -208,8 +209,8 @@ export default function Home() {
         <SpecificationUpdateFeed />
 
         {/* Institutional footer */}
-        <footer className="mt-24 pt-8 border-t border-border flex flex-col md:flex-row md:items-start md:justify-between gap-8 font-mono text-xs">
-          <div className="flex flex-col gap-5 text-muted-foreground leading-relaxed">
+        <footer className="mt-28 pt-10 border-t border-border flex flex-col md:flex-row md:items-start md:justify-between gap-10 font-mono text-xs">
+          <div className="flex flex-col gap-6 text-muted-foreground leading-relaxed">
             <div>
               <div>{content.footer.publishedBy}</div>
               <div>{content.footer.location}</div>
@@ -217,7 +218,7 @@ export default function Home() {
             <SocialLinks />
             <ShareLinks />
           </div>
-          <div className="flex shrink-0 flex-col md:items-end gap-2">
+          <div className="flex shrink-0 flex-col md:items-end gap-3">
             <span className="whitespace-nowrap text-muted-foreground">
               [ Changelog v{content.hero.spec.version} ]
             </span>

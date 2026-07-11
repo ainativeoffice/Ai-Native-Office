@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Playfair_Display, JetBrains_Mono } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans'
+import { Source_Serif_4 } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ subsets: ['latin'], variable: '--app-font-sans' })
-const playfair = Playfair_Display({ subsets: ['latin'], variable: '--app-font-serif', style: ['normal', 'italic'], weight: ['400', '600', '700'] })
-const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--app-font-mono', weight: ['400', '500', '700'] })
+const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-source-serif', style: ['normal', 'italic'], weight: ['400', '500', '600'] })
 
 export const metadata: Metadata = {
   title: 'The AI-Native Office — The Room as the Machine · Draft Specification v0.5 (RFC)',
@@ -33,7 +32,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#0A0A0A',
+  themeColor: '#f3efe5',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -41,7 +40,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} ${jetbrains.variable} bg-background`}>
+    <html lang="en" className={`${GeistSans.variable} ${sourceSerif.variable} bg-background`}>
       <body className="antialiased font-sans">
         <a href="#main-content" className="skip-link no-print">[ Skip to content ]</a>
         {children}

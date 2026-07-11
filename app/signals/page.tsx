@@ -29,7 +29,7 @@ export default function SignalsPage() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
       {/* Top bar */}
-      <header className="border-b border-border px-6 py-4 flex items-center justify-between font-mono text-xs uppercase tracking-widest">
+      <header className="border-b border-border px-7 py-5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em]">
         <Link
           href="/"
           className="text-muted-foreground transition-colors hover:text-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
@@ -40,28 +40,28 @@ export default function SignalsPage() {
         <ShareLinks />
       </header>
 
-      <main id="main-content" tabIndex={-1} className="max-w-4xl mx-auto px-6 py-16 md:px-12 lg:px-16">
-        {/* Eyebrow */}
-        <div className="mb-4 font-mono text-[11px] uppercase tracking-[0.25em] text-muted-foreground">
+      <main id="main-content" tabIndex={-1} className="max-w-4xl mx-auto px-7 py-20 md:px-12 md:py-24 lg:px-16">
+        {/* Header */}
+        <div className="mb-5 font-mono text-[11px] uppercase tracking-[0.22em] text-primary">
           The AI-Native Office
         </div>
-        <h1 className="text-4xl md:text-5xl font-serif font-bold leading-tight tracking-tight mb-4 text-primary">
+        <h1 className="text-5xl md:text-7xl font-serif font-medium leading-[0.98] tracking-[-0.04em] mb-6 text-foreground">
           Signal Log
         </h1>
-        <p className="mb-16 max-w-2xl font-serif italic text-lg leading-relaxed text-foreground/70">
+        <p className="mb-20 max-w-2xl font-serif italic text-lg leading-[1.7] text-foreground/70">
           {SIGNALS_DESCRIPTION}
         </p>
 
         {/* Legend */}
-        <div className="mb-10 border border-border px-5 py-4 font-mono text-[11px] uppercase tracking-widest text-muted-foreground flex flex-wrap gap-x-6 gap-y-2">
+        <div className="mb-12 border border-border bg-card/50 px-6 py-5 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground flex flex-wrap gap-x-7 gap-y-2">
           <span>
-            <span className="text-[#FF5F1F]">EVIDENCE LOG // NNN</span> — numbered ledger entry
+            <span className="text-primary">Evidence Log // NNN</span> — numbered ledger entry
           </span>
-          <span>VALIDATES — linked specification sections</span>
+          <span>Signal type — category</span>
         </div>
 
         {/* Entries */}
-        <ol className="flex flex-col divide-y divide-border">
+        <ol className="flex flex-col divide-y divide-border border-b border-border">
           {signalEntries.map((entry) => {
             const anchor = signalAnchor(entry);
             const designation = signalDesignation(entry);
@@ -73,14 +73,14 @@ export default function SignalsPage() {
               <li
                 key={entry.number}
                 id={anchor}
-                className="scroll-mt-8 py-10"
+                  className="scroll-mt-8 py-12 px-1"
               >
                 {/* Designation + date */}
                 <div className="mb-3 flex flex-wrap items-center gap-x-5 gap-y-1">
                   <a
                     href={`#${anchor}`}
                     aria-label={`Permalink: ${designation}`}
-                    className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-[#FF5F1F] transition-opacity hover:opacity-70"
+                      className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-primary transition-opacity hover:opacity-70"
                   >
                     {designation}
                   </a>
@@ -97,12 +97,12 @@ export default function SignalsPage() {
                 </div>
 
                 {/* Headline */}
-                <h2 className="mb-4 font-serif text-xl font-semibold text-foreground leading-snug">
-                  {entry.headline}
-                </h2>
+                  <h2 className="mb-5 font-serif text-2xl font-medium tracking-[-0.015em] text-foreground leading-snug">
+                    {entry.title}
+                  </h2>
 
-                {/* Body */}
-                <p className="mb-6 font-serif text-base leading-relaxed text-foreground/80">
+                  {/* Summary */}
+                  <p className="mb-7 font-serif text-base leading-[1.7] text-foreground/80">
                   {entry.body}
                 </p>
 
