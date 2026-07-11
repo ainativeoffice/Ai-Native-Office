@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { GeistSans } from 'geist/font/sans'
 import { Source_Serif_4 } from 'next/font/google'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import './globals.css'
 import { SITE_NAME, SITE_URL, metaTitle } from '@/lib/content/spec'
 import { content } from '@/lib/content/content'
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <a href="#main-content" className="skip-link no-print">[ Skip to content ]</a>
         {children}
+        <SpeedInsights />
       </body>
       {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
     </html>
