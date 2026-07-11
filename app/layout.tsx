@@ -15,6 +15,7 @@ import {
 } from '@/lib/seo'
 import { JsonLd } from '@/components/JsonLd'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import { Analytics } from '@vercel/analytics/next'
 
 const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-source-serif', style: ['normal', 'italic'], weight: ['400', '500', '600'] })
 
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <a href="#main-content" className="skip-link no-print">[ Skip to content ]</a>
         {children}
+        <Analytics />
       </body>
       {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
     </html>
