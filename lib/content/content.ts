@@ -67,6 +67,7 @@ interface Author {
   name: string;
   email: string;
   role: string;
+  formerRole?: string;
   linkedinUrl: string;
   organization?: {
     name: string;
@@ -220,8 +221,13 @@ export const content: Content = {
       {
         name: "Parham Alizadeh",
         email: "parham@ainativeoffice.org",
-        role: "Author",
+        role: "Author · Principal, North Castle Ventures",
+        formerRole: "Prior CEO & Co-founder, Verdocs",
         linkedinUrl: "https://www.linkedin.com/in/parhamalizadeh/",
+        organization: {
+          name: "North Castle Ventures",
+          url: "https://northcastleventures.com",
+        },
       },
     ],
   },
