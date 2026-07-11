@@ -1,0 +1,251 @@
+import { content } from "@/lib/content/content";
+import {
+  SITE_NAME,
+  SITE_URL,
+  metaTitle,
+  specMetaLabel,
+  specVersion,
+} from "@/lib/content/spec";
+import {
+  PAPER_DATE_PUBLISHED,
+  SPEC_REVISION_DATE,
+  latestIsoDate,
+} from "@/lib/content/dates";
+import { blogPages } from "@/lib/content/blogPages";
+import { signalEntries } from "@/lib/content/signalsPage";
+import type { BlogPageInfo } from "@/lib/content/blogPages";
+import type { SectionPageInfo } from "@/lib/content/sectionPages";
+
+/**
+ * Central SEO / structured-data layer. Every value here is derived from the
+ * existing content tree (`content.ts`, `spec.ts`, `dates.ts`, the page
+ * registries) so meta tags, JSON-LD, the sitemap, the manifest, and the
+ * harmonized OpenGraph card all stay in lockstep with the copy — nothing is
+ * hand-duplicated. No visible page copy is defined or altered here.
+ */
+
+/** The exact meta description already used on the home document (kept in one place). */
+export const SITE_DESCRIPTION =
+  "A technical specification for the AI-Native Office — a sovereign compute edge node that collapses the distance between human collaboration and machine inference to exactly zero.";
+
+/** Short PWA name for the web app manifest. */
+export const SHORT_NAME = "AI-Native Office";
+
+/**
+ * Topic keywords, drawn verbatim from terms already present in the
+ * specification — used for the `keywords` meta tag and JSON-LD `keywords`.
+ */
+export const KEYWORDS = [
+  "AI-Native Office",
+  "sovereign compute",
+  "on-premises AI",
+  "data sovereignty",
+  "zero egress",
+  "edge inference",
+  "regulated enterprise AI",
+  "commercial real estate asset class",
+  "Tripartite Ownership Model",
+  "ambient intelligence",
+  "STC 55",
+  "GraphRAG",
+];
+
+/** Stable JSON-LD node identifiers so nodes can cross-reference by `@id`. */
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+const WEBSITE_ID = `${SITE_URL}/#website`;
+const SPECIFICATION_ID = `${SITE_URL}/#specification`;
+
+/**
+ * The single harmonized social card, rendered on demand by `/og-image` and
+ * built from the same favicon mark + spec metadata. Referenced by every page's
+ * OpenGraph/Twitter metadata and by JSON-LD `image`.
+ */
+export const OG_IMAGE = {
+  url: `${SITE_URL}/og-image`,
+  width: 1200,
+  height: 630,
+  alt: `${content.hero.title} — ${SITE_NAME}`,
+} as const;
+
+/** Resolve an app-relative path to an absolute canonical URL. */
+export function absoluteUrl(path: string): string {
+  return path.startsWith("http") ? path : `${SITE_URL}${path.startsWith("/") ? "" : "/"}${path}`;
+}
+
+/**
+ * The document's effective `dateModified`: the newest of the spec's own
+ * revision date, the latest RFC Log post, and the latest Signal Log entry —
+ * matching the derivation described in `dates.ts`.
+ */
+export function specDateModified(): string {
+  return latestIsoDate([
+    SPEC_REVISION_DATE,
+    blogPages[0]?.date,
+    signalEntries[0]?.date,
+  ]);
+}
+
+type Node = Record<string, unknown>;
+
+function authorNodes(): Node[] {
+  return content.hero.authors.map((a) => ({
+    "@type": "Person",
+    name: a.name,
+    email: a.email,
+    affiliation: { "@id": ORGANIZATION_ID },
+  }));
+}
+
+/** Publisher/organization node. Emitted once, from the root layout. */
+export function organizationLd(): Node {
+  return {
+    "@type": "Organization",
+    "@id": ORGANIZATION_ID,
+    name: SITE_NAME,
+    url: `${SITE_URL}/`,
+    logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.svg` },
+    image: OG_IMAGE.url,
+    description: content.abstract,
+    sameAs: content.footer.social.map((s) => s.url),
+  };
+}
+
+/** WebSite node. Emitted once, from the root layout. */
+export function websiteLd(): Node {
+  return {
+    "@type": "WebSite",
+    "@id": WEBSITE_ID,
+    name: SITE_NAME,
+    url: `${SITE_URL}/`,
+    inLanguage: "en-US",
+    publisher: { "@id": ORGANIZATION_ID },
+  };
+}
+
+/** The specification itself, as a TechArticle (home page). */
+export function specificationLd(): Node {
+  return {
+    "@type": "TechArticle",
+    "@id": SPECIFICATION_ID,
+    headline: content.hero.title,
+    name: metaTitle(),
+    alternativeHeadline: content.hero.subtitle,
+    description: content.abstract,
+    inLanguage: "en-US",
+    author: authorNodes(),
+    editor: authorNodes(),
+    publisher: { "@id": ORGANIZATION_ID },
+    isPartOf: { "@id": WEBSITE_ID },
+    datePublished: PAPER_DATE_PUBLISHED,
+    dateModified: specDateModified(),
+    version: specVersion(),
+    creativeWorkStatus: specMetaLabel(),
+    keywords: KEYWORDS,
+    image: OG_IMAGE.url,
+    url: `${SITE_URL}/`,
+    mainEntityOfPage: `${SITE_URL}/`,
+    articleSection: content.sections.map((s) => s.navLabel ?? s.title.split(":")[0]),
+  };
+}
+
+/** A per-section / per-appendix TechArticle that is part of the specification. */
+export function sectionArticleLd(page: SectionPageInfo): Node {
+  return {
+    "@type": "TechArticle",
+    "@id": `${page.url}#article`,
+    headline: page.title,
+    name: page.metaTitle,
+    description: page.description,
+    url: page.url,
+    inLanguage: "en-US",
+    author: authorNodes(),
+    publisher: { "@id": ORGANIZATION_ID },
+    isPartOf: { "@id": SPECIFICATION_ID },
+    datePublished: PAPER_DATE_PUBLISHED,
+    dateModified: specDateModified(),
+    image: OG_IMAGE.url,
+    mainEntityOfPage: page.url,
+  };
+}
+
+/** A single RFC Log post. */
+export function blogPostingLd(page: BlogPageInfo): Node {
+  return {
+    "@type": "BlogPosting",
+    "@id": `${page.url}#post`,
+    headline: page.title,
+    name: page.title,
+    description: page.description,
+    url: page.url,
+    inLanguage: "en-US",
+    author: authorNodes(),
+    publisher: { "@id": ORGANIZATION_ID },
+    isPartOf: { "@id": WEBSITE_ID },
+    datePublished: page.date,
+    dateModified: page.date,
+    image: OG_IMAGE.url,
+    mainEntityOfPage: page.url,
+  };
+}
+
+/** The RFC Log index, as a Blog with its posts as an ItemList. */
+export function blogListingLd(url: string, name: string, description: string): Node {
+  return {
+    "@type": "Blog",
+    "@id": `${url}#blog`,
+    name,
+    description,
+    url,
+    inLanguage: "en-US",
+    isPartOf: { "@id": WEBSITE_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+    blogPost: blogPages.map((p) => ({
+      "@type": "BlogPosting",
+      "@id": `${p.url}#post`,
+      headline: p.title,
+      url: p.url,
+      datePublished: p.date,
+    })),
+  };
+}
+
+/** A generic collection page (Signal Log, Implementation Registry). */
+export function collectionPageLd(args: {
+  url: string;
+  name: string;
+  description: string;
+  numberOfItems?: number;
+}): Node {
+  return {
+    "@type": "CollectionPage",
+    "@id": `${args.url}#collection`,
+    name: args.name,
+    description: args.description,
+    url: args.url,
+    inLanguage: "en-US",
+    isPartOf: { "@id": WEBSITE_ID },
+    publisher: { "@id": ORGANIZATION_ID },
+    ...(args.numberOfItems != null
+      ? { mainEntity: { "@type": "ItemList", numberOfItems: args.numberOfItems } }
+      : {}),
+  };
+}
+
+/** A breadcrumb trail. Home is prepended automatically. */
+export function breadcrumbLd(trail: { name: string; url: string }[]): Node {
+  const items = [{ name: SITE_NAME, url: `${SITE_URL}/` }, ...trail];
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: it.url,
+    })),
+  };
+}
+
+/** Wrap one or more nodes into a schema.org graph document. */
+export function jsonLdGraph(nodes: Node[]): Node {
+  return { "@context": "https://schema.org", "@graph": nodes };
+}
