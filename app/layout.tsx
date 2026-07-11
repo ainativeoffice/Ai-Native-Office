@@ -10,6 +10,7 @@ import {
   OG_IMAGE,
   organizationLd,
   websiteLd,
+  ecosystemOrganizationNodes,
   jsonLdGraph,
 } from '@/lib/seo'
 import { JsonLd } from '@/components/JsonLd'
@@ -79,7 +80,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${GeistSans.variable} ${sourceSerif.variable} bg-background`}>
       <body className="antialiased font-sans">
-        <JsonLd data={jsonLdGraph([organizationLd(), websiteLd()])} />
+        <JsonLd
+          data={jsonLdGraph([organizationLd(), websiteLd(), ...ecosystemOrganizationNodes()])}
+        />
         <a href="#main-content" className="skip-link no-print">[ Skip to content ]</a>
         {children}
       </body>

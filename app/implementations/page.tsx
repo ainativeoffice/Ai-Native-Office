@@ -136,12 +136,42 @@ export default function ImplementationsPage() {
                   <span>{entry.location}</span>
                   <span aria-hidden className="text-border">·</span>
                   <span>Operator: {entry.operator}</span>
+                  {entry.founder && (
+                    <>
+                      <span aria-hidden className="text-border">·</span>
+                      <span>Founder: {entry.founder}</span>
+                    </>
+                  )}
                 </div>
 
                 {/* Summary */}
-                <p className="mb-7 max-w-3xl font-serif text-base leading-[1.7] text-foreground/80">
+                <p className="mb-5 max-w-3xl font-serif text-base leading-[1.7] text-foreground/80">
                   {entry.summary}
                 </p>
+
+                {/* External identity links */}
+                <div className="mb-7 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-widest">
+                  <a
+                    href={entry.url}
+                    target="_blank"
+                    rel="noopener external"
+                    aria-label={`${entry.name} website`}
+                    className="text-muted-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
+                  >
+                    Website
+                  </a>
+                  {entry.linkedinUrl && (
+                    <a
+                      href={entry.linkedinUrl}
+                      target="_blank"
+                      rel="noopener external"
+                      aria-label={`${entry.name} on LinkedIn`}
+                      className="text-muted-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-1 focus-visible:outline-primary"
+                    >
+                      LinkedIn
+                    </a>
+                  )}
+                </div>
 
                 {/* Related sections */}
                 {related.length > 0 && (

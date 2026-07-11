@@ -58,17 +58,43 @@ export default function Home() {
               {content.hero.subtitle}
             </p>
           )}
-          <div className="flex flex-wrap gap-x-6 gap-y-2 items-center font-mono text-[11px] text-muted-foreground uppercase tracking-[0.18em]">
-            {content.hero.authors.map((author, idx) => (
-              <span key={author.email} className="flex items-center gap-4">
-                {idx > 0 && <span className="w-1 h-1 bg-border rounded-full" aria-hidden />}
-                <a
-                  href={`mailto:${author.email}`}
-                  className="text-muted-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary focus-visible:text-primary"
-                >
-                  {author.name}
-                </a>
-              </span>
+          <div className="grid max-w-3xl gap-px border border-border bg-border sm:grid-cols-2">
+            {content.hero.authors.map((author) => (
+              <div key={author.email} className="flex flex-col gap-4 bg-background p-5">
+                <div className="flex flex-col gap-1">
+                  <a
+                    href={`mailto:${author.email}`}
+                    className="w-fit font-serif text-lg font-medium text-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                  >
+                    {author.name}
+                  </a>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+                    {author.role}
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.18em]">
+                  <a
+                    href={author.linkedinUrl}
+                    target="_blank"
+                    rel="noopener external me"
+                    aria-label={`${author.name} on LinkedIn`}
+                    className="text-muted-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                  >
+                    LinkedIn
+                  </a>
+                  {author.organization && (
+                    <a
+                      href={author.organization.url}
+                      target="_blank"
+                      rel="noopener external"
+                      aria-label={`${author.organization.name} website`}
+                      className="text-muted-foreground underline decoration-border decoration-dotted underline-offset-4 transition-colors hover:text-primary hover:decoration-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                    >
+                      {author.organization.name}
+                    </a>
+                  )}
+                </div>
+              </div>
             ))}
           </div>
         </header>

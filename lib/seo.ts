@@ -54,6 +54,10 @@ export const KEYWORDS = [
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
 const SPECIFICATION_ID = `${SITE_URL}/#specification`;
+const TRUCAST_ID = "https://trucast.ai/#organization";
+const NATIVE_AGENTIC_ID = "https://nativeagentic.com/#organization";
+const NCV_ID = "https://northcastleventures.com/#organization";
+const ARMONK_PC_ID = "https://armonkprofessionalcenter.com/#organization";
 
 /**
  * The single harmonized social card, rendered on demand by `/og-image` and
@@ -117,12 +121,60 @@ export function specDateModified(): string {
 type Node = Record<string, unknown>;
 
 function authorNodes(): Node[] {
-  return content.hero.authors.map((a) => ({
+  return content.hero.authors.map((author) => ({
     "@type": "Person",
-    name: a.name,
-    email: a.email,
-    affiliation: { "@id": ORGANIZATION_ID },
+    "@id": `${SITE_URL}/#author-${author.name.toLowerCase().replace(/\s+/g, "-")}`,
+    name: author.name,
+    email: author.email,
+    sameAs: [author.linkedinUrl],
+    affiliation: [{ "@id": ORGANIZATION_ID }],
+    ...(author.organization
+      ? {
+          jobTitle: "Founder",
+          worksFor: { "@id": TRUCAST_ID },
+          affiliation: [{ "@id": ORGANIZATION_ID }, { "@id": TRUCAST_ID }],
+        }
+      : {}),
   }));
+}
+
+/** Ecosystem organizations referenced by the registry; none is the paper publisher. */
+export function ecosystemOrganizationNodes(): Node[] {
+  return [
+    {
+      "@type": "Organization",
+      "@id": TRUCAST_ID,
+      name: "TruCast AI",
+      url: "https://trucast.ai/",
+      sameAs: ["https://www.linkedin.com/company/trucast-ai/"],
+      founder: { "@id": `${SITE_URL}/#author-timothy-walsh` },
+      description:
+        "Sovereign protocol orchestration and enterprise workflow intelligence for regulated institutions.",
+    },
+    {
+      "@type": "Organization",
+      "@id": NCV_ID,
+      name: "North Castle Ventures",
+      url: "https://northcastleventures.com/",
+      sameAs: ["https://www.linkedin.com/company/northcastleventures/"],
+    },
+    {
+      "@type": "Organization",
+      "@id": NATIVE_AGENTIC_ID,
+      name: "Native Agentic",
+      url: "https://nativeagentic.com/",
+      sameAs: ["https://www.linkedin.com/company/nativeagentic/"],
+      member: [{ "@id": TRUCAST_ID }, { "@id": NCV_ID }],
+      description: "A partnership of TruCast and North Castle Ventures.",
+    },
+    {
+      "@type": "Organization",
+      "@id": ARMONK_PC_ID,
+      name: "Armonk Professional Center",
+      url: "https://armonkprofessionalcenter.com/",
+      sameAs: ["https://www.linkedin.com/company/armonk-professional-center/"],
+    },
+  ];
 }
 
 /** Publisher/organization node. Emitted once, from the root layout. */
