@@ -60,8 +60,12 @@ const SPECIFICATION_ID = `${SITE_URL}/#specification`;
  * built from the same favicon mark + spec metadata. Referenced by every page's
  * OpenGraph/Twitter metadata and by JSON-LD `image`.
  */
+// Trailing slash matches the site's `trailingSlash: true` config so social
+// crawlers fetch the card directly instead of through a 308 redirect.
+const OG_IMAGE_PATH = `${SITE_URL}/og-image/`;
+
 export const OG_IMAGE = {
-  url: `${SITE_URL}/og-image`,
+  url: OG_IMAGE_PATH,
   width: 1200,
   height: 630,
   alt: `${content.hero.title} — ${SITE_NAME}`,
@@ -90,7 +94,7 @@ export function ogImageFor(opts: {
   if (opts.eyebrow) params.set("eyebrow", opts.eyebrow);
   if (opts.label) params.set("label", opts.label);
   return {
-    url: `${SITE_URL}/og-image?${params.toString()}`,
+    url: `${OG_IMAGE_PATH}?${params.toString()}`,
     width: OG_IMAGE.width,
     height: OG_IMAGE.height,
     alt: opts.alt ?? `${opts.title} — ${SITE_NAME}`,
