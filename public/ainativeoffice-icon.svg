@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title description">
+  <title id="title">AI-Native Office</title>
+  <desc id="description">A central intelligence node connected to four ports inside an architectural room.</desc>
+  <rect width="64" height="64" rx="14" fill="#f3efe5"/>
+  <path d="M19 11H11v8M45 11h8v8M53 45v8h-8M19 53h-8v-8" fill="none" stroke="#211f1a" stroke-width="5" stroke-linecap="square"/>
+  <path d="M32 19v8M45 32h-8M32 45v-8M19 32h8" fill="none" stroke="#211f1a" stroke-width="3"/>
+  <circle cx="32" cy="16" r="3" fill="#211f1a"/>
+  <circle cx="48" cy="32" r="3" fill="#211f1a"/>
+  <circle cx="32" cy="48" r="3" fill="#211f1a"/>
+  <circle cx="16" cy="32" r="3" fill="#211f1a"/>
+  <rect x="26" y="26" width="12" height="12" rx="2" fill="#b64b2a"/>
+  <rect x="29" y="29" width="6" height="6" rx="1" fill="#f3efe5"/>
+</svg>

@@ -17,8 +17,9 @@ export default function manifest(): MetadataRoute.Manifest {
     background_color: "#f3efe5",
     theme_color: "#f3efe5",
     icons: [
-      { src: "/icon.svg", type: "image/svg+xml", sizes: "any", purpose: "any" },
-      { src: "/apple-icon.png", type: "image/png", sizes: "180x180", purpose: "maskable" },
+      { src: "/ainativeoffice-icon.svg", type: "image/svg+xml", sizes: "any", purpose: "any" },
+      { src: "/ainativeoffice-icon-32.png", type: "image/png", sizes: "32x32", purpose: "any" },
+      { src: "/ainativeoffice-apple-icon.png", type: "image/png", sizes: "180x180", purpose: "maskable" },
     ],
   };
 }

@@ -132,7 +132,7 @@ export function organizationLd(): Node {
     "@id": ORGANIZATION_ID,
     name: SITE_NAME,
     url: `${SITE_URL}/`,
-    logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.svg` },
+    logo: { "@type": "ImageObject", url: `${SITE_URL}/ainativeoffice-icon.svg` },
     image: OG_IMAGE.url,
     description: content.abstract,
     sameAs: content.footer.social.map((s) => s.url),
