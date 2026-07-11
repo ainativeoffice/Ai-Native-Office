@@ -127,12 +127,26 @@ function authorNodes(): Node[] {
     name: author.name,
     email: author.email,
     sameAs: [author.linkedinUrl],
-    affiliation: [{ "@id": ORGANIZATION_ID }],
-    ...(author.organization
+    affiliation: [
+      { "@id": ORGANIZATION_ID },
+      ...(author.name === "Timothy Walsh" ? [{ "@id": TRUCAST_ID }] : []),
+      ...(author.name === "Parham Alizadeh" ? [{ "@id": NCV_ID }] : []),
+    ],
+    ...(author.name === "Timothy Walsh"
       ? {
           jobTitle: "Founder",
           worksFor: { "@id": TRUCAST_ID },
-          affiliation: [{ "@id": ORGANIZATION_ID }, { "@id": TRUCAST_ID }],
+        }
+      : {}),
+    ...(author.name === "Parham Alizadeh"
+      ? {
+          jobTitle: "Principal",
+          worksFor: { "@id": NCV_ID },
+          alumniOf: {
+            "@type": "Organization",
+            name: "Verdocs",
+            description: "Prior CEO and Co-founder",
+          },
         }
       : {}),
   }));
@@ -157,6 +171,10 @@ export function ecosystemOrganizationNodes(): Node[] {
       name: "North Castle Ventures",
       url: "https://northcastleventures.com/",
       sameAs: ["https://www.linkedin.com/company/northcastleventures/"],
+      employee: {
+        "@id": `${SITE_URL}/#author-parham-alizadeh`,
+        jobTitle: "Principal",
+      },
     },
     {
       "@type": "Organization",

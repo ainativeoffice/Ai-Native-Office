@@ -71,6 +71,11 @@ export default function Home() {
                   <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                     {author.role}
                   </span>
+                  {author.formerRole && (
+                    <span className="font-serif text-sm italic leading-relaxed text-muted-foreground">
+                      {author.formerRole}
+                    </span>
+                  )}
                 </div>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] uppercase tracking-[0.18em]">
                   <a
