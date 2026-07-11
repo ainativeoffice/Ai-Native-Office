@@ -18,6 +18,7 @@ export function SidebarNav({ version, status, sections, appendixNav }: SidebarNa
     "works-cited",
     "appendices",
     ...appendixNav.map((a) => a.id),
+    "implementations",
   ];
   const activeId = useActiveSection(sectionIds);
   const isAppendixActive = activeId === "appendices" || activeId.startsWith("appendix-");
@@ -147,6 +148,27 @@ export function SidebarNav({ version, status, sections, appendixNav }: SidebarNa
               ))}
             </ul>
           )}
+        </li>
+
+        {/* Physical Implementations (non-normative) */}
+        <li className="mt-5 border-t border-border pt-5">
+          <a
+            href="#implementations"
+            className={`flex items-center gap-3 transition-colors ${
+              activeId === "implementations"
+                ? "text-primary font-bold"
+                : "text-muted-foreground hover:text-foreground/80"
+            }`}
+          >
+            <div
+              className={`w-2 h-2 shrink-0 ${
+                activeId === "implementations"
+                  ? "bg-primary"
+                  : "bg-transparent border border-muted"
+              }`}
+            />
+            <span>Implementations</span>
+          </a>
         </li>
 
         {/* RFC Log & Signal Log links */}
