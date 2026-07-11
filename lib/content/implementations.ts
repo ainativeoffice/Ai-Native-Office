@@ -48,6 +48,10 @@ export interface ImplementationEntry {
   operator: string;
   /** External canonical URL for the implementation. */
   url: string;
+  /** Optional LinkedIn organization profile. */
+  linkedinUrl?: string;
+  /** Optional founder or principal associated with the implementation. */
+  founder?: string;
   /** Self-declared maturity. */
   status: ImplementationStatus;
   /** Self-declared vs independently reviewed. */
@@ -89,6 +93,7 @@ export const implementationEntries: ImplementationEntry[] = [
     location: "Armonk, New York",
     operator: "North Castle Ventures",
     url: "https://armonkprofessionalcenter.com",
+    linkedinUrl: "https://www.linkedin.com/company/armonk-professional-center/",
     status: "Principles being evaluated",
     review: "Self-declared",
     lastVerified: "2026-07-01",
@@ -103,6 +108,7 @@ export const implementationEntries: ImplementationEntry[] = [
     location: "Armonk, New York",
     operator: "North Castle Ventures",
     url: "https://northcastleventures.com",
+    linkedinUrl: "https://www.linkedin.com/company/northcastleventures/",
     status: "Referenced context",
     review: "Self-declared",
     lastVerified: "2026-07-01",
@@ -117,12 +123,29 @@ export const implementationEntries: ImplementationEntry[] = [
     location: "—",
     operator: "Native Agentic",
     url: "https://nativeagentic.com",
+    linkedinUrl: "https://www.linkedin.com/company/nativeagentic/",
     status: "Implementation profile",
     review: "Self-declared",
-    lastVerified: "2026-07-01",
+    lastVerified: "2026-07-11",
     summary:
-      "An agentic software implementation exploring the localized orchestration layer, stateless ambient ingestion, and the autonomous action pipeline described in the orchestration and ingestion appendices.",
+      "An agentic software implementation exploring the localized orchestration layer, stateless ambient ingestion, and the autonomous action pipeline described in the orchestration and ingestion appendices. TruCast and North Castle Ventures are partners in Native Agentic.",
     relatedSectionIds: ["orchestration", "ingestion", "sensory"],
+  },
+  {
+    id: "trucast-ai",
+    name: "TruCast AI",
+    kind: "Sovereign protocol orchestration + enterprise workflow intelligence",
+    location: "—",
+    operator: "TruCast",
+    url: "https://trucast.ai",
+    linkedinUrl: "https://www.linkedin.com/company/trucast-ai/",
+    founder: "Timothy Walsh",
+    status: "Implementation profile",
+    review: "Self-declared",
+    lastVerified: "2026-07-11",
+    summary:
+      "A sovereign protocol-orchestration environment for regulated institutions, focused on deterministic governance, infrastructure sovereignty, policy-bound agent execution, and end-to-end audit lineage. Founded by specification author Timothy Walsh, TruCast and North Castle Ventures are partners in Native Agentic.",
+    relatedSectionIds: ["orchestration", "isolation", "compliance", "identity"],
   },
 ];
 

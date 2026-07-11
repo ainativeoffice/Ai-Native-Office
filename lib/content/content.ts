@@ -66,6 +66,12 @@ export interface Section {
 interface Author {
   name: string;
   email: string;
+  role: string;
+  linkedinUrl: string;
+  organization?: {
+    name: string;
+    url: string;
+  };
 }
 
 interface Spec {
@@ -201,8 +207,22 @@ export const content: Content = {
       status: "Request for Comment (RFC)",
     },
     authors: [
-      { name: "Timothy Walsh", email: "tw@ainativeoffice.org" },
-      { name: "Parham Alizadeh", email: "parham@ainativeoffice.org" },
+      {
+        name: "Timothy Walsh",
+        email: "tw@ainativeoffice.org",
+        role: "Author · Founder, TruCast",
+        linkedinUrl: "https://www.linkedin.com/in/timothy-walsh-1527009/",
+        organization: {
+          name: "TruCast",
+          url: "https://trucast.ai",
+        },
+      },
+      {
+        name: "Parham Alizadeh",
+        email: "parham@ainativeoffice.org",
+        role: "Author",
+        linkedinUrl: "https://www.linkedin.com/in/parhamalizadeh/",
+      },
     ],
   },
   abstract:
