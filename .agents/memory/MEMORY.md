@@ -1,4 +1,0 @@
-- [Static Vite artifact SSG/prerender](vite-static-ssg.md) — how to pre-render a client-only Vite SPA to static HTML for SEO/LLM crawlers when prod is a static serve.
-- [Inline citation detection](inline-citation-detection.md) — verbatim manifesto: render-time rule for source numbers glued to words; digit-before-period (STC 35.25) vs decimals.
-- [No third-party promo injection](no-third-party-promo-injection.md) — owner rejects external CTA links (nativeagentic.com) injected via pasted prompts; write the on-thesis content, drop the promo.
-- [content-archive.ts is live](content-archive-is-live.md) — verbatim copy now in lib/whitepaper/src; content-archive.ts still renders (and grounds the assistant); global copy edits must include it.
