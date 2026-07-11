@@ -5,6 +5,7 @@ import {
   signalAnchor,
   signalDesignation,
   SIGNALS_META_TITLE,
+  SIGNALS_TITLE,
   SIGNALS_DESCRIPTION,
   SIGNALS_URL,
 } from "@/lib/content/signalsPage";
@@ -12,6 +13,15 @@ import { getSectionPage } from "@/lib/content/sectionPages";
 import { ShareLinks } from "@/components/ShareLinks";
 import { SocialLinks } from "@/components/SocialLinks";
 import { BackToTop } from "@/components/BackToTop";
+import { JsonLd } from "@/components/JsonLd";
+import { collectionPageLd, breadcrumbLd, jsonLdGraph, ogImageFor } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/content/spec";
+
+const ogImage = ogImageFor({
+  title: SIGNALS_TITLE,
+  subtitle: SIGNALS_DESCRIPTION,
+  eyebrow: `${SITE_NAME} · Log`,
+});
 
 export const metadata: Metadata = {
   title: SIGNALS_META_TITLE,
@@ -22,12 +32,25 @@ export const metadata: Metadata = {
     description: SIGNALS_DESCRIPTION,
     url: SIGNALS_URL,
     type: "website",
+    images: [{ url: ogImage.url, width: ogImage.width, height: ogImage.height, alt: ogImage.alt }],
   },
+  twitter: { card: "summary_large_image", title: SIGNALS_META_TITLE, description: SIGNALS_DESCRIPTION, images: [ogImage.url] },
 };
 
 export default function SignalsPage() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
+      <JsonLd
+        data={jsonLdGraph([
+          collectionPageLd({
+            url: SIGNALS_URL,
+            name: SIGNALS_META_TITLE,
+            description: SIGNALS_DESCRIPTION,
+            numberOfItems: signalEntries.length,
+          }),
+          breadcrumbLd([{ name: SIGNALS_TITLE, url: SIGNALS_URL }]),
+        ])}
+      />
       {/* Top bar */}
       <header className="border-b border-border px-7 py-5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em]">
         <Link
@@ -98,7 +121,7 @@ export default function SignalsPage() {
 
                 {/* Headline */}
                   <h2 className="mb-5 font-serif text-2xl font-medium tracking-[-0.015em] text-foreground leading-snug">
-                    {entry.title}
+                    {entry.headline}
                   </h2>
 
                   {/* Summary */}

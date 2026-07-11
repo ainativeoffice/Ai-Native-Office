@@ -1,8 +1,17 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { blogPages, BLOG_META_TITLE, BLOG_DESCRIPTION, BLOG_URL } from "@/lib/content/blogPages";
+import { blogPages, BLOG_META_TITLE, BLOG_TITLE, BLOG_DESCRIPTION, BLOG_URL } from "@/lib/content/blogPages";
 import { ShareLinks } from "@/components/ShareLinks";
 import { SocialLinks } from "@/components/SocialLinks";
+import { JsonLd } from "@/components/JsonLd";
+import { blogListingLd, breadcrumbLd, jsonLdGraph, ogImageFor } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/content/spec";
+
+const ogImage = ogImageFor({
+  title: BLOG_TITLE,
+  subtitle: BLOG_DESCRIPTION,
+  eyebrow: `${SITE_NAME} · Log`,
+});
 
 export const metadata: Metadata = {
   title: BLOG_META_TITLE,
@@ -13,12 +22,20 @@ export const metadata: Metadata = {
     description: BLOG_DESCRIPTION,
     url: BLOG_URL,
     type: "website",
+    images: [{ url: ogImage.url, width: ogImage.width, height: ogImage.height, alt: ogImage.alt }],
   },
+  twitter: { card: "summary_large_image", title: BLOG_META_TITLE, description: BLOG_DESCRIPTION, images: [ogImage.url] },
 };
 
 export default function BlogIndex() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
+      <JsonLd
+        data={jsonLdGraph([
+          blogListingLd(BLOG_URL, BLOG_META_TITLE, BLOG_DESCRIPTION),
+          breadcrumbLd([{ name: BLOG_TITLE, url: BLOG_URL }]),
+        ])}
+      />
       {/* Top bar */}
       <header className="border-b border-border px-7 py-5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em]">
         <Link

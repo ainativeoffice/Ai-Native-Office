@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import {
   implementationEntries,
   IMPLEMENTATIONS_META_TITLE,
+  IMPLEMENTATIONS_TITLE,
   IMPLEMENTATIONS_DESCRIPTION,
   IMPLEMENTATIONS_URL,
 } from "@/lib/content/implementations";
@@ -10,6 +11,15 @@ import { getSectionPage } from "@/lib/content/sectionPages";
 import { ShareLinks } from "@/components/ShareLinks";
 import { SocialLinks } from "@/components/SocialLinks";
 import { BackToTop } from "@/components/BackToTop";
+import { JsonLd } from "@/components/JsonLd";
+import { collectionPageLd, breadcrumbLd, jsonLdGraph, ogImageFor } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/content/spec";
+
+const ogImage = ogImageFor({
+  title: IMPLEMENTATIONS_TITLE,
+  subtitle: IMPLEMENTATIONS_DESCRIPTION,
+  eyebrow: `${SITE_NAME} · Registry`,
+});
 
 export const metadata: Metadata = {
   title: IMPLEMENTATIONS_META_TITLE,
@@ -20,7 +30,9 @@ export const metadata: Metadata = {
     description: IMPLEMENTATIONS_DESCRIPTION,
     url: IMPLEMENTATIONS_URL,
     type: "website",
+    images: [{ url: ogImage.url, width: ogImage.width, height: ogImage.height, alt: ogImage.alt }],
   },
+  twitter: { card: "summary_large_image", title: IMPLEMENTATIONS_META_TITLE, description: IMPLEMENTATIONS_DESCRIPTION, images: [ogImage.url] },
 };
 
 function formatDate(iso: string): string {
@@ -34,6 +46,17 @@ function formatDate(iso: string): string {
 export default function ImplementationsPage() {
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
+      <JsonLd
+        data={jsonLdGraph([
+          collectionPageLd({
+            url: IMPLEMENTATIONS_URL,
+            name: IMPLEMENTATIONS_META_TITLE,
+            description: IMPLEMENTATIONS_DESCRIPTION,
+            numberOfItems: implementationEntries.length,
+          }),
+          breadcrumbLd([{ name: IMPLEMENTATIONS_TITLE, url: IMPLEMENTATIONS_URL }]),
+        ])}
+      />
       {/* Top bar */}
       <header className="border-b border-border px-7 py-5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em]">
         <Link
