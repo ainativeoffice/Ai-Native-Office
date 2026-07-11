@@ -2,6 +2,7 @@ import Link from "next/link";
 import { content } from "@/lib/content/content";
 import { parseCitation } from "@/lib/content/citations";
 import { sectionPages } from "@/lib/content/sectionPages";
+import { implementationEntries } from "@/lib/content/implementations";
 import { SectionBody } from "@/components/whitepaper/WhitepaperBody";
 import { SpecificationUpdateFeed } from "@/components/SpecificationUpdateFeed";
 import { CopyForLlm } from "@/components/CopyForLlm";
@@ -203,6 +204,61 @@ export default function Home() {
               ))}
             </div>
           </section>
+
+          {/* Physical Implementations (non-normative) */}
+          <section id="implementations" className="pt-28 border-t border-border scroll-mt-28">
+            <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+              <h2 className="text-2xl font-mono font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                Physical Implementations
+              </h2>
+              <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] border border-border px-2 py-1 text-primary">
+                Informative / Non-Normative
+              </span>
+            </div>
+            <p className="mb-12 max-w-3xl font-serif italic text-lg leading-[1.7] text-foreground/70">
+              This specification is vendor-, property-, and operator-agnostic. The following
+              independent environments are exploring or deploying principles related to it. Inclusion
+              does not indicate certification, conformance, or endorsement. The full{" "}
+              <Link
+                href="/implementations/"
+                className="text-primary underline decoration-border/60 underline-offset-4 hover:decoration-primary"
+              >
+                Implementation Registry
+              </Link>{" "}
+              records status, operator, and related sections — and accepts unaffiliated third-party
+              submissions.
+            </p>
+            <ul className="grid gap-px border border-border bg-border sm:grid-cols-2">
+              {implementationEntries.map((entry) => (
+                <li key={entry.id} className="bg-background p-6 md:p-7">
+                  <div className="mb-2 font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
+                    {entry.status}
+                  </div>
+                  <h3 className="mb-2 font-serif text-xl font-medium tracking-[-0.015em] text-foreground">
+                    <a
+                      href={entry.url}
+                      target="_blank"
+                      rel="noopener external"
+                      className="transition-colors hover:text-primary"
+                    >
+                      {entry.name}
+                    </a>
+                  </h3>
+                  <p className="font-serif text-sm leading-[1.65] text-foreground/70">
+                    {entry.kind}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <Link
+                href="/implementations/"
+                className="inline-block font-mono text-[11px] uppercase tracking-[0.2em] text-muted-foreground border border-border px-6 py-4 transition-colors hover:text-primary hover:border-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+              >
+                [ Open Implementation Registry ]
+              </Link>
+            </div>
+          </section>
         </div>
 
         {/* Specification update feed */}
@@ -233,6 +289,12 @@ export default function Home() {
               className="whitespace-nowrap text-muted-foreground hover:text-primary transition-colors"
             >
               [ Signal Log ]
+            </Link>
+            <Link
+              href="/implementations/"
+              className="whitespace-nowrap text-muted-foreground hover:text-primary transition-colors"
+            >
+              [ Implementations ]
             </Link>
             {content.footer.links.map((link) =>
               link.disabled ? (
