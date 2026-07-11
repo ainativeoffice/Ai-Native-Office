@@ -43,11 +43,11 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
-      { url: '/icon-light-32x32.png', type: 'image/png', sizes: '32x32', media: '(prefers-color-scheme: light)' },
-      { url: '/icon-dark-32x32.png', type: 'image/png', sizes: '32x32', media: '(prefers-color-scheme: dark)' },
+      { url: '/ainativeoffice-icon.svg', type: 'image/svg+xml' },
+      { url: '/ainativeoffice-icon-32.png', type: 'image/png', sizes: '32x32' },
     ],
-    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: ['/ainativeoffice-icon.svg'],
+    apple: [{ url: '/ainativeoffice-apple-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   openGraph: {
     title: metaTitle(),
