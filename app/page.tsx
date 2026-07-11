@@ -10,6 +10,8 @@ import { SocialLinks } from "@/components/SocialLinks";
 import { ShareLinks } from "@/components/ShareLinks";
 import { BackToTop } from "@/components/BackToTop";
 import { SidebarNav } from "@/components/SidebarNav";
+import { JsonLd } from "@/components/JsonLd";
+import { specificationLd, jsonLdGraph } from "@/lib/seo";
 
 export default function Home() {
   const appendixNav = content.appendices.map((a, idx) => ({
@@ -28,6 +30,7 @@ export default function Home() {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground flex flex-col md:flex-row">
+      <JsonLd data={jsonLdGraph([specificationLd()])} />
       <SidebarNav
         version={content.hero.spec.version}
         status={content.hero.spec.status}

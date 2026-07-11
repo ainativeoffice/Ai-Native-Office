@@ -6,12 +6,17 @@ import {
   getBlogPage,
   getAdjacentBlogPages,
   BLOG_PATH,
+  BLOG_TITLE,
+  BLOG_URL,
 } from "@/lib/content/blogPages";
 import { getSectionPage } from "@/lib/content/sectionPages";
 import { SectionBody } from "@/components/whitepaper/WhitepaperBody";
 import { ShareLinks } from "@/components/ShareLinks";
 import { SocialLinks } from "@/components/SocialLinks";
 import { BackToTop } from "@/components/BackToTop";
+import { JsonLd } from "@/components/JsonLd";
+import { blogPostingLd, breadcrumbLd, jsonLdGraph, ogImageFor } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/content/spec";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -25,6 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const page = getBlogPage(slug);
   if (!page) return {};
+  const og = ogImageFor({
+    title: page.title,
+    subtitle: page.description,
+    eyebrow: `${SITE_NAME} · ${BLOG_TITLE}`,
+  });
   return {
     title: page.metaTitle,
     description: page.description,
@@ -35,7 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: page.url,
       type: "article",
       publishedTime: page.date,
+      images: [{ url: og.url, width: og.width, height: og.height, alt: og.alt }],
     },
+    twitter: { card: "summary_large_image", title: page.metaTitle, description: page.description, images: [og.url] },
   };
 }
 
@@ -52,6 +64,15 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
+      <JsonLd
+        data={jsonLdGraph([
+          blogPostingLd(page),
+          breadcrumbLd([
+            { name: BLOG_TITLE, url: BLOG_URL },
+            { name: page.title, url: page.url },
+          ]),
+        ])}
+      />
       {/* Top bar */}
       <header className="border-b border-border px-7 py-5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em]">
         <Link

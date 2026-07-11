@@ -5,6 +5,9 @@ import { sectionPages, getSectionPage, getAdjacentPages } from "@/lib/content/se
 import { SectionBody } from "@/components/whitepaper/WhitepaperBody";
 import { ShareLinks } from "@/components/ShareLinks";
 import { BackToTop } from "@/components/BackToTop";
+import { JsonLd } from "@/components/JsonLd";
+import { sectionArticleLd, breadcrumbLd, jsonLdGraph, ogImageFor } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/content/spec";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -18,6 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
   const page = getSectionPage(id);
   if (!page) return {};
+  const eyebrow = page.isAppendix ? `Appendix ${page.appendixLetter}` : "Specification";
+  const og = ogImageFor({
+    title: page.title,
+    subtitle: page.description,
+    eyebrow: `${SITE_NAME} · ${eyebrow}`,
+  });
   return {
     title: page.metaTitle,
     description: page.description,
@@ -27,7 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: page.description,
       url: page.url,
       type: "article",
+      images: [{ url: og.url, width: og.width, height: og.height, alt: og.alt }],
     },
+    twitter: { card: "summary_large_image", title: page.metaTitle, description: page.description, images: [og.url] },
   };
 }
 
@@ -40,6 +51,12 @@ export default async function SectionPage({ params }: Props) {
 
   return (
     <div className="min-h-[100dvh] bg-background text-foreground">
+      <JsonLd
+        data={jsonLdGraph([
+          sectionArticleLd(page),
+          breadcrumbLd([{ name: page.title, url: page.url }]),
+        ])}
+      />
       {/* Top bar */}
       <header className="border-b border-border px-7 py-5 flex items-center justify-between font-mono text-xs uppercase tracking-[0.18em]">
         <Link

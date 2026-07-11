@@ -73,6 +73,31 @@ export function absoluteUrl(path: string): string {
 }
 
 /**
+ * Build an OpenGraph image descriptor for a specific page. The card frame,
+ * monogram, and palette are inherited from `/og-image`; only the eyebrow,
+ * title, subtitle, and status label change, so every card stays on-identity.
+ */
+export function ogImageFor(opts: {
+  title: string;
+  subtitle?: string;
+  eyebrow?: string;
+  label?: string;
+  alt?: string;
+}) {
+  const params = new URLSearchParams();
+  params.set("title", opts.title);
+  if (opts.subtitle) params.set("subtitle", opts.subtitle);
+  if (opts.eyebrow) params.set("eyebrow", opts.eyebrow);
+  if (opts.label) params.set("label", opts.label);
+  return {
+    url: `${SITE_URL}/og-image?${params.toString()}`,
+    width: OG_IMAGE.width,
+    height: OG_IMAGE.height,
+    alt: opts.alt ?? `${opts.title} — ${SITE_NAME}`,
+  } as const;
+}
+
+/**
  * The document's effective `dateModified`: the newest of the spec's own
  * revision date, the latest RFC Log post, and the latest Signal Log entry —
  * matching the derivation described in `dates.ts`.
@@ -80,8 +105,8 @@ export function absoluteUrl(path: string): string {
 export function specDateModified(): string {
   return latestIsoDate([
     SPEC_REVISION_DATE,
-    blogPages[0]?.date,
-    signalEntries[0]?.date,
+    ...blogPages.map((p) => p.date),
+    ...signalEntries.map((s) => s.date),
   ]);
 }
 
