@@ -13,8 +13,11 @@ import {
   jsonLdGraph,
 } from '@/lib/seo'
 import { JsonLd } from '@/components/JsonLd'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const sourceSerif = Source_Serif_4({ subsets: ['latin'], variable: '--font-source-serif', style: ['normal', 'italic'], weight: ['400', '500', '600'] })
+
+const gaId = process.env.NEXT_PUBLIC_GA_ID
 
 const twitterHandle = content.footer.social.find((s) => s.platform === 'x')?.handle ?? '@ainativeoffice'
 
@@ -80,6 +83,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main-content" className="skip-link no-print">[ Skip to content ]</a>
         {children}
       </body>
+      {gaId ? <GoogleAnalytics gaId={gaId} /> : null}
     </html>
   )
 }
